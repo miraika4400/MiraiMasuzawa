@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\program files (x86)\microsoft directx sdk (june 2010)\include\</FILEPATH>
+      <FILENAME>dinput.h</FILENAME>
+      <LINE>4321</LINE>
+      <COLUMN>25</COLUMN>
+    </SFA>
+    <DEFECTCODE>28251</DEFECTCODE>
+    <DESCRIPTION>'joyConfigChanged' に対する整合性のない注釈: このインスタンスには 注釈なし が含まれます。c:\program files (x86)\windows kits\8.1\include\um\joystickapi.h(444) を参照してください。</DESCRIPTION>
+    <FUNCTION>joyConfigChanged</FUNCTION>
+    <DECORATED>joyConfigChanged@4</DECORATED>
+    <FUNCLINE>4321</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+      <FILENAME>joypad.cpp</FILENAME>
+      <LINE>149</LINE>
+      <COLUMN>92</COLUMN>
+    </SFA>
+    <DEFECTCODE>6201</DEFECTCODE>
+    <DESCRIPTION>インデックス '255' は、有効なインデックスの範囲 '0' から '31' (スタックが割り当てられた可能性のあるバッファー 'js.rgbButtons') を超えています。</DESCRIPTION>
+    <FUNCTION>CInputJoypad::Update</FUNCTION>
+    <DECORATED>?Update@CInputJoypad@@UAEXXZ</DECORATED>
+    <FUNCLINE>129</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+      <FILENAME>joypad.cpp</FILENAME>
+      <LINE>149</LINE>
+      <COLUMN>119</COLUMN>
+    </SFA>
+    <DEFECTCODE>6201</DEFECTCODE>
+    <DESCRIPTION>インデックス '255' は、有効なインデックスの範囲 '0' から '31' (スタックが割り当てられた可能性のあるバッファー 'js.rgbButtons') を超えています。</DESCRIPTION>
+    <FUNCTION>CInputJoypad::Update</FUNCTION>
+    <DECORATED>?Update@CInputJoypad@@UAEXXZ</DECORATED>
+    <FUNCLINE>129</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+      <FILENAME>joypad.cpp</FILENAME>
+      <LINE>152</LINE>
+      <COLUMN>92</COLUMN>
+    </SFA>
+    <DEFECTCODE>6201</DEFECTCODE>
+    <DESCRIPTION>インデックス '255' は、有効なインデックスの範囲 '0' から '31' (スタックが割り当てられた可能性のあるバッファー 'js.rgbButtons') を超えています。</DESCRIPTION>
+    <FUNCTION>CInputJoypad::Update</FUNCTION>
+    <DECORATED>?Update@CInputJoypad@@UAEXXZ</DECORATED>
+    <FUNCLINE>129</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+      <FILENAME>joypad.cpp</FILENAME>
+      <LINE>152</LINE>
+      <COLUMN>119</COLUMN>
+    </SFA>
+    <DEFECTCODE>6201</DEFECTCODE>
+    <DESCRIPTION>インデックス '255' は、有効なインデックスの範囲 '0' から '31' (スタックが割り当てられた可能性のあるバッファー 'js.rgbButtons') を超えています。</DESCRIPTION>
+    <FUNCTION>CInputJoypad::Update</FUNCTION>
+    <DECORATED>?Update@CInputJoypad@@UAEXXZ</DECORATED>
+    <FUNCLINE>129</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+      <FILENAME>joypad.cpp</FILENAME>
+      <LINE>155</LINE>
+      <COLUMN>55</COLUMN>
+    </SFA>
+    <DEFECTCODE>6201</DEFECTCODE>
+    <DESCRIPTION>インデックス '255' は、有効なインデックスの範囲 '0' から '31' (スタックが割り当てられた可能性のあるバッファー 'js.rgbButtons') を超えています。</DESCRIPTION>
+    <FUNCTION>CInputJoypad::Update</FUNCTION>
+    <DECORATED>?Update@CInputJoypad@@UAEXXZ</DECORATED>
+    <FUNCLINE>129</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+      <FILENAME>joypad.cpp</FILENAME>
+      <LINE>230</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>6001</DEFECTCODE>
+    <DESCRIPTION>初期化されていないメモリ 'hr' を使用しています。</DESCRIPTION>
+    <FUNCTION>CInputJoypad::EnumAxesCallback</FUNCTION>
+    <DECORATED>?EnumAxesCallback@CInputJoypad@@SGHPBUDIDEVICEOBJECTINSTANCEA@@PAX@Z</DECORATED>
+    <FUNCLINE>212</FUNCLINE>
+    <PROBABILITY>1</PROBABILITY>
+    <RANK>3</RANK>
+    <CATEGORY>
+      <RULECATEGORY>mspft</RULECATEGORY>
+    </CATEGORY>
+    <PATH>
+      <SFA>
+        <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+        <FILENAME>joypad.cpp</FILENAME>
+        <LINE>214</LINE>
+        <COLUMN>13</COLUMN>
+        <KEYEVENT>
+          <ID>1</ID>
+          <KIND>宣言</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'hr' が初期化されていません</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+        <FILENAME>joypad.cpp</FILENAME>
+        <LINE>215</LINE>
+        <COLUMN>13</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+        <FILENAME>joypad.cpp</FILENAME>
+        <LINE>217</LINE>
+        <COLUMN>19</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+        <FILENAME>joypad.cpp</FILENAME>
+        <LINE>218</LINE>
+        <COLUMN>25</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+        <FILENAME>joypad.cpp</FILENAME>
+        <LINE>219</LINE>
+        <COLUMN>18</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+        <FILENAME>joypad.cpp</FILENAME>
+        <LINE>220</LINE>
+        <COLUMN>18</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+        <FILENAME>joypad.cpp</FILENAME>
+        <LINE>221</LINE>
+        <COLUMN>12</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+        <FILENAME>joypad.cpp</FILENAME>
+        <LINE>222</LINE>
+        <COLUMN>12</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+        <FILENAME>joypad.cpp</FILENAME>
+        <LINE>224</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+        <FILENAME>joypad.cpp</FILENAME>
+        <LINE>224</LINE>
+        <COLUMN>25</COLUMN>
+        <KEYEVENT>
+          <ID>2</ID>
+          <KIND>分岐</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>このループをスキップする ('nCnt&lt;m_nJoyStickCont' が false と仮定)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\gsp030\desktop\バックアップ\2020\7.7 3d化\7.7\</FILEPATH>
+        <FILENAME>joypad.cpp</FILENAME>
+        <LINE>230</LINE>
+        <COLUMN>5</COLUMN>
+        <KEYEVENT>
+          <ID>3</ID>
+          <KIND>使用法</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'hr' が使用されますが、初期化されていない可能性があります</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+    </PATH>
+  </DEFECT>
+</DEFECTS>

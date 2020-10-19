@@ -1,0 +1,75 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (7.7.vcxproj, 7.7　3D化.vcxproj, electro_list_2.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  bg.cpp
+  bomb.cpp
+  bomb_ui.cpp
+  boss.cpp
+boss.cpp(260): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+boss.cpp(264): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  bullet.cpp
+  bulletex.cpp
+  camera.cpp
+  cursor.cpp
+  debug_log.cpp
+  effect.cpp
+  fade.cpp
+fade.cpp(25): warning C4244: '引数': 'float' から 'DWORD' への変換です。データが失われる可能性があります。
+  game.cpp
+  item.cpp
+  gage.cpp
+gage.cpp(133): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+gage.cpp(151): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+  manacircle.cpp
+  minimap.cpp
+  mouse.cpp
+mouse.cpp(105): warning C4244: '引数': 'LONG' から 'FLOAT' への変換です。データが失われる可能性があります。
+mouse.cpp(111): warning C4244: '=': 'float' から 'LONG' への変換です。データが失われる可能性があります。
+mouse.cpp(112): warning C4244: '=': 'float' から 'LONG' への変換です。データが失われる可能性があります。
+  particle.cpp
+particle.cpp(66): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
+  pause.cpp
+  polygon.cpp
+  コンパイル中...
+  enemy.cpp
+  explosion.cpp
+  input.cpp
+  joypad.cpp
+  keyboard.cpp
+  main.cpp
+  manager.cpp
+  number.cpp
+  player.cpp
+player.cpp(377): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+player.cpp(378): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  press_logo.cpp
+  ranking.cpp
+ranking.cpp(231): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+ranking.cpp(231): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
+ranking.cpp(367): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+ranking.cpp(367): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
+  renderer.cpp
+  result.cpp
+  scene.cpp
+  scene2d.cpp
+  scene3d.cpp
+  score.cpp
+score.cpp(61): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+score.cpp(99): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+score.cpp(99): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
+  sound.cpp
+  spawneffect.cpp
+  stage.cpp
+  コンパイル中...
+  tcp_client.cpp
+  time.cpp
+time.cpp(66): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+time.cpp(116): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+time.cpp(116): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
+  title.cpp
+  title_logo.cpp
+  tutorial.cpp
+  warning_logo.cpp
+  コード生成しています。
+  All 770 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  コード生成が終了しました。
+  7.7.vcxproj -> C:\Users\gsp030\Desktop\git\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\Electro\Release\electro.exe
+  7.7.vcxproj -> C:\Users\gsp030\Desktop\git\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\Electro\Release\electro.pdb (Full PDB)
