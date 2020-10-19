@@ -35,10 +35,7 @@
 #include "item.h"
 #include "bomb.h"
 #include "bomb_ui.h"
-<<<<<<< HEAD
-=======
 #include "remain.h"
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 #include "manacircle.h"
 #include "particle.h"
 #include "tutorial.h"

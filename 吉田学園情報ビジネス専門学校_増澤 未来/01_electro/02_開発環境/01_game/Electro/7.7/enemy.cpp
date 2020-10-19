@@ -381,11 +381,6 @@ void CEnemy::Update(void)
 		pos.y = stagePos.y + sinf(fAngle)*(STAGE_SIZE.x / 2 - ENEMY_SIZE / 2);
 	}
 
-<<<<<<< HEAD
-	// 座標のセット
-	SetPos(pos);
-
-=======
 	//if (CBoss::IsAlive())
 	//{
 	//	if (fDistanceStage < 200)
@@ -411,7 +406,6 @@ void CEnemy::Update(void)
 	//AttackManager();
 
 
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	// ステートの管理
 	switch (m_state)
 	{

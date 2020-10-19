@@ -186,10 +186,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="press_logo.cpp" />
     <ClCompile Include="ranking.cpp" />
-<<<<<<< HEAD
-=======
     <ClCompile Include="remain.cpp" />
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="scene.cpp" />
@@ -238,10 +235,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="press_logo.h" />
     <ClInclude Include="ranking.h" />
-<<<<<<< HEAD
-=======
     <ClInclude Include="remain.h" />
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="scene.h" />

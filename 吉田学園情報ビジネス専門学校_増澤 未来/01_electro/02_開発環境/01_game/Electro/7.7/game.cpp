@@ -28,10 +28,7 @@
 #include "item.h"
 #include "bomb.h"
 #include "bomb_ui.h"
-<<<<<<< HEAD
-=======
 #include "remain.h"
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 #include "manacircle.h"
 #include "keyboard.h"
 #include "particle.h"
@@ -136,19 +133,11 @@ void CGame::Update(void)
 	// サークル数の管理
 	CManaCircle::SpawnManager();
 
-<<<<<<< HEAD
-	// カメラのアップデート
-=======
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	if (m_pCamera != NULL)
 	{
 		m_pCamera->Update();
 	}
 	
-<<<<<<< HEAD
-	// エネミーのわきの管理
-=======
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	if (m_wave == WAVE_NORMAL)
 	{
 		CEnemy::SpawnManager();
@@ -181,10 +170,6 @@ void CGame::SetWave(GAME_WAVES wave)
 {
 	m_wave = wave;
 
-<<<<<<< HEAD
-	// ボスWAVEへ行くとき
-=======
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	if (m_wave == WAVE_BOSS)
 	{
 		// ボスの生成

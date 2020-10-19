@@ -97,12 +97,9 @@ HRESULT CEffect::Init(void)
 	{
 		return E_FAIL;
 	}
-<<<<<<< HEAD
-=======
 
 	//// テクスチャ割り当て
 	//BindTexture(m_pTexture);
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	
 	return S_OK;
 }
@@ -151,11 +148,8 @@ void CEffect::Update(void)
 //*****************************
 void CEffect::Draw(void)
 {
-<<<<<<< HEAD
-=======
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	CScene3d::Draw();
 }

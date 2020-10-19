@@ -31,10 +31,6 @@ LPDIRECT3DTEXTURE9 CExplosion::m_pTexture = NULL;
 //******************************
 CExplosion::CExplosion() :CScene3d(OBJTYPE_EXPLOSION)
 {
-<<<<<<< HEAD
-	// •Ï”‚ÌƒNƒŠƒA
-=======
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	m_nCntAnim = 0;
 	m_nAnimX = 0;
 	m_nAnimY = 0;

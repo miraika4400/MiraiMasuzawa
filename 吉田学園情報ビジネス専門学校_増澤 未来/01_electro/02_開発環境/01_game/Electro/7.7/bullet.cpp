@@ -37,10 +37,6 @@ std::list<CBullet*> CBullet::m_bulletList;      // リスト
 //******************************
 CBullet::CBullet():CScene3d(OBJTYPE_BULLET)
 {
-<<<<<<< HEAD
-	// 変数のクリア
-=======
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nLife = 0;
 	m_user = BULLETUSER_PLAYER;
@@ -88,10 +84,7 @@ HRESULT CBullet::Load(void)
 	// テクスチャの生成
 	D3DXCreateTextureFromFile(pDevice, BULLET_TEXTURE_PATH, &m_pTexture);
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	return S_OK;
 }
 
@@ -120,11 +113,7 @@ HRESULT CBullet::Init(void)
 	
 	// テクスチャ割り当て
 	BindTexture(m_pTexture);
-<<<<<<< HEAD
-	// サイズの設定
-=======
 
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	SetSize(D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f));
 
 	return S_OK;
@@ -221,21 +210,14 @@ void CBullet::CollisionBullet(BULLETUSER user)
 				pos.y - size.y <= enemyPos.y + enemySize.y / 3 &&
 				pos.y + size.y >= enemyPos.y - enemySize.y / 3)
 			{
-<<<<<<< HEAD
-=======
 				// 爆発の生成
 				//CExplosion::Create(enemyPos, D3DXVECTOR3(160, 160, 0), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 				// エネミー爆発SE
 				CManager::GetSound()->Play(CSound::LABEL_SE_EXPLOSION);
 				
 				// エネミーを消す
 				(*enemyIteretor)->HitAttack(1);
-<<<<<<< HEAD
-
-=======
 				//(*iteretor)->Uninit();
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 				// 弾を消す
 				Uninit();
 				return;
@@ -255,21 +237,14 @@ void CBullet::CollisionBullet(BULLETUSER user)
 				pos.y - size.y <= bossPos.y + bossSize.y / 3 &&
 				pos.y + size.y >= bossPos.y - bossSize.y / 3)
 			{
-<<<<<<< HEAD
-=======
 				// 爆発の生成
 				//CExplosion::Create(enemyPos, D3DXVECTOR3(160, 160, 0), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 				// エネミー爆発SE
 				CManager::GetSound()->Play(CSound::LABEL_SE_EXPLOSION);
 
 				// エネミーを消す
 				CGame::GetBoss()->HitAttack(1);
-<<<<<<< HEAD
-
-=======
 				//(*iteretor)->Uninit();
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 				// 弾を消す
 				Uninit();
 				return;
@@ -307,8 +282,5 @@ void CBullet::CollisionBullet(BULLETUSER user)
 			}
 		}
 	}
-<<<<<<< HEAD
-=======
 
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 }

@@ -117,12 +117,9 @@
     <ClCompile Include="gage.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-<<<<<<< HEAD
-=======
     <ClCompile Include="remain.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
     <ClCompile Include="manacircle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -263,12 +260,9 @@
     <ClInclude Include="gage.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
     <ClInclude Include="remain.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
     <ClInclude Include="manacircle.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>

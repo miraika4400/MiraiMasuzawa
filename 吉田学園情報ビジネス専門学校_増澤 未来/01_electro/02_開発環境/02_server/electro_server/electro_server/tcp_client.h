@@ -36,11 +36,7 @@ public:
 
 private:
 	//メンバ変数
-<<<<<<< HEAD
-	SOCKET m_sock;  //ソケット
-=======
 	SOCKET m_sock;
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 };
 
 #endif

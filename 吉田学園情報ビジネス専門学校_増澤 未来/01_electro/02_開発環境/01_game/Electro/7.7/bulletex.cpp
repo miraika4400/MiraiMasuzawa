@@ -40,12 +40,6 @@ CBulletEx::~CBulletEx()
 {
 }
 
-<<<<<<< HEAD
-//******************************
-// クリエイト
-//******************************
-=======
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 CBulletEx * CBulletEx::Create_Rotation(const D3DXVECTOR3 pos, const D3DXVECTOR3 posParent, const D3DXVECTOR3 move, const D3DXVECTOR3 size, const int nLife, const BULLETUSER user, const D3DCOLOR col)
 {
 		// メモリの確保
@@ -71,8 +65,6 @@ CBulletEx * CBulletEx::Create_Rotation(const D3DXVECTOR3 pos, const D3DXVECTOR3 
 		return pBulletEx;
 }
 
-<<<<<<< HEAD
-=======
 //******************************
 // クリエイト
 //******************************
@@ -99,7 +91,6 @@ CBulletEx * CBulletEx::Create_Rotation(const D3DXVECTOR3 pos, const D3DXVECTOR3 
 //	return pBulletEx;
 //}
 
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 CBulletEx * CBulletEx::Create_Rotation_Spread(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int nLife, const BULLETUSER user, const D3DCOLOR col, const float rotAngle)
 {
 	// メモリの確保

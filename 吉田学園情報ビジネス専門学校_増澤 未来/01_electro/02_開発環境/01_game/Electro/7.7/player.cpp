@@ -573,10 +573,6 @@ void CPlayer::ControlManager(void)
 	{
 		if (CManager::GetMouse()->GetMouseTrigger(1) || CManager::GetJoypad()->GetJoystickTrigger(6, 0))
 		{
-<<<<<<< HEAD
-			// ƒ{ƒ€‚Ì¶¬
-			CBomb::Create(GetPos(),500.0f);
-=======
 			//D3DXVECTOR3 cursorPos = CGame::GetCursor()->GetPos();
 			//// ’e‚Ì”­ŽËŠp“x
 			//float fBombAngle = atan2f(SCREEN_HEIGHT / 2 - cursorPos.y, cursorPos.x - SCREEN_WIDTH / 2);
@@ -584,7 +580,6 @@ void CPlayer::ControlManager(void)
 
 			// ƒ{ƒ€‚Ì¶¬
 			CBomb::Create(GetPos(),500.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 
 			m_bBomb = false;
 		}

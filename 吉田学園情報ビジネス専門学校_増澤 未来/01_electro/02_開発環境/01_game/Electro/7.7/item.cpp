@@ -18,27 +18,15 @@
 // マクロ定義
 //*****************************
 // テクスチャのパス
-<<<<<<< HEAD
-#define ITEM_SIZE 40     // アイテムのサイズ
-#define RECOVERY_LIFE 2  // 回復アイテムの回復量
-// テクスチャのパス
-#define ITEM_TEXTURE_PATH_RECOVERY "./data/Textures/HP2.png" // 回復アイテム
-#define ITEM_TEXTURE_PATH_BOMB "./data/Textures/Bomb.png"    // ボムアイテム
-=======
 #define ITEM_SIZE 40
 #define RECOVERY_LIFE 2
 #define ITEM_TEXTURE_PATH_RECOVERY "./data/Textures/HP2.png"
 #define ITEM_TEXTURE_PATH_BOMB "./data/Textures/Bomb.png"
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 
 //**********************************
 //静的メンバ変数宣言
 //**********************************
-<<<<<<< HEAD
-LPDIRECT3DTEXTURE9 CItem::m_apTexture[CItem::ITEMTYPE_MAX] = {};// テクスチャ
-=======
 LPDIRECT3DTEXTURE9 CItem::m_apTexture[CItem::ITEMTYPE_MAX] = {};
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 std::list<CItem*> CItem::m_itemList;// アイテムリスト
 
 //==================================
@@ -156,11 +144,6 @@ void CItem::Update(void)
 {
 	if (CPlayer::IsAlive())
 	{
-<<<<<<< HEAD
-		// アイテムの当たり判定
-
-=======
->>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 		// 座標、サイズの取得
 		D3DXVECTOR3 pos = GetPos();
 		D3DXVECTOR3 size = GetSize();
