@@ -1,5 +1,5 @@
 ﻿  main.cpp
-c:\users\gsp030\documents\visual studio 2015\projects\electro_server\electro_server\tcp_listener.h(32): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+c:\users\gsp030\desktop\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\02_server\electro_server\electro_server\tcp_listener.h(32): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
   C:\Program Files (x86)\Windows Kits\8.1\Include\um\WinSock2.h(1868): note: 'inet_ntoa' の宣言を確認してください
 main.cpp(114): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(205): note: 'fopen' の宣言を確認してください
@@ -7,10 +7,13 @@ main.cpp(121): warning C4996: 'fscanf': This function or variable may be unsafe.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1193): note: 'fscanf' の宣言を確認してください
 main.cpp(135): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(205): note: 'fopen' の宣言を確認してください
+  tcp_client.cpp
+  tcp_listener.cpp
   コード生成しています。
-  0 of 96 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+c:\users\gsp030\desktop\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\02_server\electro_server\electro_server\main.cpp(99): warning C4700: 初期化されていないローカル変数 'sockServer' が使用されます
+  93 of 96 functions (96.9%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
-  electro_server.vcxproj -> C:\Users\gsp030\Documents\Visual Studio 2015\Projects\electro_server\Release\electro_server.exe
-  electro_server.vcxproj -> C:\Users\gsp030\Documents\Visual Studio 2015\Projects\electro_server\Release\electro_server.pdb (Full PDB)
+  electro_server.vcxproj -> C:\Users\gsp030\Desktop\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\02_server\electro_server\Release\electro_server.exe
+  electro_server.vcxproj -> C:\Users\gsp030\Desktop\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\02_server\electro_server\Release\electro_server.pdb (Full PDB)

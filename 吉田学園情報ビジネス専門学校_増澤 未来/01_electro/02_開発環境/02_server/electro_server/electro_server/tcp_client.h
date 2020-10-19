@@ -36,7 +36,7 @@ public:
 
 private:
 	//メンバ変数
-	SOCKET m_sock;
+	SOCKET m_sock; // ソケット
 };
 
 #endif
