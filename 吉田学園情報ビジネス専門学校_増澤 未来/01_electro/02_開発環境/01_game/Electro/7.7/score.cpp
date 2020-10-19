@@ -57,6 +57,7 @@ HRESULT CScore::Init(void)
 	// 最大桁数分ループ
 	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
 	{
+		// ナンバーの生成
 		m_apNumber[nCntDigit] = CNumber::Create(0,
 			D3DXVECTOR3(1000 + nCntDigit * 20 * 2, 50.0f, 0.0f),
 			D3DXVECTOR3(20, 20, 0),
@@ -73,10 +74,11 @@ HRESULT CScore::Init(void)
 //==================================
 void CScore::Uninit(void)
 {
+	// 最大桁数分ループ
 	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
 	{
 		if (m_apNumber[nCntDigit] != NULL)
-		{
+		{// 終了処理
 			m_apNumber[nCntDigit]->Uninit();
 			delete m_apNumber[nCntDigit];
 			m_apNumber[nCntDigit] = NULL;
@@ -95,7 +97,7 @@ void CScore::Update(void)
 	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit]->Update();
-
+		// 各桁数の計算
 		m_apNumber[nCntDigit]->SetNumber((m_nScore % (int)(powf(10.0f, (MAX_SCORE_DIGIT - nCntDigit)))) / (float)(powf(10.0, (MAX_SCORE_DIGIT - nCntDigit - 1))));
 	}
 }

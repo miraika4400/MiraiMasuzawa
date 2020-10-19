@@ -25,6 +25,7 @@
 //===================================
 CScene3d::CScene3d(int nPriority) :CScene(nPriority)
 {
+	// ïœêîÇÃÉNÉäÉA
 	m_pTexture = NULL;
 	m_pVtxBuff = NULL;
 	m_pos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f);

@@ -121,7 +121,7 @@ void CTitle::Update(void)
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
 		CManager::GetMouse()->GetMouseTrigger(0) || 
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
-	{
+	{// チュートリアル画面に移行
 		CManager::GetSound()->Play(CSound::LABEL_SE_ENTER);
 		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
 	}

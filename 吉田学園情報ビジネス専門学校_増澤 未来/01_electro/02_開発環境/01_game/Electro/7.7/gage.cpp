@@ -43,8 +43,7 @@
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
-LPDIRECT3DTEXTURE9 CGage::m_pTexture = NULL;
-//int CLife::m_nLife = MAX_GAGE;
+LPDIRECT3DTEXTURE9 CGage::m_pTexture = NULL;// テクスチャ
 
 //==================================
 // コンストラクタ
@@ -132,6 +131,7 @@ HRESULT CGage::Init(void)
 		fWidth = m_fBarWidht * CGame::GetPlayer()->GetLife() / m_nMaxNum;   // 幅の計算
 		m_fRedLife = CGame::GetPlayer()->GetLife();                          // 赤ゲージのライフ量
 		break;
+
 	case GAGE_PLAYER_MP:
 		m_leftPos = D3DXVECTOR3(PLAYER_MP_POS_X, PLAYER_MP_POS_Y, 0.0f); // 左端
 		m_fBarWidht = PLAYER_MP_WIDTH;                                     // HPバーの幅
@@ -140,8 +140,10 @@ HRESULT CGage::Init(void)
 		fWidth = m_fBarWidht * CGame::GetPlayer()->GetMp() / m_nMaxNum;      // 幅の計算
 		m_fRedLife = 0;                                                      // 赤ゲージの量
 
+		// カラー
 		frontCol = D3DXCOLOR(0.0f, 0.75f, 1.0f, 1.0f);
 		break;
+
 	case GAGE_BOSS_HP:
 		m_leftPos = D3DXVECTOR3(BOSS_HP_POS_X, BOSS_HP_POS_Y, 0.0f);    // 左端
 		m_fBarWidht = BOSS_HP_WIDTH;									    // HPバーの幅
@@ -176,9 +178,11 @@ HRESULT CGage::Init(void)
 		//m_apPolygon[nCntGage]->SetTexture(m_pTexture);
 	}
 
-	
+	// 赤ゲージの色の設定
 	m_apPolygon[BAR_RED]->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	// 緑ゲージの色の設定
 	m_apPolygon[BAR_FRONT]->SetColor(frontCol);
+	// ゲージのフレームのテクスチャの割り当て
 	m_apPolygon[BAR_FRAME]->SetTexture(m_pTexture);
 
 	return S_OK;
@@ -211,8 +215,6 @@ void CGage::Uninit(void)
 //==================================
 void CGage::Update(void)
 {
-	//int nPlayerLife = CGame::GetPlayer()->GetLife();
-
 	// ライフバーの頂点の設定
 
 	// 幅の計算
@@ -272,8 +274,6 @@ void CGage::Update(void)
 	vtxPos[3] = D3DXVECTOR3(m_leftPos.x + fWidth, m_leftPos.y + m_fBarHeight, 0.0f);
 	
 	m_apPolygon[BAR_FRONT]->SetVertexPos(vtxPos);
-
-	
 
 	// 幅の計算
 	fWidth = m_fBarWidht * m_fRedLife / m_nMaxNum;

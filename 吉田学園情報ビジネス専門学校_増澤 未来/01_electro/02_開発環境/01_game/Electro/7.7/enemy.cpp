@@ -351,12 +351,6 @@ void CEnemy::Update(void)
 
 		if (powf(pos.x - playerPos.x, 2) + powf(pos.y - playerPos.y, 2) <= powf(playerSize.x / 2 + size.x / 2, 2))
 		{
-			// 角度
-			/*float fAngle = atan2f(pos.y - playerPos.y, pos.x - playerPos.x);
-			pos.x = playerPos.x + cosf(fAngle)*ENEMY_SIZE/2+playerSize.x/2;
-			pos.y = playerPos.y + sinf(fAngle)*ENEMY_SIZE/2+playerSize.x/2;
-			SetPos(pos);*/
-
 			if (CGame::GetPlayer()->GetState() == CPlayer::STATE_NORMAL)
 			{
 				CGame::GetPlayer()->HitAttack(1);
@@ -381,30 +375,8 @@ void CEnemy::Update(void)
 		pos.y = stagePos.y + sinf(fAngle)*(STAGE_SIZE.x / 2 - ENEMY_SIZE / 2);
 	}
 
-	//if (CBoss::IsAlive())
-	//{
-	//	if (fDistanceStage < 200)
-	//	{
-	//		float fAngle = atan2f(pos.y - stagePos.y, pos.x - stagePos.x);
-
-	//		pos = D3DXVECTOR3(cosf(fAngle)*(200), sinf(fAngle)*(200), 0.0f);
-
-	//		// 移動方向の変更
-	//		int nRand = rand() % 360;
-
-	//		// 移動量の設定
-	//		m_move.x = cosf(D3DXToRadian(nRand))*ENEMY_SPEED;
-	//		m_move.y = sinf(D3DXToRadian(nRand))*ENEMY_SPEED;
-	//	}
-	//}
-
 	// 座標のセット
 	SetPos(pos);
-
-
-	// 攻撃の処理
-	//AttackManager();
-
 
 	// ステートの管理
 	switch (m_state)

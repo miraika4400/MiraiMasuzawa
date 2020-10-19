@@ -22,6 +22,7 @@
 #define NOW_SCORE_INIT_POS_X 510.0f  // 現在スコア配置のX初期位置
 #define NOW_SCORE_POS_Y 665.0f       // 現在スコアのY位置
 #define FLASH_COUNT 30               // 点滅のカウント
+
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
@@ -205,24 +206,6 @@ void CRanking::SetRanking(int nScore)
 	m_nNowScore = nScore;
 	SetRanking();
 	GetRanking();
-	//// ランキング圏内か判定
-	//if (m_nRanking[MAX_RANK - 1] < nScore)
-	//{
-	//	// ランキング最下位の上書き
-	//	m_nRanking[MAX_RANK - 1] = nScore;
-
-	//	// ソート
-	//	for (int nCntRank = MAX_RANK-1; nCntRank > 0; nCntRank--)
-	//	{
-	//		if (m_nRanking[nCntRank] > m_nRanking[nCntRank - 1])
-	//		{
-	//			// 入れかえ
-	//			int nSort = m_nRanking[nCntRank];
-	//			m_nRanking[nCntRank] = m_nRanking[nCntRank - 1];
-	//			m_nRanking[nCntRank - 1] = nSort;
-	//		}
-	//	}
-	//}
 
 	// 今のスコアの表示
 	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)

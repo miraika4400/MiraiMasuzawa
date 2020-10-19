@@ -15,6 +15,7 @@
 //******************************
 CInputKeyboard::CInputKeyboard()
 {
+	// 0ÉNÉäÉA
 	memset(m_aKeyState, 0, sizeof(m_aKeyState));
 	memset(m_aKeyStateTrigger, 0, sizeof(m_aKeyStateTrigger));
 	memset(m_aKeyStateRelease, 0, sizeof(m_aKeyStateRelease));

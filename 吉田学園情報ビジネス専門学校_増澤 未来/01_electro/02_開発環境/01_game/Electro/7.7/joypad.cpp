@@ -42,12 +42,14 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
 	HRESULT  hr[MAX_JOYSTICK_NUM];
 	m_nJoyStickCont = 0;
 
+	// DirectInputオブジェクトを作成
 	for (int nCntJoyStick = 0; nCntJoyStick < MAX_JOYSTICK_NUM; nCntJoyStick++)
 	{
 		hr[nCntJoyStick] = DirectInput8Create(hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
 			(void**)&m_pInput, NULL);
 	}
 
+	// 列挙
 	hr[m_nJoyStickCont] = m_pInput->EnumDevices(DI8DEVCLASS_GAMECTRL, EnumJoysticksCallback, NULL, DIEDFL_ATTACHEDONLY);
 
 	for (int nCntJoystick = 0; nCntJoystick < m_nJoyStickCont; nCntJoystick++)
@@ -61,20 +63,22 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
 				return FALSE;
 			}
 
+			// 入力データ形式のセット
 			hr[nCntJoystick] = m_apDevice[nCntJoystick]->SetDataFormat(&c_dfDIJoystick);
 			if (FAILED(hr[nCntJoystick])) 
 			{
 				MessageBox(hWnd, "Can't set data format.", "Error", MB_OK);
 				return FALSE;
 			}
-
+			// 排他制御のセット
 			hr[nCntJoystick] = m_apDevice[nCntJoystick]->SetCooperativeLevel(hWnd, DISCL_EXCLUSIVE | DISCL_FOREGROUND);
 			if (FAILED(hr[nCntJoystick])) 
 			{
 				MessageBox(hWnd, "Can't set cooperative level.", "Error", MB_OK);
 				return FALSE;
 			}
-
+			
+			// 各制約可能なプロパティの値または値の範囲を指定
 			m_diDevCaps.dwSize = sizeof(DIDEVCAPS);
 			hr[nCntJoystick] = m_apDevice[nCntJoystick]->GetCapabilities(&m_diDevCaps);
 			if (FAILED(hr[nCntJoystick]))
@@ -83,6 +87,7 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
 				return FALSE;
 			}
 
+			// 列挙
 			hr[nCntJoystick] = m_apDevice[nCntJoystick]->EnumObjects(EnumAxesCallback, (VOID*)hWnd, DIDFT_AXIS);
 			if (FAILED(hr[nCntJoystick]))
 			{

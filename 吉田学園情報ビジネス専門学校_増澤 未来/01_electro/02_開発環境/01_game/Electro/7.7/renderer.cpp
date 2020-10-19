@@ -22,6 +22,7 @@
 //==================================
 CRenderer::CRenderer()
 {
+	// NULLÉNÉäÉA
 	m_pD3D = NULL;
 	m_pD3DDevice = NULL;	
 #ifdef _DEBUG

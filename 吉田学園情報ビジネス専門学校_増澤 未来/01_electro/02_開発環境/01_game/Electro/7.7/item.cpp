@@ -18,15 +18,16 @@
 // マクロ定義
 //*****************************
 // テクスチャのパス
-#define ITEM_SIZE 40
-#define RECOVERY_LIFE 2
-#define ITEM_TEXTURE_PATH_RECOVERY "./data/Textures/HP2.png"
-#define ITEM_TEXTURE_PATH_BOMB "./data/Textures/Bomb.png"
+#define ITEM_SIZE 40      // アイテムのサイズ
+#define RECOVERY_LIFE 2   // 回復アイテムの回復量
+// テクスチャのパス
+#define ITEM_TEXTURE_PATH_RECOVERY "./data/Textures/HP2.png" // 回復アイテム
+#define ITEM_TEXTURE_PATH_BOMB "./data/Textures/Bomb.png"    // ボムアイテム
 
 //**********************************
 //静的メンバ変数宣言
 //**********************************
-LPDIRECT3DTEXTURE9 CItem::m_apTexture[CItem::ITEMTYPE_MAX] = {};
+LPDIRECT3DTEXTURE9 CItem::m_apTexture[CItem::ITEMTYPE_MAX] = {};// テクスチャ
 std::list<CItem*> CItem::m_itemList;// アイテムリスト
 
 //==================================
@@ -51,7 +52,7 @@ CItem * CItem::Create(const D3DXVECTOR3 pos, const ITEMTYPE type)
 	// メモリの確保
 	CItem *pItem = new CItem;
 	
-	
+	// タイプの設定
 	pItem->m_itemType = type;
 
 	// 初期化処理

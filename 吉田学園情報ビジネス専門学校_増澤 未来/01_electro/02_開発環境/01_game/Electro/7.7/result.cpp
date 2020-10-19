@@ -21,14 +21,14 @@
 #include "score.h"
 
 //**********************************
-// 静的メンバ変数宣言
-//**********************************
-LPDIRECT3DTEXTURE9 CResult::m_pTexture = NULL;
-
-//**********************************
 // マクロ定義
 //**********************************
 #define  TITLE_TEXTURE_PATH "./data/Textures/result001.png" // テクスチャ
+
+//**********************************
+// 静的メンバ変数宣言
+//**********************************
+LPDIRECT3DTEXTURE9 CResult::m_pTexture = NULL; // テクスチャ
 
 //=============================
 // コンストラクタ
@@ -67,15 +67,16 @@ HRESULT CResult::Init(void)
 	// テクスチャの生成
 	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_PATH, &m_pTexture);
 
-
+	// ポリゴンの生成
 	m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
+	// ポリゴンのテクスチャの設定
 	m_pPolygon->SetTexture(m_pTexture);
 	
 	// ランキングの生成
 	CRanking::Create();
+	// セットランキング
 	CRanking::SetRanking(CScore::GetScore());
 	return S_OK;
 }
@@ -118,7 +119,7 @@ void CResult::Update(void)
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
 		CManager::GetMouse()->GetMouseTrigger(0) || 
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
-	{
+	{// タイトル画面に移行
 		CManager::GetFade()->SetFade(CManager::MODE_TITLE);
 	}
 }

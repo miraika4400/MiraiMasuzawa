@@ -123,6 +123,7 @@ void CWarningLogo::Uninit(void)
 //=============================
 void CWarningLogo::Update(void)
 {
+	// ステージの周りを回す
 	SetAngle(GetAngle() + 0.1f);
 }
 

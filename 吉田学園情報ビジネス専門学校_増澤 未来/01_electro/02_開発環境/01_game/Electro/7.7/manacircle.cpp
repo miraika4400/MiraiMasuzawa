@@ -95,8 +95,6 @@ CManaCircle * CManaCircle::Create(const D3DXVECTOR3 pos)
 	pMCircle->SetPos(pos);                    // 座標
 	pMCircle->SetObjType(OBJTYPE_MANACIRCLE); // オブジェクトタイプ
 
-	// サークルリストに追加
-	//m_circleList.push_back(pMCircle);
 	return pMCircle;
 }
 
@@ -268,9 +266,9 @@ void CManaCircle::Update(void)
 
 	// サークルのサイズ
 	D3DXVECTOR3 size = GetSize();
-
+	// サイズの加算
 	size += (CIRCLE_SIZE - size)*0.05f;
-
+	// サイズのセット
 	SetSize(size);
 
 	// 当たり判定
@@ -415,7 +413,7 @@ void CManaCircle::CollisionCircle(void)
 				int nRandDistance = rand() % 30 + 10;// 10～40
 													 // ランダムな角度
 				int nRandAngle = rand() % 360;//0～360
-											  // ↑の情報で座標の生成
+				// ↑の情報で座標の生成
 				D3DXVECTOR3 randPos;
 				randPos.x = cosf(D3DXToRadian(nRandAngle))*nRandDistance;
 				randPos.y = sinf(D3DXToRadian(nRandAngle))*nRandDistance;

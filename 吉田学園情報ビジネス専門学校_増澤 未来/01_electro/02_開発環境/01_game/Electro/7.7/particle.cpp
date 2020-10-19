@@ -29,6 +29,7 @@ LPDIRECT3DTEXTURE9  CParticle::m_apTexture[PARTICLE_MAX] = {}; // テクスチャポイ
 //******************************
 CParticle::CParticle() :CScene3d(OBJTYPE_PARTICLE)
 {
+	// 変数のクリア
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nLife = 0;
 	m_type = PARTICLE_BOX;
@@ -137,6 +138,7 @@ void CParticle::Update(void)
 	m_nLife--;
 	if (m_nLife <= 0)
 	{
+		// 消す
 		Uninit();
 	}
 }

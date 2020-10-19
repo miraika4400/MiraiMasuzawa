@@ -1,4 +1,3 @@
-
 //===================================================
 //
 //    プレイヤークラスの処理[player.cpp]
@@ -48,8 +47,8 @@
 //**********************************
 //静的メンバ変数宣言
 //**********************************
-LPDIRECT3DTEXTURE9 CPlayer::m_pTexture = NULL;
-bool CPlayer::m_bAlive = false;
+LPDIRECT3DTEXTURE9 CPlayer::m_pTexture = NULL; // テクスチャ
+bool CPlayer::m_bAlive = false;                // 生きているかのフラグ
 
 //==================================
 // コンストラクタ
@@ -173,8 +172,6 @@ void CPlayer::Update(void)
 	//DirectinManager();
 	if (m_bAlive)
 	{
-
-
 		// コントロールの管理
 		ControlManager();
 
@@ -379,7 +376,7 @@ void CPlayer::StateManager(void)
 				SLOW_TIME + 20,
 				D3DXCOLOR((float)(rand() % 100) / 100.0f, 1.0f, (float)(rand() % 100) / 100.0f, 0.8f),
 				CParticle::PARTICLE_CIRCLE);
-			/*(CParticle::PARTICLE_TYPE)(rand() % CParticle::PARTICLE_MAX)*/
+
 
 		}
 		if (m_nStateCount > PLAYER_GAMEOVER_COUNT)
@@ -480,8 +477,6 @@ void CPlayer::ControlManager(void)
 	// カーソルの角度
 	float fCoursorAngle = atan2f(SCREEN_HEIGHT / 2 - cursorPos.y, cursorPos.x - SCREEN_WIDTH / 2);
 
-	//moveDest = D3DXVECTOR3(cosf(fCoursorAngle)*PLAYER_SPEED, sinf(fCoursorAngle)*PLAYER_SPEED, 0.0f);
-
 	// 慣性
 	m_move += (moveDest - m_move) * PLAYER_MOVE_RATE;
 
@@ -490,7 +485,7 @@ void CPlayer::ControlManager(void)
 		m_nCntBullet = PLAYER_ATTACK_COUNT - 1;
 	}
 	// マウスで弾の発射
-	if (CManager::GetMouse()->GetMousePress(0)/* || CManager::GetJoypad()->GetJoystickPress(7, 0)*/)
+	if (CManager::GetMouse()->GetMousePress(0))
 	{
 		// 弾のインターバルのカウント
 		m_nCntBullet++;
@@ -573,11 +568,6 @@ void CPlayer::ControlManager(void)
 	{
 		if (CManager::GetMouse()->GetMouseTrigger(1) || CManager::GetJoypad()->GetJoystickTrigger(6, 0))
 		{
-			//D3DXVECTOR3 cursorPos = CGame::GetCursor()->GetPos();
-			//// 弾の発射角度
-			//float fBombAngle = atan2f(SCREEN_HEIGHT / 2 - cursorPos.y, cursorPos.x - SCREEN_WIDTH / 2);
-			//float fDistance = sqrtf(powf(cursorPos.x - SCREEN_WIDTH / 2, 2) + powf(cursorPos.y - SCREEN_HEIGHT / 2, 2));
-
 			// ボムの生成
 			CBomb::Create(GetPos(),500.0f);
 

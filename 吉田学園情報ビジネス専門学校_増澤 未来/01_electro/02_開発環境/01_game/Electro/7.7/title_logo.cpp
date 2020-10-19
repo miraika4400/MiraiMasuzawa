@@ -42,6 +42,7 @@ LPDIRECT3DTEXTURE9 CTitleLogo::m_pTexture = NULL;
 //=============================
 CTitleLogo::CTitleLogo():CScene2d(OBJTYPE_UI)
 {
+	// 変数のクリア
 	m_nCntAnim = 0;       // アニメーションカウント
 	m_nAnimX = 0;         // アニメーションX軸
 	m_nAnimY = 0;         // アニメーションY軸
@@ -103,7 +104,6 @@ HRESULT CTitleLogo::Init(void)
 	SetSize(LOGO_SIZE);
 	// テクスチャの設定
 	BindTexture(m_pTexture);
-
 	// ランダムで初期化
 	m_nCntSetAnim = rand() % 20;
 	return S_OK;
@@ -173,6 +173,7 @@ void CTitleLogo::Update(void)
 	}
 	else
 	{
+		// ネオンの最大点灯時に一定時間以上はアニメーションを止める
 		m_nCntSetAnim++;
 		if (m_nCntSetAnim >= NEON_INTERVAL && rand() % 20 == 0)
 		{

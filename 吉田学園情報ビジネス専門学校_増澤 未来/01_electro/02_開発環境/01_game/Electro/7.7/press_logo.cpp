@@ -22,9 +22,9 @@
 //**********************************
 // マクロ定義
 //**********************************
-#define LOGO_TEXTURE_PATH "./data/Textures/press_button.png" // テクスチャ
+#define LOGO_TEXTURE_PATH "./data/Textures/press_button.png"   // テクスチャ
 #define LOGO_SIZE D3DXVECTOR3(685.0f*0.4f, 221.0f*0.4f, 0.0f)  // サイズ画像の解像度に合わせる
-#define LOGO_POS D3DXVECTOR3(SCREEN_WIDTH/2,600.0f,0.0f) // 座標
+#define LOGO_POS D3DXVECTOR3(SCREEN_WIDTH/2,600.0f,0.0f)       // 座標
 
 //=============================
 // コンストラクタ

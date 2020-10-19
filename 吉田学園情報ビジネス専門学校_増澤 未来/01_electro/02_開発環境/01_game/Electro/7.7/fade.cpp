@@ -14,14 +14,14 @@
 //**********************************
 //マクロ定義
 //**********************************
-#define FADE_RATE 0.06f
-
+#define FADE_RATE 0.06f // フェードの不透明度更新時の係数
 
 //==================================
 // コンストラクタ
 //==================================
 CFade::CFade()
 {
+	// 変数のクリア
 	m_col = (0.0f, 0.0f, 0.0f, 1.0f);
 	m_pPolygon = NULL;
 	m_modeNext = CManager::MODE_GAME;
@@ -127,6 +127,8 @@ void CFade::Draw(void)
 //==================================
 void CFade::SetFade(CManager::MODE mode)
 {
+	// フェードアウトに設定
 	m_fade = FADE_OUT;
+	// ネクストモードの設定
 	m_modeNext = mode;
 }

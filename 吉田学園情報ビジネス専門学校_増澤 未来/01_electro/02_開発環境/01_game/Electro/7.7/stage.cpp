@@ -24,8 +24,8 @@
 #define STAGE_COL_CHANGE_COUNT 100    // 色を変えるインターバル
 #define STAGE_COL_RATE 0.05f          // 徐々に色を変えるときの係数
 // テクスチャのパス
-#define STAGE_TEXTURE_PATH1 "./data/Textures/electro_stage001.png"
-#define STAGE_TEXTURE_PATH2 "./data/Textures/electro_stage000.png"
+#define STAGE_TEXTURE_PATH1     "./data/Textures/electro_stage001.png"
+#define STAGE_TEXTURE_PATH2     "./data/Textures/electro_stage000.png"
 #define STAGE_TEXTURE_PATH_10   "./data/Textures/electro_stage000_10.png" 
 #define STAGE_TEXTURE_PATH_9    "./data/Textures/electro_stage000_9.png"  
 #define STAGE_TEXTURE_PATH_8    "./data/Textures/electro_stage000_8.png"  
@@ -48,6 +48,7 @@ LPDIRECT3DTEXTURE9 CStage::m_apTexture[STAGE_MAX] = {};
 //==================================
 CStage::CStage(): CScene(OBJTYPE_MAP)
 {
+	// 変数のクリア
 	memset(&pScene3d, 0, sizeof(pScene3d));
 	m_distCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	m_nColChangeCnt = 0;
@@ -226,7 +227,7 @@ void CStage::Update(void)
 			m_distCol.b = ((float)(rand() % 50) / 100) + 0.5f;
 		}
 
-		// 10秒前からテクスチャの切り替え
+		// 10秒前からテクスチャの切り替えでカウントダウン
 		for (int nCntTime = 0; nCntTime < 10; nCntTime++)
 		{
 			// 経過時間の取得
@@ -249,47 +250,6 @@ void CStage::Update(void)
 			}
 		}
 	}
-
-	/*if ((CTime::GetTime() / 1000) == 59)
-	{
-		
-	}
-	if ((CTime::GetTime() / 1000) == 58)
-	{
-		pScene3d[STAGE_FRONT]->BindTexture(m_apTexture[STAGE_2]);
-	}
-	if ((CTime::GetTime() / 1000) == 57)
-	{
-		pScene3d[STAGE_FRONT]->BindTexture(m_apTexture[STAGE_3]);
-	}
-	if ((CTime::GetTime() / 1000) == 56)
-	{
-		pScene3d[STAGE_FRONT]->BindTexture(m_apTexture[STAGE_4]);
-	}
-	if ((CTime::GetTime() / 1000) == 55)
-	{
-		pScene3d[STAGE_FRONT]->BindTexture(m_apTexture[STAGE_5]);
-	}
-	if ((CTime::GetTime() / 1000) == 54)
-	{
-		pScene3d[STAGE_FRONT]->BindTexture(m_apTexture[STAGE_6]);
-	}
-	if ((CTime::GetTime() / 1000) == 53)
-	{
-		pScene3d[STAGE_FRONT]->BindTexture(m_apTexture[STAGE_7]);
-	}
-	if ((CTime::GetTime() / 1000) == 52)
-	{
-		pScene3d[STAGE_FRONT]->BindTexture(m_apTexture[STAGE_8]);
-	}
-	if ((CTime::GetTime() / 1000) == 51)
-	{
-		pScene3d[STAGE_FRONT]->BindTexture(m_apTexture[STAGE_9]);
-	}
-	if ((CTime::GetTime() / 1000) == 50)
-	{
-		pScene3d[STAGE_FRONT]->BindTexture(m_apTexture[STAGE_10]);
-	}*/
 }
 
 //==================================

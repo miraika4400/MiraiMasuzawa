@@ -42,6 +42,7 @@
 #include "pause.h"
 #include "debug_log.h"
 #include "time.h"
+
 //=============================
 // 静的メンバ変数宣言
 //=============================
@@ -309,9 +310,9 @@ void CManager::Update(void)
 				}
 			}
 		}
-
 		else
-		{
+		{// ポーズ画面じゃないとき
+			// 更新処理
 			m_pRenderer->Update();
 		}
 		

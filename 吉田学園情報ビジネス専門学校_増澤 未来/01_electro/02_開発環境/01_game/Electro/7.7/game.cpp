@@ -132,11 +132,13 @@ void CGame::Update(void)
 	// サークル数の管理
 	CManaCircle::SpawnManager();
 
+	// カメラの更新
 	if (m_pCamera != NULL)
 	{
 		m_pCamera->Update();
 	}
 	
+	// エネミーのわきの管理
 	if (m_wave == WAVE_NORMAL)
 	{
 		CEnemy::SpawnManager();
@@ -169,6 +171,7 @@ void CGame::SetWave(GAME_WAVES wave)
 {
 	m_wave = wave;
 
+	// ボス戦移行時
 	if (m_wave == WAVE_BOSS)
 	{
 		// ボスの生成

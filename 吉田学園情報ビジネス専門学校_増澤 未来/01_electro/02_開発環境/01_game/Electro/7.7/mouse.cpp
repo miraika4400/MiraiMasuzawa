@@ -1,22 +1,42 @@
+////////////////////////////////////////////////////
+//
+//    mauseクラスの処理[mause.cpp]
+//    Author:増澤 未来
+//
+////////////////////////////////////////////////////
+
+//******************************
+// インクルード
+//******************************
 #include "mouse.h"
 
-
+//******************************
+// コンストラクタ
+//******************************
 CInputMouse::CInputMouse()
 {
+	// 0クリア
 	memset(m_aMouseState, 0, sizeof(m_aMouseState));
 	memset(m_aMouseStateTrigger, 0, sizeof(m_aMouseStateTrigger));
 	memset(m_aMouseStateRelease, 0, sizeof(m_aMouseStateRelease));
 }
 
+//******************************
+// デストラクタ
+//******************************
 CInputMouse::~CInputMouse()
 {
 }
 
+
+//******************************
+// 初期化処理
+//******************************
 HRESULT CInputMouse::Init(HINSTANCE hInstance, HWND hWnd)
 {
 	CInput::Init(hInstance, hWnd);
 
-	// 入力デバイス（キーボード）の作成
+	// 入力デバイス（マウス）の作成
 	if (FAILED(m_pInput->CreateDevice(GUID_SysMouse, &m_pDevice, NULL)))
 	{
 		return E_FAIL;
@@ -40,11 +60,17 @@ HRESULT CInputMouse::Init(HINSTANCE hInstance, HWND hWnd)
 	return S_OK;
 }
 
+//******************************
+// 終了処理
+//******************************
 void CInputMouse::Uninit(void)
 {
 	CInput::Uninit();
 }
 
+//******************************
+// 更新処理
+//******************************
 void CInputMouse::Update(void)
 {
 	int nCntKey;
@@ -78,21 +104,34 @@ void CInputMouse::Update(void)
 		}
 	}
 }
+
+//******************************
+// プレス情報の取得
+//******************************
 bool CInputMouse::GetMousePress(int nKey)
 {
 	return m_aMouseState[nKey] & 0x80 ? true : false;
 }
 
+//******************************
+// トリガー情報の取得
+//******************************
 bool CInputMouse::GetMouseTrigger(int nKey)
 {
 	return m_aMouseStateTrigger[nKey] & 0x80 ? true : false;
 }
 
+//******************************
+// リリース情報の取得
+//******************************
 bool CInputMouse::GetMouseRelease(int nKey)
 {
 	return m_aMouseStateRelease[nKey] & 0x80 ? true : false;
 }
 
+//******************************
+// 座標の取得
+//******************************
 D3DXVECTOR3 CInputMouse::GetMousePos(void)
 {
 	// マウス座標を取得する
@@ -105,6 +144,9 @@ D3DXVECTOR3 CInputMouse::GetMousePos(void)
 	return D3DXVECTOR3(p.x, p.y, 0);
 }
 
+//******************************
+// 座標のセット
+//******************************
 void CInputMouse::SetMousePos(D3DXVECTOR3 pos)
 {
 	POINT p;
