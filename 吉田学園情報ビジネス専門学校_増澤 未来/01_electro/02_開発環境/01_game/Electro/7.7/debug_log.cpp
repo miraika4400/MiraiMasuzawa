@@ -35,7 +35,10 @@ CDebugLog::~CDebugLog()
 //=============================
 HRESULT CDebugLog::Init(void)
 {
+<<<<<<< HEAD
 	// 文字列の初期化
+=======
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	memset(&m_aStr, 0, sizeof(m_aStr));
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
@@ -119,7 +122,10 @@ void CDebugLog::Print(const char * format, ...)
 //=============================
 void CDebugLog::Draw(void)
 {
+<<<<<<< HEAD
 	// FPS表示と被んないようにサイズを決める
+=======
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	RECT rect = { 20, 70, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 	// テキスト描画

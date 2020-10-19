@@ -381,9 +381,37 @@ void CEnemy::Update(void)
 		pos.y = stagePos.y + sinf(fAngle)*(STAGE_SIZE.x / 2 - ENEMY_SIZE / 2);
 	}
 
+<<<<<<< HEAD
 	// 座標のセット
 	SetPos(pos);
 
+=======
+	//if (CBoss::IsAlive())
+	//{
+	//	if (fDistanceStage < 200)
+	//	{
+	//		float fAngle = atan2f(pos.y - stagePos.y, pos.x - stagePos.x);
+
+	//		pos = D3DXVECTOR3(cosf(fAngle)*(200), sinf(fAngle)*(200), 0.0f);
+
+	//		// 移動方向の変更
+	//		int nRand = rand() % 360;
+
+	//		// 移動量の設定
+	//		m_move.x = cosf(D3DXToRadian(nRand))*ENEMY_SPEED;
+	//		m_move.y = sinf(D3DXToRadian(nRand))*ENEMY_SPEED;
+	//	}
+	//}
+
+	// 座標のセット
+	SetPos(pos);
+
+
+	// 攻撃の処理
+	//AttackManager();
+
+
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	// ステートの管理
 	switch (m_state)
 	{

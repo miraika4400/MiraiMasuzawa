@@ -446,7 +446,11 @@ void CManaCircle::CollisionCircle(void)
 				// MPÇÃâÒïú
 				CGame::GetPlayer()->RecoveryMp(15.0f);
 				// É{ÉÄÇÃê∂ê¨
+<<<<<<< HEAD
 				CBomb::Create(pos, 300);
+=======
+				CBomb::Create(pos, 300, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 
 				LostCircle();
 				// SEÇîÒçƒê∂èÛë‘Ç…Ç∑ÇÈ
@@ -462,7 +466,11 @@ void CManaCircle::CollisionCircle(void)
 				// MPÇÃâÒïú
 				CGame::GetPlayer()->RecoveryMp(10.0f);
 				// É{ÉÄÇÃê∂ê¨
+<<<<<<< HEAD
 				CBomb::Create(pos, 300);
+=======
+				CBomb::Create(pos, 300, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 
 				LostCircle();
 

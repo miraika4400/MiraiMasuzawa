@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (7.7.vcxproj, 7.7　3D化.vcxproj, electro_list_2.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   bg.cpp
   bomb.cpp
@@ -73,3 +74,14 @@ time.cpp(116): warning C4244: '引数': 'float' から 'const int' への変換�
   コード生成が終了しました。
   7.7.vcxproj -> C:\Users\gsp030\Desktop\git\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\Electro\Release\electro.exe
   7.7.vcxproj -> C:\Users\gsp030\Desktop\git\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\Electro\Release\electro.pdb (Full PDB)
+=======
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (7.7.vcxproj, 7.7　3D化.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  main.cpp
+  コード生成しています。
+  3 of 776 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  コード生成が終了しました。
+  7.7.vcxproj -> C:\Users\gsp030\Desktop\Electro_list\Release\electro_list_2.exe
+  7.7.vcxproj -> C:\Users\gsp030\Desktop\Electro_list\Release\electro_list_2.pdb (Full PDB)
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178

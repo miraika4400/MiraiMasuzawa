@@ -23,6 +23,10 @@
 #define CURSOR_TEXTURE_PATH "./data/Textures/cursor001.png" // テクスチャのパス
 #define CURSOR_RATE_SPEED 60.0f   // ジョイパッドの感度調整用
 #define CURSOR_SIZE 30            // カーソルサイズ
+<<<<<<< HEAD
+=======
+//#define CURSOR_DISTANCE 100       // カーソルサイズ
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 #define CURSOR_ANIM_SPEED 6       // アニメーション速度
 #define CURSOR_MAX_ANIMATION_X 11 // アニメーション数 横
 #define CURSOR_MAX_ANIMATION_Y 1  // アニメーション数 縦
@@ -37,7 +41,11 @@ LPDIRECT3DTEXTURE9 CCursor::m_pTexture = NULL;
 //==================================
 CCursor::CCursor():CScene2d(OBJTYPE_UI)
 {
+<<<<<<< HEAD
 	// 変数のクリア
+=======
+	m_fRotAngle = 0.0f;
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	m_nCntAnim = 0;
 	m_nAnimX = 0;
 	m_nAnimY = 0;
@@ -61,6 +69,11 @@ CCursor * CCursor::Create(const D3DXVECTOR3 pos)
 	// 初期化
 	pCursor->Init();
 
+<<<<<<< HEAD
+=======
+	pCursor->m_fRotAngle = 0.0f;
+
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	D3DXVECTOR3 playerPos = CGame::GetPlayer()->GetPos();
 
 	// 座標の設定
@@ -114,6 +127,12 @@ HRESULT CCursor::Init(void)
 	// テクスチャ割り当て
 	BindTexture(m_pTexture);
 
+<<<<<<< HEAD
+=======
+	// 回転角度の初期化
+	m_fRotAngle = 0.0f;
+
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	// UV座標の設定
 	D3DXVECTOR2 uv[NUM_VERTEX];
 	float fu = 1.0f / CURSOR_MAX_ANIMATION_X;
@@ -153,6 +172,31 @@ void CCursor::Update(void)
 	// ジョイパッドの取得
 	DIJOYSTATE js = CInputJoypad::GetStick(0);
 
+<<<<<<< HEAD
+=======
+	//// ジョイパッドでカーソルの操作
+	//pos.x += cosf(45) * js.lZ / CURSOR_RATE_SPEED;
+	//pos.y += sinf(45) * js.lRz / CURSOR_RATE_SPEED;
+
+	//// 画面端の判定
+	//if (pos.y < 0.0f + CURSOR_SIZE / 2)
+	//{// ↑
+	//	pos.y = 0.0f + CURSOR_SIZE / 2;
+	//}
+	//if (pos.y > SCREEN_HEIGHT - CURSOR_SIZE / 2)
+	//{ // ↓
+	//	pos.y = SCREEN_HEIGHT - CURSOR_SIZE / 2;
+	//}
+	//if (pos.x < 0.0f + CURSOR_SIZE / 2)
+	//{// ←
+	//	pos.x = 0.0f + CURSOR_SIZE / 2;
+	//}
+	//if(pos.x > SCREEN_WIDTH - CURSOR_SIZE / 2)
+	//{ // →
+	//	pos.x = SCREEN_WIDTH - CURSOR_SIZE / 2;
+	//}
+
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	// ジョイスティックの角度でカーソルの位置を変える
 	if (js.lRz >= 600 || js.lRz <= -600 || js.lZ >= 600 || js.lZ <= -600)
 	{
@@ -169,6 +213,12 @@ void CCursor::Update(void)
 	SetPos(pos);
 	pMouse->SetMousePos(pos);
 
+<<<<<<< HEAD
+=======
+	/*m_fRotAngle += 2.0f;
+	SetAngle(m_fRotAngle);*/
+
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	// アニメーションカウントを進める
 	m_nCntAnim++;
 
@@ -207,9 +257,12 @@ void CCursor::Draw(void)
 	CScene2d::Draw();
 }
 
+<<<<<<< HEAD
 //==================================
 // スクリーン座標からワールド座標に変換
 //==================================
+=======
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 D3DXVECTOR3 CCursor::GetPos3d(void)
 {
 	D3DXVECTOR3 pos;
@@ -229,5 +282,9 @@ D3DXVECTOR3 CCursor::GetPos3d(void)
 	D3DXMATRIX tmp = InvViewport * InvPrj * InvView;
 	D3DXVec3TransformCoord(&pos, &D3DXVECTOR3(GetPos().x, GetPos().y, 0), &tmp);
 
+<<<<<<< HEAD
 	return pos / 2.0f;
+=======
+	return pos/2;
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 }

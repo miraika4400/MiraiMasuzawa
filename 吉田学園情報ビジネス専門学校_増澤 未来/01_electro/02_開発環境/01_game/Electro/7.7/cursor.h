@@ -39,6 +39,10 @@ public:
 private:
 	// メンバ変数
 	static LPDIRECT3DTEXTURE9 m_pTexture; // テクスチャのポインタ
+<<<<<<< HEAD
+=======
+	float m_fRotAngle;                       // 回転角度
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	int m_nCntAnim;     // アニメーションカウント
 	int m_nAnimX;       // アニメーションX軸
 	int m_nAnimY;       // アニメーションY軸

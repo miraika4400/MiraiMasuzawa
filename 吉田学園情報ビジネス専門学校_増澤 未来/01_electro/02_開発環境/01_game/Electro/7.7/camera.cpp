@@ -19,7 +19,11 @@
 //******************************
 // 静的メンバ変数宣言
 //******************************
+<<<<<<< HEAD
 CCamera*CCamera::m_pCamera = NULL; //
+=======
+CCamera*CCamera::m_pCamera = NULL;
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 
 //******************************
 // コンストラクタ
@@ -72,18 +76,28 @@ void CCamera::Release(void)
 //******************************
 HRESULT CCamera::Init(void)
 {
+<<<<<<< HEAD
 	// X軸とY軸をプレイヤー座標に固定する
+=======
+	
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	CPlayer*pPlayer = CGame::GetPlayer();
 	if (pPlayer != NULL)
 	{
 		if (CPlayer::IsAlive())
 		{
+<<<<<<< HEAD
 			// 位置の設定
 			D3DXVECTOR3 playerPos = pPlayer->GetPos();
 			m_posV = D3DXVECTOR3(playerPos.x, playerPos.y, -500.0f);
 			// 注視点の設定
 			m_posR = playerPos;
 			// 上向きの座標の設定
+=======
+			D3DXVECTOR3 playerPos = pPlayer->GetPos();
+			m_posV = D3DXVECTOR3(playerPos.x, playerPos.y, -500.0f);
+			m_posR = playerPos;
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 			m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 		}
 	}
@@ -95,8 +109,11 @@ HRESULT CCamera::Init(void)
 //******************************
 void CCamera::Uninit(void)
 {
+<<<<<<< HEAD
 	m_pCamera = NULL;
 	Release();
+=======
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 }
 
 //******************************
@@ -127,7 +144,10 @@ void CCamera::Update(void)
 	// ボス戦で視野を広げる
 	if (CGame::GetWave()==CGame::WAVE_BOSS)
 	{
+<<<<<<< HEAD
 		// 16:9*500
+=======
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 		fDistViewAreaX = 1.6f * 500.0f;
 		fDistViewAreaY = 0.9f * 500.0f;
 	}

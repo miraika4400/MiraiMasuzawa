@@ -65,7 +65,11 @@ bool CTcpListener::Init(int nPortNum)
 	addr.sin_port = htons(SERVER_PORT_NUM);  //ポート番号
 	addr.sin_addr.S_un.S_addr = INADDR_ANY;  //すべての接続受け付ける
 
+<<<<<<< HEAD
 	//ソケットにIPアドレスとポート番号を設定する
+=======
+											 //ソケットにIPアドレスとポート番号を設定する
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	bind(m_sockServer, (struct sockaddr*)&addr, sizeof(addr));
 
 	//接続要求受付を開始する

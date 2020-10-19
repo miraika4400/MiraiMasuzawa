@@ -22,7 +22,10 @@
 //==================================
 CFade::CFade()
 {
+<<<<<<< HEAD
 	// 変数のクリア
+=======
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	m_col = (0.0f, 0.0f, 0.0f, 1.0f);
 	m_pPolygon = NULL;
 	m_modeNext = CManager::MODE_GAME;
@@ -128,8 +131,12 @@ void CFade::Draw(void)
 //==================================
 void CFade::SetFade(CManager::MODE mode)
 {
+<<<<<<< HEAD
 	// フェードアウト状態にする
 	m_fade = FADE_OUT;
 	// ネクストモードの設定
+=======
+	m_fade = FADE_OUT;
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	m_modeNext = mode;
 }

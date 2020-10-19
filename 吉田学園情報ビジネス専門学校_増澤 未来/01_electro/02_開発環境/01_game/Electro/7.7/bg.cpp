@@ -20,11 +20,14 @@
 // マクロ定義
 //*****************************
 
+<<<<<<< HEAD
 // スクロールのスピードを少しづつ変える
 #define BG_SCROLL_SPEED_1 0.002f
 #define BG_SCROLL_SPEED_2 0.001f
 #define BG_SCROLL_SPEED_3 0.0009f
 
+=======
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 // テクスチャのパス
 #define BG_TEXTURE_PATH1 "./data/Textures/bg001.png"
 #define BG_TEXTURE_PATH2 "./data/Textures/bg000.png"
@@ -33,7 +36,11 @@
 //**********************************
 //静的メンバ変数宣言
 //**********************************
+<<<<<<< HEAD
 LPDIRECT3DTEXTURE9 CBg::m_apTexture[BG_TEXTURE_NUM] = {}; // テクスチャ
+=======
+LPDIRECT3DTEXTURE9 CBg::m_apTexture[BG_TEXTURE_NUM] = {};
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 
 //==================================
 // コンストラクタ
@@ -156,9 +163,17 @@ void CBg::Update(void)
 	D3DXVECTOR2 uv[NUM_VERTEX];
 
 	// テクスチャを下にずらす
+<<<<<<< HEAD
 	m_afTexMoveV[0] -= BG_SCROLL_SPEED_1;
 	m_afTexMoveV[1] -= BG_SCROLL_SPEED_2;
 	m_afTexMoveV[2] -= BG_SCROLL_SPEED_3;
+=======
+	m_afTexMoveV[0] -= 0.002f;
+	m_afTexMoveV[1] -= 0.001f;
+	m_afTexMoveV[2] -= 0.0009f;
+
+	
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 
 	for (int nCntBg = 0; nCntBg < BG_PARTS_NUM; nCntBg++)
 	{

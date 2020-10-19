@@ -43,7 +43,12 @@
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
+<<<<<<< HEAD
 LPDIRECT3DTEXTURE9 CGage::m_pTexture = NULL; // テクスチャ
+=======
+LPDIRECT3DTEXTURE9 CGage::m_pTexture = NULL;
+//int CLife::m_nLife = MAX_GAGE;
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 
 //==================================
 // コンストラクタ
@@ -163,7 +168,11 @@ HRESULT CGage::Init(void)
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 		
+<<<<<<< HEAD
 		// 頂点座標の設定
+=======
+		
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 		D3DXVECTOR3 vtxPos[NUM_VERTEX];
 
 		vtxPos[0] = D3DXVECTOR3(m_leftPos.x         , m_leftPos.y - m_fBarHeight, 0.0f);
@@ -172,6 +181,7 @@ HRESULT CGage::Init(void)
 		vtxPos[3] = D3DXVECTOR3(m_leftPos.x + fWidth, m_leftPos.y + m_fBarHeight, 0.0f);
 
 		m_apPolygon[nCntGage]->SetVertexPos(vtxPos);
+<<<<<<< HEAD
 	}
 
 	// 赤ゲージの色
@@ -179,6 +189,14 @@ HRESULT CGage::Init(void)
 	// 緑ゲージの色
 	m_apPolygon[BAR_FRONT]->SetColor(frontCol);
 	// ゲージのフレームのテクスチャ割り当て
+=======
+		//m_apPolygon[nCntGage]->SetTexture(m_pTexture);
+	}
+
+	
+	m_apPolygon[BAR_RED]->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	m_apPolygon[BAR_FRONT]->SetColor(frontCol);
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	m_apPolygon[BAR_FRAME]->SetTexture(m_pTexture);
 
 	return S_OK;
@@ -211,6 +229,11 @@ void CGage::Uninit(void)
 //==================================
 void CGage::Update(void)
 {
+<<<<<<< HEAD
+=======
+	//int nPlayerLife = CGame::GetPlayer()->GetLife();
+
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	// ライフバーの頂点の設定
 
 	// 幅の計算
@@ -271,6 +294,11 @@ void CGage::Update(void)
 	
 	m_apPolygon[BAR_FRONT]->SetVertexPos(vtxPos);
 
+<<<<<<< HEAD
+=======
+	
+
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	// 幅の計算
 	fWidth = m_fBarWidht * m_fRedLife / m_nMaxNum;
 
@@ -290,6 +318,11 @@ void CGage::Update(void)
 			m_apPolygon[nCntGage]->Update();
 		}
 	}
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 }
 
 //==================================
@@ -303,6 +336,10 @@ void CGage::Draw(void)
 		if (m_apPolygon[nCntGage] != NULL)
 		{
 			m_apPolygon[nCntGage]->Draw();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 		}
 	}
 }

@@ -60,7 +60,11 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
 				MessageBox(hWnd, "Can't create Device.", "Error", MB_OK);
 				return FALSE;
 			}
+<<<<<<< HEAD
 			// 入力データ形式のセット
+=======
+
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 			hr[nCntJoystick] = m_apDevice[nCntJoystick]->SetDataFormat(&c_dfDIJoystick);
 			if (FAILED(hr[nCntJoystick])) 
 			{
@@ -68,7 +72,10 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
 				return FALSE;
 			}
 
+<<<<<<< HEAD
 			// 排他制御のセット
+=======
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 			hr[nCntJoystick] = m_apDevice[nCntJoystick]->SetCooperativeLevel(hWnd, DISCL_EXCLUSIVE | DISCL_FOREGROUND);
 			if (FAILED(hr[nCntJoystick])) 
 			{
@@ -76,7 +83,10 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
 				return FALSE;
 			}
 
+<<<<<<< HEAD
 			//各制約可能なプロパティの値または値の範囲を指定
+=======
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 			m_diDevCaps.dwSize = sizeof(DIDEVCAPS);
 			hr[nCntJoystick] = m_apDevice[nCntJoystick]->GetCapabilities(&m_diDevCaps);
 			if (FAILED(hr[nCntJoystick]))
@@ -85,7 +95,10 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
 				return FALSE;
 			}
 
+<<<<<<< HEAD
 			// 列挙
+=======
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 			hr[nCntJoystick] = m_apDevice[nCntJoystick]->EnumObjects(EnumAxesCallback, (VOID*)hWnd, DIDFT_AXIS);
 			if (FAILED(hr[nCntJoystick]))
 			{
@@ -141,7 +154,10 @@ void CInputJoypad::Update(void)
 		{
 			m_apDevice[nCnt]->Poll();
 
+<<<<<<< HEAD
 			// デバイス情報の取得
+=======
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 			hr = m_apDevice[nCnt]->GetDeviceState(sizeof(DIJOYSTATE), &js);
 
 			//デバイスからデータを取得

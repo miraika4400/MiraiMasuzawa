@@ -22,7 +22,10 @@ LPDIRECTINPUT8 CInput::m_pInput = NULL;    // DirectInputポインタ
 //===============================
 CInput::CInput()
 {
+<<<<<<< HEAD
 	// NULLクリア
+=======
+>>>>>>> 1f4259f10d71f719b19dc40ae4c297906db09178
 	m_pDevice = NULL;
 }
 
