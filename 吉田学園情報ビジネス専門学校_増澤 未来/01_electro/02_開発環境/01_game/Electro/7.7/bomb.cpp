@@ -148,8 +148,6 @@ void CBomb::Update(void)
 			m_pos.y - size.y <= enemyPos.y + enemySize.y &&
 			m_pos.y + size.y >= enemyPos.y - enemySize.y)
 		{
-			// 爆発の生成
-			//CExplosion::Create(enemyPos, D3DXVECTOR3(160, 160, 0), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 			// エネミー爆発SE
 			CManager::GetSound()->Play(CSound::LABEL_SE_EXPLOSION);
 
@@ -170,23 +168,18 @@ void CBomb::Update(void)
 		{
 			D3DXVECTOR3 size = m_size / 2;  // ボムのサイズ
 
-			D3DXVECTOR3 bulletPos = (*bulletIteretor)->GetPos();   // 敵の座標
-			D3DXVECTOR3 bulletSize = (*bulletIteretor)->GetSize(); // 敵のサイズ
+			D3DXVECTOR3 bulletPos = (*bulletIteretor)->GetPos();   // 弾の座標
+			D3DXVECTOR3 bulletSize = (*bulletIteretor)->GetSize(); // 弾のサイズ
 
 			if (m_pos.x - size.x <= bulletPos.x + bulletSize.x &&
 				m_pos.x + size.x >= bulletPos.x - bulletSize.x &&
 				m_pos.y - size.y <= bulletPos.y + bulletSize.y &&
 				m_pos.y + size.y >= bulletPos.y - bulletSize.y)
-			{
-				// 爆発の生成
-				//CExplosion::Create(enemyPos, D3DXVECTOR3(160, 160, 0), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-				
+			{				
 				CBullet*pBullet = *bulletIteretor;
 				bulletIteretor = CBullet::GetBulletlist()->erase(bulletIteretor);
 				//	弾を消す
 				pBullet->Uninit();
-				//// リストの初期化
-				//bulletIteretor = CBullet::GetBulletlist()->begin();
 
 				// スコア加算
 				CScore::AddScore(10);
@@ -209,16 +202,14 @@ void CBomb::Update(void)
 			// ボスへの当たり判定
 			D3DXVECTOR3 size = m_size / 2;  // ボムのサイズ
 
-			D3DXVECTOR3 bossPos = CGame::GetBoss()->GetPos();   // 敵の座標
-			D3DXVECTOR3 bossSize = CGame::GetBoss()->GetSize(); // 敵のサイズ
+			D3DXVECTOR3 bossPos = CGame::GetBoss()->GetPos();   // ボスの座標
+			D3DXVECTOR3 bossSize = CGame::GetBoss()->GetSize(); // ボスのサイズ
 
 			if (m_pos.x - size.x/2 <= bossPos.x + bossSize.x / 2 &&
 				m_pos.x + size.x/2 >= bossPos.x - bossSize.x / 2 &&
 				m_pos.y - size.y/2 <= bossPos.y + bossSize.y / 2 &&
 				m_pos.y + size.y/2 >= bossPos.y - bossSize.y / 2)
 			{
-				// 爆発の生成
-				//CExplosion::Create(enemyPos, D3DXVECTOR3(160, 160, 0), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 				// エネミー爆発SE
 				CManager::GetSound()->Play(CSound::LABEL_SE_EXPLOSION);
 

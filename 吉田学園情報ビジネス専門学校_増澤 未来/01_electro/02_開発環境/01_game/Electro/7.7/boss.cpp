@@ -45,8 +45,8 @@
 //**********************************
 //静的メンバ変数宣言
 //**********************************
-LPDIRECT3DTEXTURE9 CBoss::m_pTexture  = NULL;
-bool CBoss::m_bIsAlive = false;
+LPDIRECT3DTEXTURE9 CBoss::m_pTexture  = NULL; // テクスチャ
+bool CBoss::m_bIsAlive = false;               // 生きているかのフラグ
 
 //==================================
 // コンストラクタ

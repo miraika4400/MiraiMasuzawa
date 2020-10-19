@@ -40,6 +40,9 @@ CBulletEx::~CBulletEx()
 {
 }
 
+//******************************
+// クリエイト
+//******************************
 CBulletEx * CBulletEx::Create_Rotation(const D3DXVECTOR3 pos, const D3DXVECTOR3 posParent, const D3DXVECTOR3 move, const D3DXVECTOR3 size, const int nLife, const BULLETUSER user, const D3DCOLOR col)
 {
 		// メモリの確保
@@ -64,32 +67,6 @@ CBulletEx * CBulletEx::Create_Rotation(const D3DXVECTOR3 pos, const D3DXVECTOR3 
 		GetBulletlist()->push_back(pBulletEx);
 		return pBulletEx;
 }
-
-//******************************
-// クリエイト
-//******************************
-//CBulletEx * CBulletEx::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, const int nLife, const BULLETUSER user, const D3DCOLOR col, const BULLETTYPE type, const float rotAngle)
-//{
-//	// メモリの確保
-//	CBulletEx *pBulletEx;
-//	pBulletEx = new CBulletEx;
-//	// 初期化
-//	pBulletEx->Init();
-//
-//	// 各値の代入・セット
-//	pBulletEx->SetPos(pos);                // 座標
-//	pBulletEx->SetColor(col);              // 色
-//	pBulletEx->SetObjType(OBJTYPE_BULLET); // オブジェクトタイプ
-//	pBulletEx->m_posParent = pos;          // 親座標
-//	pBulletEx->m_move = move;              // 移動量
-//	pBulletEx->m_nLife = nLife;            // 寿命
-//	pBulletEx->m_user = user;              // バレットユーザー
-//	pBulletEx->m_bulletType = type;        // 弾の種類
-//	pBulletEx->m_fRotAngle = rotAngle;
-//
-//
-//	return pBulletEx;
-//}
 
 CBulletEx * CBulletEx::Create_Rotation_Spread(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int nLife, const BULLETUSER user, const D3DCOLOR col, const float rotAngle)
 {
@@ -134,7 +111,7 @@ CBulletEx * CBulletEx::Create_Target(const D3DXVECTOR3 pos, const D3DXVECTOR3 mo
 	pBulletEx->SetUser(user);              // バレットユーザー
 	pBulletEx->m_bulletType = BULLETTYPE_TARGET;        // 弾の種類
 
-														// リストに追加
+	// リストに追加
 	GetBulletlist()->push_back(pBulletEx);
 	return pBulletEx;
 }

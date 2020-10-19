@@ -37,6 +37,7 @@ std::list<CBullet*> CBullet::m_bulletList;      // リスト
 //******************************
 CBullet::CBullet():CScene3d(OBJTYPE_BULLET)
 {
+	// 変数のクリア
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nLife = 0;
 	m_user = BULLETUSER_PLAYER;
@@ -113,7 +114,7 @@ HRESULT CBullet::Init(void)
 	
 	// テクスチャ割り当て
 	BindTexture(m_pTexture);
-
+	// サイズの設定
 	SetSize(D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f));
 
 	return S_OK;
@@ -210,8 +211,6 @@ void CBullet::CollisionBullet(BULLETUSER user)
 				pos.y - size.y <= enemyPos.y + enemySize.y / 3 &&
 				pos.y + size.y >= enemyPos.y - enemySize.y / 3)
 			{
-				// 爆発の生成
-				//CExplosion::Create(enemyPos, D3DXVECTOR3(160, 160, 0), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 				// エネミー爆発SE
 				CManager::GetSound()->Play(CSound::LABEL_SE_EXPLOSION);
 				
@@ -229,16 +228,14 @@ void CBullet::CollisionBullet(BULLETUSER user)
 			// ボスへの当たり判定
 			D3DXVECTOR3 size = GetSize();  // 弾のサイズ
 
-			D3DXVECTOR3 bossPos = CGame::GetBoss()->GetPos();   // 敵の座標
-			D3DXVECTOR3 bossSize = CGame::GetBoss()->GetSize(); // 敵のサイズ
+			D3DXVECTOR3 bossPos = CGame::GetBoss()->GetPos();   // ボスの座標
+			D3DXVECTOR3 bossSize = CGame::GetBoss()->GetSize(); // ボスのサイズ
 
 			if (pos.x - size.x <= bossPos.x + bossSize.x / 3 &&
 				pos.x + size.x >= bossPos.x - bossSize.x / 3 &&
 				pos.y - size.y <= bossPos.y + bossSize.y / 3 &&
 				pos.y + size.y >= bossPos.y - bossSize.y / 3)
 			{
-				// 爆発の生成
-				//CExplosion::Create(enemyPos, D3DXVECTOR3(160, 160, 0), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 				// エネミー爆発SE
 				CManager::GetSound()->Play(CSound::LABEL_SE_EXPLOSION);
 
@@ -274,7 +271,6 @@ void CBullet::CollisionBullet(BULLETUSER user)
 					CManager::GetSound()->Play(CSound::LABEL_SE_EXPLOSION);
 					// ライフを減らす
 					pPlayer->HitAttack(1);
-					//pPlayer->SetState(CPlayer::STATE_DAMAGE);
 				}
 				// 弾を消す
 				Uninit();

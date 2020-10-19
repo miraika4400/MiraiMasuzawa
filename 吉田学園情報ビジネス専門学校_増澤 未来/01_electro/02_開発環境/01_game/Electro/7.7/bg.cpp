@@ -19,6 +19,9 @@
 //*****************************
 // マクロ定義
 //*****************************
+#define BG_SCROLL_SPEED_1 0.002f
+#define BG_SCROLL_SPEED_2 0.001f
+#define BG_SCROLL_SPEED_3 0.0009f
 
 // テクスチャのパス
 #define BG_TEXTURE_PATH1 "./data/Textures/bg001.png"
@@ -151,12 +154,12 @@ void CBg::Update(void)
 	D3DXVECTOR2 uv[NUM_VERTEX];
 
 	// テクスチャを下にずらす
-	m_afTexMoveV[0] -= 0.002f;
-	m_afTexMoveV[1] -= 0.001f;
-	m_afTexMoveV[2] -= 0.0009f;
+	// 少しずつずらすスピードを変える
+	m_afTexMoveV[0] -= BG_SCROLL_SPEED_1;
+	m_afTexMoveV[1] -= BG_SCROLL_SPEED_2;
+	m_afTexMoveV[2] -= BG_SCROLL_SPEED_3;
 
 	
-
 	for (int nCntBg = 0; nCntBg < BG_PARTS_NUM; nCntBg++)
 	{
 		if (m_apScene3d[nCntBg] != NULL)
