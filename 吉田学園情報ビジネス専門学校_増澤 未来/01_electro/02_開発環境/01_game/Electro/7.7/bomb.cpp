@@ -25,7 +25,7 @@
 // マクロ定義
 //*****************************
 #define BOMB_TEXTURE_PATH "./data/Textures/bomb000.png" //テクスチャのパス
-#define BOMB_RATE_SIZE 0.1f;
+#define BOMB_RATE_SIZE 0.1f // ボムのサイズ加算時の係数
 
 //******************************
 // 静的メンバ変数宣言

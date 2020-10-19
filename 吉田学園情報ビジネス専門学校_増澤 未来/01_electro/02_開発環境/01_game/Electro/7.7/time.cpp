@@ -132,6 +132,7 @@ void CTime::Update(void)
 void CTime::Draw(void)
 {
 #ifdef _DEBUG
+	// デバッグ時時間の描画
 	// 最大分ループ
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_NUM; nCntDigit++)
 	{
