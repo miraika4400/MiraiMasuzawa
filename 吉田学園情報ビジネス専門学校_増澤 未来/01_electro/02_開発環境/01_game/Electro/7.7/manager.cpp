@@ -35,7 +35,6 @@
 #include "item.h"
 #include "bomb.h"
 #include "bomb_ui.h"
-#include "remain.h"
 #include "manacircle.h"
 #include "particle.h"
 #include "tutorial.h"

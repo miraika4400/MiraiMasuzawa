@@ -25,9 +25,6 @@
 // マクロ定義
 //*****************************
 #define BOMB_TEXTURE_PATH "./data/Textures/bomb000.png" //テクスチャのパス
-#define BOMB_ANIM_SPEED 4      // アニメーション速度
-#define BOMB_MAX_ANIMATION_X 1 // アニメーション数 横
-#define BOMB_MAX_ANIMATION_Y 1 // アニメーション数 縦
 #define BOMB_RATE_SIZE 0.1f;
 
 //******************************
@@ -38,13 +35,16 @@ LPDIRECT3DTEXTURE9 CBomb::m_pTexture = NULL; // テクスチャポインタ
 //******************************
 // コンストラクタ
 //******************************
-CBomb::CBomb():CScene3d(OBJTYPE_BOMB)
+CBomb::CBomb():CScene(OBJTYPE_BOMB)
 {
+	// 変数のクリア
 	m_bHitBoss = false;
 	m_fMaxsize = 0.0f;
 	m_nCntAnim = 0;
 	m_nAnimX = 0;
 	m_nAnimY = 0;
+	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
 //******************************
@@ -57,7 +57,7 @@ CBomb::~CBomb()
 //******************************
 // クリエイト
 //******************************
-CBomb * CBomb::Create(const D3DXVECTOR3 pos, const float fMaxsize, const D3DCOLOR col)
+CBomb * CBomb::Create(const D3DXVECTOR3 pos, const float fMaxsize)
 {
 	// メモリの確保
 	CBomb *pBomb;
@@ -66,11 +66,8 @@ CBomb * CBomb::Create(const D3DXVECTOR3 pos, const float fMaxsize, const D3DCOLO
 	pBomb->Init();
 
 	// 各値の代入・セット
-	pBomb->SetPos(pos);                // 座標
-	pBomb->SetColor(col);              // 色
-	pBomb->SetSize(D3DXVECTOR3(1.0f,1.0f,1.0f));              // サイズ
-	pBomb->SetObjType(OBJTYPE_BOMB);   // オブジェクトタイプ
-	pBomb->m_fMaxsize = fMaxsize;
+	pBomb->m_pos = pos;             // 座標
+	pBomb->m_fMaxsize = fMaxsize;   // 最大サイズ
 
 	// SEの再生
 	CManager::GetSound()->Play(CSound::LABEL_SE_BOMB);
@@ -111,30 +108,8 @@ void CBomb::Unload(void)
 //******************************
 HRESULT CBomb::Init(void)
 {
-	if (FAILED(CScene3d::Init()))
-	{
-		return E_FAIL;
-	}
-
-	// テクスチャ割り当て
-	BindTexture(m_pTexture);
-
-	m_nCntAnim = 0;
-	m_nAnimX = 0;
-	m_nAnimY = 0;
-
-	// UV座標の設定
-	D3DXVECTOR2 uv[NUM_VERTEX];
-	float fu = 1.0f / BOMB_MAX_ANIMATION_X;
-	float fv = 1.0f / BOMB_MAX_ANIMATION_Y;
-
-	uv[0] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY);
-	uv[1] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY);
-	uv[2] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY + fv);
-	uv[3] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY + fv);
-
-	// UV座標セット
-	SetTextureUV(uv);
+	m_size = D3DXVECTOR3(1.0f, 1.0f, 1.0f); // サイズ
+	SetObjType(OBJTYPE_BOMB);               // オブジェクトタイプ
 
 	return S_OK;
 }
@@ -144,8 +119,7 @@ HRESULT CBomb::Init(void)
 //******************************
 void CBomb::Uninit(void)
 {
-
-	CScene3d::Uninit();
+	Release();
 }
 
 //******************************
@@ -153,13 +127,9 @@ void CBomb::Uninit(void)
 //******************************
 void CBomb::Update(void)
 {
-	// 自身の座標の取得
-	D3DXVECTOR3 pos = GetPos();
 
-	D3DXVECTOR3 size = GetSize();
-	size.x += ((m_fMaxsize + 3.0f) - size.x)*BOMB_RATE_SIZE;
-	size.y += ((m_fMaxsize + 3.0f) - size.y)*BOMB_RATE_SIZE;
-	SetSize(size);
+	m_size.x += ((m_fMaxsize + 3.0f) - m_size.x)*BOMB_RATE_SIZE;
+	m_size.y += ((m_fMaxsize + 3.0f) - m_size.y)*BOMB_RATE_SIZE;
 
 	// 当たり判定
 
@@ -168,15 +138,15 @@ void CBomb::Update(void)
 	for (enemyIteretor = CEnemy::GetEnemylist()->begin(); enemyIteretor != CEnemy::GetEnemylist()->end(); enemyIteretor++)
 	{
 
-		D3DXVECTOR3 size = GetSize()/2;  // 弾のサイズ
+		D3DXVECTOR3 size = m_size/2;  // ボムのサイズ
 
 		D3DXVECTOR3 enemyPos = (*enemyIteretor)->GetPos();   // 敵の座標
 		D3DXVECTOR3 enemySize = (*enemyIteretor)->GetSize(); // 敵のサイズ
 
-		if (pos.x - size.x <= enemyPos.x + enemySize.x &&
-			pos.x + size.x >= enemyPos.x - enemySize.x &&
-			pos.y - size.y <= enemyPos.y + enemySize.y &&
-			pos.y + size.y >= enemyPos.y - enemySize.y)
+		if (m_pos.x - size.x <= enemyPos.x + enemySize.x &&
+			m_pos.x + size.x >= enemyPos.x - enemySize.x &&
+			m_pos.y - size.y <= enemyPos.y + enemySize.y &&
+			m_pos.y + size.y >= enemyPos.y - enemySize.y)
 		{
 			// 爆発の生成
 			//CExplosion::Create(enemyPos, D3DXVECTOR3(160, 160, 0), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
@@ -198,15 +168,15 @@ void CBomb::Update(void)
 	{
 		if ((*bulletIteretor)->GetUser() == CBullet::BULLETUSER_ENEMY)
 		{
-			D3DXVECTOR3 size = GetSize() / 2;  // 弾のサイズ
+			D3DXVECTOR3 size = m_size / 2;  // ボムのサイズ
 
 			D3DXVECTOR3 bulletPos = (*bulletIteretor)->GetPos();   // 敵の座標
 			D3DXVECTOR3 bulletSize = (*bulletIteretor)->GetSize(); // 敵のサイズ
 
-			if (pos.x - size.x <= bulletPos.x + bulletSize.x &&
-				pos.x + size.x >= bulletPos.x - bulletSize.x &&
-				pos.y - size.y <= bulletPos.y + bulletSize.y &&
-				pos.y + size.y >= bulletPos.y - bulletSize.y)
+			if (m_pos.x - size.x <= bulletPos.x + bulletSize.x &&
+				m_pos.x + size.x >= bulletPos.x - bulletSize.x &&
+				m_pos.y - size.y <= bulletPos.y + bulletSize.y &&
+				m_pos.y + size.y >= bulletPos.y - bulletSize.y)
 			{
 				// 爆発の生成
 				//CExplosion::Create(enemyPos, D3DXVECTOR3(160, 160, 0), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
@@ -237,15 +207,15 @@ void CBomb::Update(void)
 		if (!m_bHitBoss)
 		{
 			// ボスへの当たり判定
-			D3DXVECTOR3 size = GetSize();  // 弾のサイズ
+			D3DXVECTOR3 size = m_size / 2;  // ボムのサイズ
 
 			D3DXVECTOR3 bossPos = CGame::GetBoss()->GetPos();   // 敵の座標
 			D3DXVECTOR3 bossSize = CGame::GetBoss()->GetSize(); // 敵のサイズ
 
-			if (pos.x - size.x/2 <= bossPos.x + bossSize.x / 2 &&
-				pos.x + size.x/2 >= bossPos.x - bossSize.x / 2 &&
-				pos.y - size.y/2 <= bossPos.y + bossSize.y / 2 &&
-				pos.y + size.y/2 >= bossPos.y - bossSize.y / 2)
+			if (m_pos.x - size.x/2 <= bossPos.x + bossSize.x / 2 &&
+				m_pos.x + size.x/2 >= bossPos.x - bossSize.x / 2 &&
+				m_pos.y - size.y/2 <= bossPos.y + bossSize.y / 2 &&
+				m_pos.y + size.y/2 >= bossPos.y - bossSize.y / 2)
 			{
 				// 爆発の生成
 				//CExplosion::Create(enemyPos, D3DXVECTOR3(160, 160, 0), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
@@ -270,8 +240,8 @@ void CBomb::Update(void)
 		
 		// ランダムな座標
 		D3DXVECTOR3 randPos;
-		randPos.x = pos.x + cosf(D3DXToRadian(nRandAngle))*(size.x/2 + fRandDistance);
-		randPos.y = pos.y + sinf(D3DXToRadian(nRandAngle))*(size.y/2 + fRandDistance);
+		randPos.x = m_pos.x + cosf(D3DXToRadian(nRandAngle))*(m_size.x/2 + fRandDistance);
+		randPos.y = m_pos.y + sinf(D3DXToRadian(nRandAngle))*(m_size.y/2 + fRandDistance);
 		randPos.z = 0.0f;
 	
 		if (m_fMaxsize >= 500)
@@ -303,42 +273,11 @@ void CBomb::Update(void)
 	}
 	
 	// 最大サイズに到達したら消す
-	if (size.x > m_fMaxsize)
+	if (m_size.x > m_fMaxsize)
 	{
 		Uninit();
 		return;
 	}
-
-
-	//// アニメーションカウントを進める
-	//m_nCntAnim++;
-
-	//if (m_nCntAnim % BOMB_ANIM_SPEED == 0)
-	//{
-	//	// アニメーションX軸の加算
-	//	m_nAnimX++;
-
-	//	if (m_nAnimX >= BOMB_MAX_ANIMATION_X)
-	//	{
-	//		// 消す
-	//		Uninit();
-	//		return;
-	//	}
-
-	//	// UV座標の設定
-	//	D3DXVECTOR2 uv[NUM_VERTEX];
-	//	float fu = 1.0f / BOMB_MAX_ANIMATION_X;
-	//	float fv = 1.0f / BOMB_MAX_ANIMATION_Y;
-
-	//	uv[0] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY);
-	//	uv[1] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY);
-	//	uv[2] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY + fv);
-	//	uv[3] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY + fv);
-
-	//	// UV座標セット
-	//	SetTextureUV(uv);
-	//}
-
 }
 
 //******************************
@@ -346,6 +285,5 @@ void CBomb::Update(void)
 //******************************
 void CBomb::Draw(void)
 {
-//	CScene3d::Draw();
 }
 

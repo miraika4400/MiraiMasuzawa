@@ -186,7 +186,6 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="press_logo.cpp" />
     <ClCompile Include="ranking.cpp" />
-    <ClCompile Include="remain.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="scene.cpp" />
@@ -235,7 +234,6 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="press_logo.h" />
     <ClInclude Include="ranking.h" />
-    <ClInclude Include="remain.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="scene.h" />

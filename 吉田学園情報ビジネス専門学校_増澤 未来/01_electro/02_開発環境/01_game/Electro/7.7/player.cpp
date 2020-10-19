@@ -579,7 +579,7 @@ void CPlayer::ControlManager(void)
 			//float fDistance = sqrtf(powf(cursorPos.x - SCREEN_WIDTH / 2, 2) + powf(cursorPos.y - SCREEN_HEIGHT / 2, 2));
 
 			// É{ÉÄÇÃê∂ê¨
-			CBomb::Create(GetPos(),500.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			CBomb::Create(GetPos(),500.0f);
 
 			m_bBomb = false;
 		}

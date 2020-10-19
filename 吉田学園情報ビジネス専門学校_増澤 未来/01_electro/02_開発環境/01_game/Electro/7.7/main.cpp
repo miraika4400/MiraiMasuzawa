@@ -85,7 +85,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// マネージャーの生成
 	CManager *pManager = new CManager;
 
-	if (FAILED(pManager->Init(hInstance, hWnd, false)))
+	if (FAILED(pManager->Init(hInstance, hWnd, true)))
 	{
 		return -1;
 	}
