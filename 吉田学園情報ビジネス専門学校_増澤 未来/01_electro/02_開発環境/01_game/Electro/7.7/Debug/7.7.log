@@ -1,6 +1,2 @@
-﻿  time.cpp
-c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\time.cpp(66): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
-c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\time.cpp(116): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\time.cpp(116): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
-  7.7.vcxproj -> C:\Users\gsp030\Desktop\git\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\Electro\Debug\electro.exe
+﻿  7.7.vcxproj -> C:\Users\gsp030\Desktop\git\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\Electro\Debug\electro.exe
   7.7.vcxproj -> C:\Users\gsp030\Desktop\git\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\Electro\Debug\electro.pdb (Full PDB)

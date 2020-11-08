@@ -19,8 +19,8 @@
 //*****************
 #define SERVER_PORT_NUM 12345      //接続先サーバーの接続先ポート
 #define BUFFER_NUM 256             //送受信バッファーサイズ
-#define SERVER_IP "52.185.164.185" //サーバーのIPアドレス
-//#define SERVER_IP "127.0.0.1" //サーバーのIPアドレス
+#define SERVER_IP "52.155.109.73"  //サーバーのIPアドレス
+//#define SERVER_IP "127.0.0.1"    //サーバーのIPアドレス
 
 //*****************
 // クラス定義
