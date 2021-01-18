@@ -1,9 +1,0 @@
-﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (7.7.vcxproj, 7.7　3D化.vcxproj, electro_list_2.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  main.cpp
-  コード生成しています。
-  3 of 770 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
-  コード生成が終了しました。
-  7.7.vcxproj -> C:\Users\gsp030\Desktop\git\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\Electro\Release\electro.exe
-  7.7.vcxproj -> C:\Users\gsp030\Desktop\git\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\Electro\Release\electro.pdb (Full PDB)

@@ -29,7 +29,6 @@ LPDIRECT3DTEXTURE9  CParticle::m_apTexture[PARTICLE_MAX] = {}; // テクスチャポイ
 //******************************
 CParticle::CParticle() :CScene3d(OBJTYPE_PARTICLE)
 {
-	// 変数のクリア
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nLife = 0;
 	m_type = PARTICLE_BOX;
@@ -63,7 +62,7 @@ CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, con
 	pParticle->SetSize(size);                // サイズ
 	pParticle->m_nLife = nLife;              // 寿命
 	pParticle->SetColor(col);                // カラー
-	pParticle->SetObjType(OBJTYPE_PARTICLE); // オブジェクトタイプ
+	pParticle->SetPriority(OBJTYPE_PARTICLE); // オブジェクトタイプ
 	pParticle->SetAngle(rand() % 360);       // 回転角度をランダム
 	pParticle->SetAddMode(true);             // 加算合成
 	return pParticle;
@@ -138,7 +137,6 @@ void CParticle::Update(void)
 	m_nLife--;
 	if (m_nLife <= 0)
 	{
-		// 消す
 		Uninit();
 	}
 }

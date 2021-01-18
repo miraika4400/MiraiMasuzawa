@@ -1,3 +1,4 @@
+
 //===================================================
 //
 //    プレイヤークラスの処理[player.cpp]
@@ -27,6 +28,10 @@
 #include "effect.h"
 #include "particle.h"
 #include "boss.h"
+#include "gauge.h"
+#include "fever_logo.h"
+#include "fever_screen.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -47,8 +52,8 @@
 //**********************************
 //静的メンバ変数宣言
 //**********************************
-LPDIRECT3DTEXTURE9 CPlayer::m_pTexture = NULL; // テクスチャ
-bool CPlayer::m_bAlive = false;                // 生きているかのフラグ
+LPDIRECT3DTEXTURE9 CPlayer::m_pTexture = NULL;
+bool CPlayer::m_bAlive = false;
 
 //==================================
 // コンストラクタ
@@ -63,9 +68,15 @@ CPlayer::CPlayer() :CScene3d(OBJTYPE_PLAYER)
 	m_bBomb = false;
 	m_nRemain = PLAYER_MAX_REMAIN;
 	m_fMp = PLAYER_MAX_MP;
-	m_nLife = PLAYER_MAX_HP;
+	m_fLife = PLAYER_MAX_HP;
 	m_fRotAngle = 0;
 	m_fRotAngleDist = 0;
+	memset(&m_pGauge, 0, sizeof(m_pGauge));
+	m_fFeverGauge = 0.0f;
+	m_bFever = false;
+	m_nBulletInterval = PLAYER_ATTACK_COUNT;
+	m_pFeverLogo = NULL;
+	m_pFeverScreen = NULL;
 }
 
 //==================================
@@ -85,12 +96,12 @@ CPlayer * CPlayer:: Create(const D3DXVECTOR3 pos)
 	pPlayer = new CPlayer;
 	
 	// 初期化
-	pPlayer->Init(pos);
+	pPlayer->Init();
 
 	// 座標の設定
 	pPlayer->SetPos(pos);
 	// オブジェクトタイプの設定
-	pPlayer->SetObjType(OBJTYPE_PLAYER);
+	pPlayer->SetPriority(OBJTYPE_PLAYER);
 
 	return pPlayer;
 }
@@ -125,7 +136,7 @@ void CPlayer::Unload(void)
 //==================================
 // 初期化処理
 //==================================
-HRESULT CPlayer::Init(D3DXVECTOR3 pos)
+HRESULT CPlayer::Init(void)
 {
 	if (FAILED(CScene3d::Init()))
 	{
@@ -144,13 +155,24 @@ HRESULT CPlayer::Init(D3DXVECTOR3 pos)
 	m_nStateCount = 0;
 	m_state = STATE_SPAWN;
 	m_bAlive = true;
-	m_fMp = PLAYER_MAX_MP;
-	m_nLife = PLAYER_MAX_HP;
+	m_fMp   = PLAYER_MAX_MP;
+	m_fLife = PLAYER_MAX_HP;
 
 	// 角度の初期化
 	m_fRotAngle = 90;
 	m_fRotAngleDist = 90;
 	SetAngle(90);
+
+	// ゲージ生成
+	// 体力
+	m_pGauge[0] =CGauge::Create(&m_fLife, D3DXVECTOR3(PLAYER_LIFE_POS_X, PLAYER_LIFE_POS_Y, 0.0f), PLAYER_LIFE_WIDTH, PLAYER_LIFE_HEGHT,
+		PLAYER_MAX_HP, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f), true);
+	// MP
+	m_pGauge[1] = CGauge::Create(&m_fMp, D3DXVECTOR3(PLAYER_MP_POS_X, PLAYER_MP_POS_Y, 0.0f), PLAYER_MP_WIDTH, PLAYER_MP_HEGHT,
+		PLAYER_MAX_MP, D3DXCOLOR(0.0f, 0.75f, 1.0f, 1.0f));
+	// フィーバー
+	m_pGauge[2] = CGauge::Create(&m_fFeverGauge, D3DXVECTOR3(FEVER_POS_X, FEVER_POS_Y, 0.0f), FEVER_WIDTH, FEVER_HEGHT,
+		IN_FEVER_NUM, D3DXCOLOR(1.0f, 0.8f, 0.2f, 1.0f));
 
 	return S_OK;
 }
@@ -161,7 +183,22 @@ HRESULT CPlayer::Init(D3DXVECTOR3 pos)
 void CPlayer::Uninit(void)
 {
 	CScene3d::Uninit();
+
+	// ゲージを消す
+	for (int nCntGauge = 0; nCntGauge < PLAYER_GAUGE_NUM; nCntGauge++)
+	{
+		if (m_pGauge[nCntGauge] != NULL)
+		{
+			m_pGauge[nCntGauge]->Uninit();
+			m_pGauge[nCntGauge] = NULL;
+		}
+	}
+
+	// 生存フラグをfalseにする
 	m_bAlive = false;
+
+	// バックバッファカラーの初期化
+	CManager::GetRenderer()->SetBuffColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 //==================================
@@ -171,11 +208,9 @@ void CPlayer::Update(void)
 {
 	//DirectinManager();
 	if (m_bAlive)
-	{
+	{// 生きてるとき
 		// コントロールの管理
 		ControlManager();
-
-		static float fBulletAngle = -90.0f;// 弾を飛ばす方向
 
 		// 座標の取得
 		D3DXVECTOR3 pos = GetPos();
@@ -234,6 +269,8 @@ void CPlayer::Update(void)
 	}
 	// ステートの管理
 	StateManager();
+	// フィーバーの処理
+	FeverManager();
 }
 
 //==================================
@@ -253,9 +290,9 @@ void CPlayer::Draw(void)
 void CPlayer::HitAttack(int nDamage)
 {
 	// ライフを減らす
-	m_nLife -= nDamage;
+	m_fLife -= nDamage;
 
-	if (m_nLife > 0)
+	if (m_fLife > 0)
 	{// ライフが残っている
 		m_state = STATE_DAMAGE;
 	}
@@ -263,7 +300,7 @@ void CPlayer::HitAttack(int nDamage)
 	{// ライフが0以下
 
 		// ライフが0以下にならないように
-		m_nLife = 0;
+		m_fLife = 0;
 		
 		// 死亡状態に
 		m_bAlive = false;
@@ -279,10 +316,13 @@ void CPlayer::HitAttack(int nDamage)
 //==================================
 void CPlayer::RecoveryLife(const int nRecovery)
 {
-	m_nLife += nRecovery;
-	if (m_nLife > PLAYER_MAX_HP)
+	// ライフに引数を足す
+	m_fLife += nRecovery;
+
+	// ライフが最大値を超えないように
+	if (m_fLife > PLAYER_MAX_HP)
 	{
-		m_nLife = PLAYER_MAX_HP;
+		m_fLife = PLAYER_MAX_HP;
 	}
 }
 
@@ -291,10 +331,31 @@ void CPlayer::RecoveryLife(const int nRecovery)
 //==================================
 void CPlayer::RecoveryMp(float fRecoveryMp)
 {
+	// MPに引数を足す
 	m_fMp += fRecoveryMp;
+	// MPが最大値を超えないように
 	if (m_fMp > PLAYER_MAX_MP)
 	{
 		m_fMp = PLAYER_MAX_MP;
+	}
+}
+
+void CPlayer::ProgressFever(float fAdd)
+{
+	if (!m_bFever)
+	{// フィーバー状態じゃないとき
+
+		// フィーバー値の加算
+		m_fFeverGauge+= fAdd;
+
+		// 一定値に達したらフィーバーの入る
+		if (m_fFeverGauge >= IN_FEVER_NUM)
+		{
+			m_bFever = true;
+			// BGMの切り替え
+			CManager::GetSound()->Stop(CSound::LABEL_BGM_GAME);
+			CManager::GetSound()->Play(CSound::LABEL_BGM_FEVER);
+		}
 	}
 }
 
@@ -325,6 +386,9 @@ void CPlayer::StateManager(void)
 			m_nStateCount = 0;
 			m_state = STATE_NORMAL;
 		}
+
+		// 赤く点滅させる
+
 		if (m_nStateCount % (PLAYER_STATE_COUNT * 2) == 0)
 		{// 通常カラー
 			SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
@@ -349,6 +413,8 @@ void CPlayer::StateManager(void)
 			m_state = STATE_NORMAL;
 		}
 		
+		// 点滅させる
+
 		if (m_nStateCount % (PLAYER_STATE_COUNT * 2) == 0)
 		{// 通常カラー
 			SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
@@ -376,7 +442,7 @@ void CPlayer::StateManager(void)
 				SLOW_TIME + 20,
 				D3DXCOLOR((float)(rand() % 100) / 100.0f, 1.0f, (float)(rand() % 100) / 100.0f, 0.8f),
 				CParticle::PARTICLE_CIRCLE);
-
+			/*(CParticle::PARTICLE_TYPE)(rand() % CParticle::PARTICLE_MAX)*/
 
 		}
 		if (m_nStateCount > PLAYER_GAMEOVER_COUNT)
@@ -484,12 +550,12 @@ void CPlayer::ControlManager(void)
 	{
 		m_nCntBullet = PLAYER_ATTACK_COUNT - 1;
 	}
-	// マウスで弾の発射
+	// 左クリックで弾の発射
 	if (CManager::GetMouse()->GetMousePress(0))
 	{
 		// 弾のインターバルのカウント
 		m_nCntBullet++;
-		if (m_nCntBullet > PLAYER_ATTACK_COUNT)
+		if (m_nCntBullet > m_nBulletInterval)
 		{
 			// MPの確認
 			if (m_fMp >= PLAYER_BULLET_MP)
@@ -505,15 +571,26 @@ void CPlayer::ControlManager(void)
 
 				// 弾の発射角度
 				float fBulletAngle = atan2f(SCREEN_HEIGHT / 2 - cursorPos.y, cursorPos.x - SCREEN_WIDTH / 2);
-
-				// 弾の生成
-				CBullet::Create(
-					GetPos(),
-					D3DXVECTOR3(cosf(fBulletAngle)*PLAYER_BULLET_SPEED, sinf(fBulletAngle)*PLAYER_BULLET_SPEED, 0.0f),
-					60,
-					CBullet::BULLETUSER_PLAYER,
-					D3DXCOLOR(0.5f, 1.0f, 0.5f, 1.0f));
-
+				if (!m_bFever)
+				{// 通常状態
+					// 弾の生成
+					CBullet::Create(
+						GetPos(),
+						D3DXVECTOR3(cosf(fBulletAngle)*PLAYER_BULLET_SPEED, sinf(fBulletAngle)*PLAYER_BULLET_SPEED, 0.0f),
+						60,
+						CBullet::BULLETUSER_PLAYER,
+						D3DXCOLOR(0.5f, 1.0f, 0.5f, 1.0f));
+				}
+				else
+				{// フィーバー状態
+				 // 弾の生成
+					CBullet::Create(
+						GetPos(),
+						D3DXVECTOR3(cosf(fBulletAngle)*PLAYER_BULLET_SPEED*1.5f, sinf(fBulletAngle)*PLAYER_BULLET_SPEED*1.5f, 0.0f),
+						60,
+						CBullet::BULLETUSER_PLAYER,
+						D3DXCOLOR(0.5f, 1.0f, 0.5f, 1.0f));
+				}
 
 				// SEの再生
 				CManager::GetSound()->Play(CSound::LABEL_SE_SHOT);
@@ -537,13 +614,17 @@ void CPlayer::ControlManager(void)
 			{
 				// MPを減らす
 				m_fMp -= PLAYER_BULLET_MP;
-				if (m_fMp <= 0)
+				// MPがマイナスにならないようにする
+				if (m_fMp < 0)
 				{
 					m_fMp = 0;
 				}
 
+				// 弾を撃つ方向をスティックの方向にする
 				D3DXVECTOR3 bulletMove = D3DXVECTOR3(cosf(45)*js.lZ, -(sinf(45)*js.lRz), 0.0f);
+				// 正規化
 				D3DXVec3Normalize(&bulletMove, &bulletMove);
+
 				// 弾の生成
 				CBullet::Create(
 					GetPos(),
@@ -569,9 +650,63 @@ void CPlayer::ControlManager(void)
 		if (CManager::GetMouse()->GetMouseTrigger(1) || CManager::GetJoypad()->GetJoystickTrigger(6, 0))
 		{
 			// ボムの生成
-			CBomb::Create(GetPos(),500.0f);
-
+			CBomb::Create(GetPos(),500.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			// ボムを使用不可状態にする
 			m_bBomb = false;
 		}
+	}
+}
+
+
+//==================================
+// フィーバーの処理
+//==================================
+void CPlayer::FeverManager(void)
+{
+
+	if (m_bFever)
+	{// フィーバー中
+		m_nBulletInterval = PLAYER_ATTACK_COUNT / 2;
+		m_fMp = PLAYER_MAX_MP;
+
+		if (m_pFeverScreen == NULL)
+		{// フィーバー画面の生成
+			m_pFeverScreen = CFeverScreen::Create();
+		}
+		if (m_pFeverLogo == NULL)
+		{// フィーバーロゴの生成
+			m_pFeverLogo = CFeverLogo::Create();
+		}
+
+		// フィーバー値を減らす
+		m_fFeverGauge -= 0.1f;
+		if (m_fFeverGauge < 0)
+		{// 値が0以下の時フィーバーの終了
+			m_bFever = false;
+			m_fFeverGauge = 0;
+			// BGMの切り替え
+			CManager::GetSound()->Stop(CSound::LABEL_BGM_FEVER);
+			CManager::GetSound()->Play(CSound::LABEL_BGM_GAME);
+		}
+
+		// バックバッファカラーの設定
+		CManager::GetRenderer()->SetBuffColor(D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f));
+	}
+	else
+	{
+		if (m_pFeverScreen != NULL)
+		{// フィーバー画面を消す
+			m_pFeverScreen->Uninit();
+			m_pFeverScreen = NULL;
+		}
+		if (m_pFeverLogo != NULL)
+		{// フィーバーロゴを消す
+			m_pFeverLogo->Uninit();
+			m_pFeverLogo = NULL;
+		}
+
+		m_nBulletInterval = PLAYER_ATTACK_COUNT;
+		// バックバッファカラーの設定
+		CManager::GetRenderer()->SetBuffColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 }

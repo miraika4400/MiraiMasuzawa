@@ -166,9 +166,11 @@
     <ClCompile Include="debug_log.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="fade.cpp" />
+    <ClCompile Include="fever_logo.cpp" />
+    <ClCompile Include="fever_screen.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="item.cpp" />
-    <ClCompile Include="gage.cpp" />
+    <ClCompile Include="gauge.cpp" />
     <ClCompile Include="manacircle.cpp" />
     <ClCompile Include="minimap.cpp" />
     <ClCompile Include="mouse.cpp" />
@@ -199,6 +201,7 @@
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="title_logo.cpp" />
+    <ClCompile Include="title_menu.cpp" />
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="warning_logo.cpp" />
   </ItemGroup>
@@ -214,9 +217,11 @@
     <ClInclude Include="debug_log.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="fade.h" />
+    <ClInclude Include="fever_logo.h" />
+    <ClInclude Include="fever_screen.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="item.h" />
-    <ClInclude Include="gage.h" />
+    <ClInclude Include="gauge.h" />
     <ClInclude Include="manacircle.h" />
     <ClInclude Include="minimap.h" />
     <ClInclude Include="mouse.h" />
@@ -247,6 +252,7 @@
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="title_logo.h" />
+    <ClInclude Include="title_menu.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="warning_logo.h" />
   </ItemGroup>

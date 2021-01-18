@@ -77,14 +77,10 @@ HRESULT CCamera::Init(void)
 	if (pPlayer != NULL)
 	{
 		if (CPlayer::IsAlive())
-		{// プレイヤーが生きているとき
-			// プレイヤー座標の取得
+		{
 			D3DXVECTOR3 playerPos = pPlayer->GetPos();
-			// 位置の設定
 			m_posV = D3DXVECTOR3(playerPos.x, playerPos.y, -500.0f);
-			// 注視点の設定
 			m_posR = playerPos;
-			// 上方向の設定
 			m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 		}
 	}
@@ -119,6 +115,7 @@ void CCamera::Update(void)
 
 		}
 	}
+
 	
 	float fDistViewAreaX = 0.0f;
 	float fDistViewAreaY = 0.0f;
@@ -155,10 +152,14 @@ void CCamera::SetCamera(void)
 	//プロジェクションマトリックスの作成*並行投影
 	D3DXMatrixOrthoLH(&m_pCamera->m_mtxProjection, ((float)SCREEN_WIDTH * 2) + m_fViewAriaX, ((float)SCREEN_HEIGHT * 2) + m_fViewAriaY, 1, 1000);
 
+	/*D3DXMatrixPerspectiveFovLH(&m_pCamera->mtxProjection,
+		D3DXToRadian(100.0f), 
+		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.0f, 1000.0f);*/
+	
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_pCamera->m_mtxProjection);
 
-	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_RGBA(255, 255, 255, 255), 1.0f, 0);
+	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, CManager::GetRenderer()->GetBuffColor(), 1.0f, 0);
 
 	
 }

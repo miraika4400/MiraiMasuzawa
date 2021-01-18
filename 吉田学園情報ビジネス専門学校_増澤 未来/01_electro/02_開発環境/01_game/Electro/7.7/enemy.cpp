@@ -41,7 +41,11 @@
 //テクスチャのパス
 #define ENEMY_TEXTURE_PATH_YELLOW "./data/Textures/enemy000.png" // 黄色エネミー
 #define ENEMY_TEXTURE_PATH_PURPLE "./data/Textures/enemy001.png" // 紫色エネミー
-#define ENEMY_TEXTURE_PATH_RED "./data/Textures/enemy002.png"	 // 赤色エネミー
+#define ENEMY_TEXTURE_PATH_RED    "./data/Textures/enemy002.png" // 赤色エネミー
+
+// 難易度別の読み込みデータ
+#define DIFFECULT_PATH_NORMAL "./data/Texts/Enemy_Manage_NORMAL.txt" // ノーマル
+#define DIFFECULT_PATH_HARD   "./data/Texts/Enemy_Manage_HARD.txt"   // ハード
 
 //**********************************
 //静的メンバ変数宣言
@@ -50,6 +54,12 @@ LPDIRECT3DTEXTURE9 CEnemy::m_pTexture[ENEMYTYPE_MAX] = {};
 std::list<CEnemy*> CEnemy::m_enemyList; // エネミーリスト
 int CEnemy::m_nCntSpawn = 0;            // スポーンカウント
 int CEnemy::m_nNumEnemy = 0;            // エネミー、ボスの数
+//int *CEnemy::m_pMaxEnemy   = NULL;      // エネミーの最大数
+//int *CEnemy::m_pSpawnCount = NULL;      // エネミーの湧く頻度
+//int *CEnemy::m_pPhaseTime = NULL;       // フェーズを切り替える時間
+CEnemy::ENEMY_SPAWN * CEnemy::m_pSpawn = NULL;// エネミーのわき管理用
+int CEnemy::m_nMaxPhaseNum = 0;            // フェーズ最大数
+int CEnemy::m_nPhaseNum = 0;               // フェーズ数
 
 //==================================
 // コンストラクタ
@@ -90,7 +100,7 @@ CEnemy * CEnemy::Create(const D3DXVECTOR3 pos, const ENEMYTYPE type)
 	pEnemy->SetPos(pos);
 
 	// オブジェクトタイプの設定
-	pEnemy->SetObjType(OBJTYPE_ENEMY);
+	pEnemy->SetPriority(OBJTYPE_ENEMY);
 
 	// エネミーリストに追加
 	m_enemyList.push_back(pEnemy);
@@ -131,6 +141,66 @@ void CEnemy::Unload(void)
 }
 
 //==================================
+// 難易度別の敵の湧くデータの読み込み
+//==================================
+void CEnemy::LoadDefficult(void)
+{
+	FILE*pFile = NULL;
+
+	// ファイルオープン
+	if (CGame::GetDefficult() == CGame::DEFFICULT_NORMAL)
+	{// ノーマル
+		pFile = fopen(DIFFECULT_PATH_NORMAL, "r");
+	}
+	else
+	{// ハード
+		pFile = fopen(DIFFECULT_PATH_HARD, "r");
+	}
+
+	// NULLチェック
+	if (pFile != NULL)
+	{
+		// フェーズ数の読み込み
+		fscanf(pFile, "%*s%*s%d", &m_nMaxPhaseNum);
+		// メモリの確保
+		m_pSpawn = new ENEMY_SPAWN[m_nMaxPhaseNum];
+
+		// フェーズ数分ループ
+		for (int nCnt = 0; nCnt < m_nMaxPhaseNum; nCnt++)
+		{
+			int nIndex;
+			// 配列
+			fscanf(pFile, "%*s%*s%d", &nIndex);
+			// 時間
+			fscanf(pFile, "%*s%*s%d", &m_pSpawn[nIndex].nPhaseTime);
+			// 最大数
+			fscanf(pFile, "%*s%*s%d", &m_pSpawn[nIndex].nMaxEnemy);
+			// 頻度
+			fscanf(pFile, "%*s%*s%d", &m_pSpawn[nIndex].nSpawnCount);
+			// サークル数
+			fscanf(pFile, "%*s%*s%d", &m_pSpawn[nIndex].nCircleNum);
+		}
+		fclose(pFile);
+	}
+	
+}
+
+//==================================
+// 難易度別の敵の湧くデータのアンロード
+//==================================
+void CEnemy::UnloadDefficult(void)
+{
+	if (m_pSpawn != NULL)
+	{
+		// メモリの確保
+		delete[] m_pSpawn;
+		m_pSpawn = NULL;
+	}
+	// フェーズ数のリセット
+	m_nPhaseNum = 0;
+}
+
+//==================================
 // スポーンの管理
 //==================================
 void CEnemy::SpawnManager(void)
@@ -138,52 +208,30 @@ void CEnemy::SpawnManager(void)
 	int nMaxEnemy = 10;
 	int nSpawnCount = 200;
 
-
 	// 時間によって難易度調整
 	if (CTime::GetTime() / 1000 >= BOSS_SPAWN_SEC)
-	{
+	{// ボスフェーズ
 		// サークルの最大数
 		CManaCircle::SetCircleMax(6);
+		// ボスの生成
 		CGame::SetWave(CGame::WAVE_BOSS);
-	}
-	else if (CTime::GetTime() / 1000 >= 40)
-	{// 60秒
-
-		// 敵の最大数（およそ）
-		nMaxEnemy = 25;
-		// エネミーのスポーン頻度
-		nSpawnCount = 100;
-		// サークルの最大数
-		CManaCircle::SetCircleMax(5);
-	}
-	else if (CTime::GetTime() / 1000 >= 30)
-	{// 40秒
-
-		 // 敵の最大数（およそ）
-		nMaxEnemy = 20;
-		// エネミーのスポーン頻度
-		nSpawnCount = 125;
-		// サークルの最大数
-		CManaCircle::SetCircleMax(4);
-	}
-	else if (CTime::GetTime() / 1000 >= 20)
-	{// 20秒
-		
-		// 敵の最大数（およそ）
-		nMaxEnemy = 15;
-		// エネミーのスポーン頻度
-		nSpawnCount = 150;
 	}
 	else
 	{
-		// 敵の最大数（およそ）
-		nMaxEnemy = 10;
-		// エネミーのスポーン頻度
-		nSpawnCount = 200;
-		// サークルの最大数
-		CManaCircle::SetCircleMax(3);
+		for (int nCnt = 0; nCnt < m_nMaxPhaseNum; nCnt++)
+		{
+			if (CTime::GetTime() / 1000 >= m_pSpawn[nCnt].nPhaseTime)
+			{// 60秒
+
+				// 敵の最大数（およそ）
+				nMaxEnemy = m_pSpawn[nCnt].nMaxEnemy;
+				// エネミーのスポーン頻度
+				nSpawnCount = m_pSpawn[nCnt].nSpawnCount;
+				// サークルの最大数
+				CManaCircle::SetCircleMax(m_pSpawn[nCnt].nCircleNum);
+			}
+		}
 	}
-	
 
 	if (m_nNumEnemy <= nMaxEnemy)
 	{
@@ -351,6 +399,12 @@ void CEnemy::Update(void)
 
 		if (powf(pos.x - playerPos.x, 2) + powf(pos.y - playerPos.y, 2) <= powf(playerSize.x / 2 + size.x / 2, 2))
 		{
+			// 角度
+			/*float fAngle = atan2f(pos.y - playerPos.y, pos.x - playerPos.x);
+			pos.x = playerPos.x + cosf(fAngle)*ENEMY_SIZE/2+playerSize.x/2;
+			pos.y = playerPos.y + sinf(fAngle)*ENEMY_SIZE/2+playerSize.x/2;
+			SetPos(pos);*/
+
 			if (CGame::GetPlayer()->GetState() == CPlayer::STATE_NORMAL)
 			{
 				CGame::GetPlayer()->HitAttack(1);
@@ -375,8 +429,30 @@ void CEnemy::Update(void)
 		pos.y = stagePos.y + sinf(fAngle)*(STAGE_SIZE.x / 2 - ENEMY_SIZE / 2);
 	}
 
+	//if (CBoss::IsAlive())
+	//{
+	//	if (fDistanceStage < 200)
+	//	{
+	//		float fAngle = atan2f(pos.y - stagePos.y, pos.x - stagePos.x);
+
+	//		pos = D3DXVECTOR3(cosf(fAngle)*(200), sinf(fAngle)*(200), 0.0f);
+
+	//		// 移動方向の変更
+	//		int nRand = rand() % 360;
+
+	//		// 移動量の設定
+	//		m_move.x = cosf(D3DXToRadian(nRand))*ENEMY_SPEED;
+	//		m_move.y = sinf(D3DXToRadian(nRand))*ENEMY_SPEED;
+	//	}
+	//}
+
 	// 座標のセット
 	SetPos(pos);
+
+
+	// 攻撃の処理
+	//AttackManager();
+
 
 	// ステートの管理
 	switch (m_state)
@@ -436,8 +512,17 @@ void CEnemy::HitAttack(int nDamage)
 
 		// パーティクル生成
 		ParticleCreate();
+
+		int nScore = 100;
+		if (CGame::GetPlayer()->GetFever())
+		{// フィーバー中スコアボーナス
+			nScore *= 1.5f;
+		}
 		// スコア加算
-		CScore::AddScore(100);
+		CScore::AddScore(nScore);
+
+		// フィーバー値を進める
+		CGame::GetPlayer()->ProgressFever(1.0f);
 
 		if ((rand() % 10) == 0)
 		{

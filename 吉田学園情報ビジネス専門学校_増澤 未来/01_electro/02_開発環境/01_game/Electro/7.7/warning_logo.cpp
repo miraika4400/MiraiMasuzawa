@@ -101,7 +101,7 @@ HRESULT CWarningLogo::Init(void)
 	//　テクスチャの設定
 	BindTexture(m_pTexture);
 	// オブジェくタイプの設定
-	SetObjType(OBJTYPE_WARNING);
+	SetPriority(OBJTYPE_WARNING);
 	// SEの再生
 	CManager::GetSound()->Play(CSound::LABEL_SE_WARNING);
 	return S_OK;
@@ -123,7 +123,6 @@ void CWarningLogo::Uninit(void)
 //=============================
 void CWarningLogo::Update(void)
 {
-	// ステージの周りを回す
 	SetAngle(GetAngle() + 0.1f);
 }
 

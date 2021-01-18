@@ -1,2 +1,81 @@
-﻿  7.7.vcxproj -> C:\Users\gsp030\Desktop\git\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\Electro\Debug\electro.exe
+﻿  warning_logo.cpp
+  tutorial.cpp
+  title_menu.cpp
+  title_logo.cpp
+  title.cpp
+  time.cpp
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\time.cpp(66): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\time.cpp(116): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\time.cpp(116): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
+  tcp_client.cpp
+  stage.cpp
+  spawneffect.cpp
+  sound.cpp
+  score.cpp
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\score.cpp(61): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\score.cpp(99): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\score.cpp(99): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
+  scene3d.cpp
+  scene2d.cpp
+  scene.cpp
+  result.cpp
+  renderer.cpp
+  ranking.cpp
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\ranking.cpp(213): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\ranking.cpp(213): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\ranking.cpp(348): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\ranking.cpp(348): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
+  press_logo.cpp
+  player.cpp
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\player.cpp(169): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\player.cpp(172): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\player.cpp(175): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\player.cpp(440): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\player.cpp(441): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  number.cpp
+  コードを生成中...
+  コンパイル中...
+  manager.cpp
+  main.cpp
+  keyboard.cpp
+  joypad.cpp
+  input.cpp
+  explosion.cpp
+  enemy.cpp
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\enemy.cpp(519): warning C4244: '*=': 'float' から 'int' への変換です。データが失われる可能性があります。
+  polygon.cpp
+  pause.cpp
+  particle.cpp
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\particle.cpp(66): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
+  mouse.cpp
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\mouse.cpp(105): warning C4244: '引数': 'LONG' から 'FLOAT' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\mouse.cpp(111): warning C4244: '=': 'float' から 'LONG' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\mouse.cpp(112): warning C4244: '=': 'float' から 'LONG' への変換です。データが失われる可能性があります。
+  minimap.cpp
+  manacircle.cpp
+  gauge.cpp
+  item.cpp
+  game.cpp
+  fever_screen.cpp
+  fever_logo.cpp
+  fade.cpp
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\fade.cpp(25): warning C4244: '引数': 'float' から 'DWORD' への変換です。データが失われる可能性があります。
+  effect.cpp
+  コードを生成中...
+  コンパイル中...
+  debug_log.cpp
+  cursor.cpp
+  camera.cpp
+  bulletex.cpp
+  bullet.cpp
+  boss.cpp
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\boss.cpp(166): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\boss.cpp(275): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  bomb_ui.cpp
+  bomb.cpp
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\bomb.cpp(194): warning C4244: '*=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\git\miraimasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\electro\7.7\bomb.cpp(235): warning C4244: '*=': 'float' から 'int' への変換です。データが失われる可能性があります。
+  bg.cpp
+  コードを生成中...
+  7.7.vcxproj -> C:\Users\gsp030\Desktop\git\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\Electro\Debug\electro.exe
   7.7.vcxproj -> C:\Users\gsp030\Desktop\git\MiraiMasuzawa\吉田学園情報ビジネス専門学校_増澤 未来\01_electro\02_開発環境\01_game\Electro\Debug\electro.pdb (Full PDB)

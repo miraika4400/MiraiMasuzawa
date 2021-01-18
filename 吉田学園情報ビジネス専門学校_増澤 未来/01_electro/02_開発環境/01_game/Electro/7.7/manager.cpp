@@ -23,7 +23,7 @@
 #include "enemy.h"
 #include "number.h"
 #include "score.h" 
-#include "gage.h"
+#include "gauge.h"
 #include "effect.h"
 #include "mouse.h"
 #include "cursor.h"
@@ -42,6 +42,9 @@
 #include "pause.h"
 #include "debug_log.h"
 #include "time.h"
+#include "title_menu.h"
+#include "fever_logo.h"
+#include "fever_screen.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -136,7 +139,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CExplosion::Load();	   // 爆発
 	CEnemy::Load();		   // エネミー
 	CNumber::Load();	   // ナンバー
-	CGage::Load();		   // ライフ
+	CGauge::Load();		   // ライフ
 	CEffect::Load();	   // エフェクト
 	CCursor::Load();	   // カーソル
 	CStage::Load();		   // ステージ
@@ -148,7 +151,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CParticle::Load();     // パーティクル
 	CWarningLogo::Load();  // ワーニングロゴ
 	CPause::Load();        // ポーズメニュー
-
+	CTitleMenu::Load();    // タイトルメニュー
+	CFeverLogo::Load();    // フィーバーロゴ
+	CFeverScreen::Load();  // フィーバー画面
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -168,7 +173,7 @@ void CManager::Uninit(void)
 	CExplosion::Unload();		// 爆発
 	CEnemy::Unload();			// エネミー
 	CNumber::Unload();			// ナンバー
-	CGage::Unload();			// ライフ
+	CGauge::Unload();			// ライフ
 	CEffect::Unload();			// エフェクト
 	CCursor::Unload();			// カーソル
 	CStage::Unload();			// ステージ
@@ -179,7 +184,10 @@ void CManager::Uninit(void)
 	CManaCircle::Unload();		// サークル
 	CParticle::Unload();		// パーティクル
 	CWarningLogo::Unload();		// ワーニングロゴ
-	CPause::UnLoad();			// ポーズメニュー
+	CPause::Unload();			// ポーズメニュー
+	CTitleMenu::Unload();       // タイトルメニュー
+	CFeverLogo::Unload();       // フィーバーロゴ
+	CFeverScreen::Unload();     // フィーバー画面
 
 	// デバッグログ
 	CDebugLog::Uninit();
@@ -310,9 +318,9 @@ void CManager::Update(void)
 				}
 			}
 		}
+
 		else
-		{// ポーズ画面じゃないとき
-			// 更新処理
+		{
 			m_pRenderer->Update();
 		}
 		
@@ -360,6 +368,8 @@ void CManager::SetMode(MODE mode)
 		m_pGame = NULL;
 		// ゲームBGM停止
 		m_pSound->Stop(CSound::LABEL_BGM_GAME);
+		CManager::GetSound()->Stop(CSound::LABEL_BGM_FEVER);
+
 		break;
 
 	case MODE_RESULT:

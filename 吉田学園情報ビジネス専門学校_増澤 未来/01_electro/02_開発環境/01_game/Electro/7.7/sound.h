@@ -17,50 +17,61 @@
 class CSound
 {
 public:
+	//============
+	// 状態列挙
+	//============ 
+	typedef enum
+	{
+		LABEL_BGM_TITLE = 0, // タイトルBGM
+		LABEL_BGM_GAME,      // ゲームBGM
+		LABEL_BGM_FEVER,     // フィーバーBGM
+		LABEL_BGM_RESULT,    // リザルトBGM
+		LABEL_SE_SHOT,       // ショットSE
+		LABEL_SE_EXPLOSION,  // 爆発SE
+		LABEL_SE_ENTER,      // エンターSE
+		LABEL_SE_NEON,       // ネオンSE
+		LABEL_SE_CIRCLE,     // サークルSE
+		LABEL_SE_BOMB,       // ボムSE
+		LABEL_SE_COUNT,      // カウントSE
+		LABEL_SE_WARNING,    // ワーニングSE
+		LABEL_SE_DEATH,      // 死亡SE
+		SOUND_LABEL_MAX,     // サウンド最大数
+	}LABEL;
+
+	//============
+	// メンバ関数
+	//============
 	CSound();
 	~CSound();
 
-	typedef enum
-	{
-		LABEL_BGM_TITLE=0,  // タイトルBGM
-		LABEL_BGM_GAME,	    // ゲームBGM
-		LABEL_BGM_RESULT,   // リザルトBGM
-		LABEL_SE_SHOT,	    // ショットSE
-		LABEL_SE_EXPLOSION, // 爆発SE
-		LABEL_SE_ENTER,	    // エンターSE
-		LABEL_SE_NEON,	    // ネオン灯SE
-		LABEL_SE_CIRCLE,    // サークルSE
-		LABEL_SE_BOMB,	    // ボムSE
-		LABEL_SE_COUNT,	    // カウントSE
-		LABEL_SE_WARNING,   // 警告SE
-		LABEL_SE_DEATH,	    // 死亡SE
-		SOUND_LABEL_MAX,
-	}LABEL;
-
-	HRESULT Init(HWND hWnd);
-	void Uninit(void);
-	HRESULT Play(LABEL label);
-	void Stop(LABEL label);
-	void Stop(void);
+	HRESULT Init(HWND hWnd);   // 初期化
+	void Uninit(void);         // 終了
+	HRESULT Play(LABEL label); // 再生
+	void Stop(LABEL label);    // 停止
+	void Stop(void);           // 再生中の音のすべて停止
 private:
-	// プロトタイプ宣言
 	HRESULT CheckChunk(HANDLE hFile, DWORD format, DWORD *pChunkSize, DWORD *pChunkDataPosition);
 	HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwBufferoffset);
 
-	// パラメータ構造体定義
+	//============
+	// 構造体定義
+	//============
+	// パラメータ
 	typedef struct
 	{
-		char *pFilename;	// ファイル名
-		int nCntLoop;		// ループカウント
+		char *pFilename; // ファイル名
+		int nCntLoop;    // ループカウント
 	} SOUNDPARAM;
 
+	//============
 	// メンバ変数
-	static SOUNDPARAM m_aParam[SOUND_LABEL_MAX];
+	//============
+	static SOUNDPARAM m_aParam[SOUND_LABEL_MAX];             // パラメータ
 
-	IXAudio2 *m_pXAudio2;								    // XAudio2オブジェクトへのインターフェイス
-	IXAudio2MasteringVoice *m_pMasteringVoice ;			    // マスターボイス
-	IXAudio2SourceVoice *m_apSourceVoice[SOUND_LABEL_MAX];	// ソースボイス
-	BYTE *m_apDataAudio[SOUND_LABEL_MAX];					// オーディオデータ
-	DWORD m_aSizeAudio[SOUND_LABEL_MAX];					// オーディオデータサイズ
+	IXAudio2 *m_pXAudio2;                                    // XAudio2オブジェクトへのインターフェイス
+	IXAudio2MasteringVoice *m_pMasteringVoice ;              // マスターボイス
+	IXAudio2SourceVoice *m_apSourceVoice[SOUND_LABEL_MAX];   // ソースボイス
+	BYTE *m_apDataAudio[SOUND_LABEL_MAX];                    // オーディオデータ
+	DWORD m_aSizeAudio[SOUND_LABEL_MAX];                     // オーディオデータサイズ
 };
 #endif

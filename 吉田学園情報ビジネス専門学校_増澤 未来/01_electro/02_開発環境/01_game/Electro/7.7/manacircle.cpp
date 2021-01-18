@@ -32,11 +32,18 @@
 #define CIRCLE_SIZE D3DXVECTOR3(140.0f,140.0f,0.0f)          // サイズ
 #define RECOVERYCOUNT 50                                     // サークルを消すカウント
 #define CIRCLE_NUM_BOSS_WAVE 6                               // ボス戦時のサークル数
-#define CIRCLE_RESPAWN_COUNT 200                             // ボス戦時のサークルのリスポーン時間
+#define CIRCLE_RESPAWN_COUNT_NORMAL 150                      // ボス戦時のサークルのリスポーン時間
+#define CIRCLE_RESPAWN_COUNT_HARD   200                      // ボス戦時のサークルのリスポーン時間
 #define CIRCLE_ANIM_SPEED 10      // アニメーション速度
 #define CIRCLE_MAX_ANIMATION_X 16 // アニメーション数 横
 #define CIRCLE_MAX_ANIMATION_Y 1 // アニメーション数 縦
 #define CIRCLE_DISTANCE_BOSSWAVE 400 // ボス戦時のサークルの中心からの距離
+#define CIRCLE_BOMB_SIZE         300 // サークルの爆発のサイズ
+#define MP_RECOVERY_S 10.0f          // サークルのMP回復量＊小
+#define MP_RECOVERY_M 15.0f          // ＊中
+// サークルに入っている間のMPの回復量
+#define REGENE_MP_NORMAL 0.4f  // ノーマル
+#define REGENE_MP_HARD 0.25f   // ハード
 
 //******************************
 // 静的メンバ変数宣言
@@ -53,7 +60,7 @@ CManaCircle *CManaCircle::m_apCircle[CIRCLE_MAX] = {};
 CManaCircle::CManaCircle() :CScene3d(OBJTYPE_MANACIRCLE)
 {
 	// 変数のクリア
-	nCntRecovery = 0;
+	m_nCntRecovery = 0;
 	bInCircle = false;
 	m_nCntAnim = 0;
 	m_nAnimX = 0;
@@ -93,8 +100,10 @@ CManaCircle * CManaCircle::Create(const D3DXVECTOR3 pos)
 
 	// 各値の代入・セット
 	pMCircle->SetPos(pos);                    // 座標
-	pMCircle->SetObjType(OBJTYPE_MANACIRCLE); // オブジェクトタイプ
+	pMCircle->SetPriority(OBJTYPE_MANACIRCLE); // オブジェクトタイプ
 
+	// サークルリストに追加
+	//m_circleList.push_back(pMCircle);
 	return pMCircle;
 }
 
@@ -138,7 +147,14 @@ void CManaCircle::SpawnManager(void)
 		// 静的変数の初期化
 		for (int nCntCircle = 0; nCntCircle < CIRCLE_NUM_BOSS_WAVE; nCntCircle++)
 		{
-			nCntReSpawn[nCntCircle] = CIRCLE_RESPAWN_COUNT;
+			if (CGame::GetDefficult() == CGame::DEFFICULT_NORMAL)
+			{// ノーマル
+				nCntReSpawn[nCntCircle] = CIRCLE_RESPAWN_COUNT_NORMAL;
+			}
+			else
+			{// ハード
+				nCntReSpawn[nCntCircle] = CIRCLE_RESPAWN_COUNT_HARD;
+			}
 		}
 
 		// サークルを最大数にする
@@ -170,7 +186,8 @@ void CManaCircle::SpawnManager(void)
 			{
 				// カウントを進める
 				nCntReSpawn[nCntCircle]++;
-				if (nCntReSpawn[nCntCircle] >= CIRCLE_RESPAWN_COUNT)
+				if (CGame::GetDefficult() == CGame::DEFFICULT_NORMAL && nCntReSpawn[nCntCircle] >= CIRCLE_RESPAWN_COUNT_NORMAL||
+					CGame::GetDefficult() == CGame::DEFFICULT_HARD   && nCntReSpawn[nCntCircle] >= CIRCLE_RESPAWN_COUNT_HARD)
 				{
 					// カウントの初期化
 					nCntReSpawn[nCntCircle] = 0;
@@ -266,9 +283,9 @@ void CManaCircle::Update(void)
 
 	// サークルのサイズ
 	D3DXVECTOR3 size = GetSize();
-	// サイズの加算
+
 	size += (CIRCLE_SIZE - size)*0.05f;
-	// サイズのセット
+
 	SetSize(size);
 
 	// 当たり判定
@@ -400,9 +417,16 @@ void CManaCircle::CollisionCircle(void)
 			bInCircle = true;
 
 			// MPの回復
-			CGame::GetPlayer()->RecoveryMp(0.25f);
+			if (CGame::GetDefficult() == CGame::DEFFICULT_NORMAL)
+			{// ノーマル
+				CGame::GetPlayer()->RecoveryMp(REGENE_MP_NORMAL);
+			}
+			else
+			{// ハード
+				CGame::GetPlayer()->RecoveryMp(REGENE_MP_HARD);
+			}
 
-			nCntRecovery++;
+			m_nCntRecovery++;
 
 			// パーティクルの生成
 			// 何個生成するかランダム
@@ -413,7 +437,7 @@ void CManaCircle::CollisionCircle(void)
 				int nRandDistance = rand() % 30 + 10;// 10～40
 													 // ランダムな角度
 				int nRandAngle = rand() % 360;//0～360
-				// ↑の情報で座標の生成
+											  // ↑の情報で座標の生成
 				D3DXVECTOR3 randPos;
 				randPos.x = cosf(D3DXToRadian(nRandAngle))*nRandDistance;
 				randPos.y = sinf(D3DXToRadian(nRandAngle))*nRandDistance;
@@ -438,13 +462,13 @@ void CManaCircle::CollisionCircle(void)
 			}
 
 			// サークルに入っていられる限界
-			if (nCntRecovery >= RECOVERYCOUNT)
+			if (m_nCntRecovery >= RECOVERYCOUNT)
 			{
 
 				// MPの回復
-				CGame::GetPlayer()->RecoveryMp(15.0f);
+				CGame::GetPlayer()->RecoveryMp(MP_RECOVERY_M);
 				// ボムの生成
-				CBomb::Create(pos, 300);
+				CBomb::Create(pos, CIRCLE_BOMB_SIZE, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 				LostCircle();
 				// SEを非再生状態にする
@@ -454,13 +478,13 @@ void CManaCircle::CollisionCircle(void)
 		}
 		else
 		{
-			nCntRecovery = 0;
+			m_nCntRecovery = 0;
 			if (bInCircle)
 			{
 				// MPの回復
-				CGame::GetPlayer()->RecoveryMp(10.0f);
+				CGame::GetPlayer()->RecoveryMp(MP_RECOVERY_S);
 				// ボムの生成
-				CBomb::Create(pos, 300);
+				CBomb::Create(pos, CIRCLE_BOMB_SIZE, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 				LostCircle();
 

@@ -23,25 +23,27 @@
 class CExplosion : public CScene3d
 {
 public:
-	//メンバ関数
+	//============
+	// メンバ関数
+	//============
 	CExplosion();
 	~CExplosion();
+	// static
+	static CExplosion *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXCOLOR col); // クラス生成
+	static HRESULT Load(void);													 // テクスチャロード
+	static void Unload(void);													 // テクスチャアンロード
 
-	static CExplosion *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXCOLOR col);
-	static HRESULT Load(void);
-	static void Unload(void);
-
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	HRESULT Init(void); // 初期化
+	void Uninit(void);  // 終了
+	void Update(void);  // 更新
+	void Draw(void);    // 描画
 
 private:
 	// メンバ変数
 	static LPDIRECT3DTEXTURE9 m_pTexture; // テクスチャ
 	int m_nCntAnim; // アニメーションカウント
-	int m_nAnimX;         // アニメーションX軸
-	int m_nAnimY;         // アニメーションY軸
+	int m_nAnimX;   // アニメーションX軸
+	int m_nAnimY;   // アニメーションY軸
 };
 
 #endif

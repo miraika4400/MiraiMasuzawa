@@ -21,6 +21,7 @@
 #include "sound.h"
 #include "press_logo.h"
 #include "debug_log.h"
+#include "title_menu.h"
 
 //**********************************
 // 静的メンバ変数宣言
@@ -38,6 +39,7 @@ LPDIRECT3DTEXTURE9 CTitle::m_pTexture = NULL;
 CTitle::CTitle()
 {
 	m_pPolygon = NULL;
+	m_pPressLogo = NULL;
 }
 
 //=============================
@@ -74,10 +76,10 @@ HRESULT CTitle::Init(void)
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	// テクスチャの割り当て
-	m_pPolygon->SetTexture(m_pTexture);
+	m_pPolygon->BindTexture(m_pTexture);
 
 	// ロゴ生成
-	CPressLogo::Create();
+	m_pPressLogo = CPressLogo::Create();
 	CTitleLogo::Create();
 	
 	return S_OK;
@@ -121,9 +123,16 @@ void CTitle::Update(void)
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
 		CManager::GetMouse()->GetMouseTrigger(0) || 
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
-	{// チュートリアル画面に移行
+	{
 		CManager::GetSound()->Play(CSound::LABEL_SE_ENTER);
-		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+		/*CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);*/
+		if (m_pPressLogo != NULL)
+		{
+			m_pPressLogo->Uninit();
+			m_pPressLogo = NULL;
+		}
+
+		CTitleMenu::Create();
 	}
 }
 

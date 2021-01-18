@@ -15,10 +15,10 @@
 //***********************************
 //静的メンバ変数宣言
 //***********************************
+//CScene *CScene::m_apScene[MAX_SCENE] = {};
 CScene * CScene::m_pTop[PRIORITY_NUM] = {};                // 先頭
 CScene * CScene::m_pCur[PRIORITY_NUM] = {};                // 最後
 int CScene::m_nIDAll = 0;
-
 //===================================
 // コンストラクタ
 //===================================
@@ -167,6 +167,48 @@ void CScene::DrawAll(void)
 			// ネクストの情報を渡す
 			pScene = pSave;
 		}
+	}
+}
+
+//====================================
+// プライオリティの変更
+//====================================
+void CScene::SetPriority(const int nPriority)
+{
+	ReConnection();
+
+	// プライオリティの設定
+	m_nPriority = nPriority;
+
+	if (m_pTop[m_nPriority] == NULL)
+	{// 最初が空の時
+
+	 // 最初にオブジェクトに自分を入れる
+		m_pTop[m_nPriority] = this;
+
+		// プレビューをNULLクリア
+		m_pPrev = NULL;
+	}
+	if (m_pCur[m_nPriority] == NULL)
+	{// 最後が空の時
+
+	 // 最後にオブジェクトに自分を入れる
+		m_pCur[m_nPriority] = this;
+
+		// ネクストをNULLクリア
+		m_pNext = NULL;
+
+	}
+	else
+	{
+		// 一個前のポインタ情報の更新
+		m_pPrev = m_pCur[m_nPriority];
+		// カレントポインタの次のポインタに自分を代入
+		m_pCur[m_nPriority]->m_pNext = this;
+		// カレントポインタを自分に更新
+		m_pCur[m_nPriority] = this;
+		// ネクストをNULLクリア
+		m_pNext = NULL;
 	}
 }
 

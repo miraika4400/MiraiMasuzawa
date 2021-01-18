@@ -19,7 +19,7 @@
 // 前方宣言
 //=============================
 class CPolygon;
-
+class CPressLogo;
 //*****************************
 //クラス定義
 //*****************************
@@ -28,21 +28,26 @@ class CPolygon;
 class CTitle : public CScene
 {
 public:
+	//============
 	// メンバ関数
+	//============
 	CTitle();
 	~CTitle();
-	static CTitle *Create(void);
 
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	static CTitle *Create(void); // クラス生成
+
+	HRESULT Init(void); // 初期化
+	void Uninit(void);  // 終了
+	void Update(void);  // 更新
+	void Draw(void);    // 描画
 
 private:
+	//============
 	// メンバ変数
-	static LPDIRECT3DTEXTURE9 m_pTexture;        // テクスチャへのポインタ
+	//============
+	static LPDIRECT3DTEXTURE9 m_pTexture; // テクスチャへのポインタ
 	CPolygon *m_pPolygon;                 // ポリゴン
-
+	CPressLogo*m_pPressLogo;              // プレスエンターのロゴ
 };
 
 #endif

@@ -22,12 +22,12 @@
 // マクロ定義
 //=======================================================================================
 #define BACK_SIZE D3DXVECTOR3(200.0f,180.0f,0.0f)                  // 背面サイズ
-#define BACK_POS D3DXVECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0.0f)  // 背面座標
+#define BACK_POS D3DXVECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0.0f) // 背面座標
 
-#define STRING_SIZE D3DXVECTOR3(150.0f,50.0f,0.0f)                                           // 文字テクスチャのサイズ
-#define RESUME_POS  D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y - (STRING_SIZE.y + 25),0.0f) // 続けるの座標
-#define RESTART_POS D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y,0.0f)                        // リスタートの座標
-#define EXIT_POS   	D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y + (STRING_SIZE.y + 25),0.0f) // 終了の座標
+#define STRING_SIZE D3DXVECTOR3(150.0f,50.0f,0.0f)                                  // 文字列
+#define RESUME_POS  D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y - (STRING_SIZE.y + 25),0.0f) // 続ける
+#define RESTART_POS D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y,0.0f)                        // リスタート
+#define EXIT_POS   	D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y + (STRING_SIZE.y + 25),0.0f) // 終了
 
 #define MENU_ENTER_COL D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f)     // 選んでるメニューの色
 #define MENU_NOT_ENTER_COL D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f) // 選んでないメニューの色
@@ -35,21 +35,20 @@
 //=======================================================================================
 // 前方宣言
 //=======================================================================================
-LPDIRECT3DTEXTURE9 CPause::m_apTexture[CPause::PARTS_MAX] = {}; //テクスチャ
+LPDIRECT3DTEXTURE9 CPause::m_apTexture[CPause::PARTS_MAX] = {};
 
 //=======================================================================================
-// コンストラクタ
+// 
 //=======================================================================================
 CPause::CPause()
 {
-	// 変数のクリア
 	memset(&m_pPolygon, 0, sizeof(m_pPolygon));
 	m_nMenu = RESUME;
 	m_bMove = true;
 }
 
 //=======================================================================================
-// デストラクタ
+// 
 //=======================================================================================
 CPause::~CPause()
 {
@@ -57,20 +56,19 @@ CPause::~CPause()
 }
 
 //=======================================================================================
-// クリエイト
+// 
 //=======================================================================================
 CPause* CPause::Create(void)
 {
-	// メモリの確保
 	CPause* pPause = new CPause();
-	// 初期化処理
+
 	pPause->Init();
 
 	return pPause;
 }
 
 //=======================================================================================
-// テクスチャのロード
+// 
 //=======================================================================================
 HRESULT CPause::Load(void)
 {
@@ -88,7 +86,7 @@ HRESULT CPause::Load(void)
 //=======================================================================================
 // テクスチャのアンロード
 //=======================================================================================
-void CPause::UnLoad(void)
+void CPause::Unload(void)
 {
 
 	for (int nCntTex = 0; nCntTex < PARTS_MAX; nCntTex++)
@@ -102,7 +100,7 @@ void CPause::UnLoad(void)
 	}
 }
 //=======================================================================================
-// 初期化処理
+// 
 //=======================================================================================
 HRESULT CPause::Init(void)
 {
@@ -110,23 +108,23 @@ HRESULT CPause::Init(void)
 
 	// 後ろのやつ
 	m_pPolygon[BACK] = CPolygon::Create(BACK_POS, BACK_SIZE);
-	m_pPolygon[BACK]->SetTexture(m_apTexture[BACK]);
+	m_pPolygon[BACK]->BindTexture(m_apTexture[BACK]);
 	// 再開のやつ
 	m_pPolygon[RESUME] = CPolygon::Create(RESUME_POS, STRING_SIZE);
-	m_pPolygon[RESUME]->SetTexture(m_apTexture[RESUME]);
+	m_pPolygon[RESUME]->BindTexture(m_apTexture[RESUME]);
 	// リスタートのやつ
 	m_pPolygon[RESTART] = CPolygon::Create(RESTART_POS, STRING_SIZE);
-	m_pPolygon[RESTART]->SetTexture(m_apTexture[RESTART]);
+	m_pPolygon[RESTART]->BindTexture(m_apTexture[RESTART]);
 	// EXITのやつ
 	m_pPolygon[EXIT] = CPolygon::Create(EXIT_POS, STRING_SIZE);
-	m_pPolygon[EXIT]->SetTexture(m_apTexture[EXIT]);
+	m_pPolygon[EXIT]->BindTexture(m_apTexture[EXIT]);
 	
 
 	return S_OK;
 }
 
 //=======================================================================================
-// 終了処理
+// 
 //=======================================================================================
 void CPause::Uninit(void)
 {
@@ -144,7 +142,7 @@ void CPause::Uninit(void)
 }
 
 //=======================================================================================
-// 更新処理
+// 
 //=======================================================================================
 void CPause::Update(void)
 {
@@ -213,11 +211,10 @@ void CPause::Update(void)
 }
 
 //=======================================================================================
-// 描画処理
+// 
 //=======================================================================================
 void CPause::Draw(void)
 {
-	// すべてのパーツ分描画
 	for (int nCntPolygon = 0; nCntPolygon < PARTS_MAX; nCntPolygon++)
 	{
 		if (m_pPolygon[nCntPolygon] != NULL)

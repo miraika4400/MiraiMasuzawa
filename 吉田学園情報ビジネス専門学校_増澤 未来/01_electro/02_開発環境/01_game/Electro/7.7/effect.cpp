@@ -16,7 +16,7 @@
 // マクロ定義
 //*****************************
 #define EFFECT_TEXTURE_PATH "./data/Textures/bullet000.png" // テクスチャのパス
-#define EFFECT_LIFE 6          // エフェクトの寿命
+#define EFFECT_LIFE 6 // エフェクトの寿命
 #define EFFECT_SUB_SIZE 0.8f   // サイズの減少量
 #define EFFECT_SUB_ALPHA 0.1f  // a値の減少量
 
@@ -30,7 +30,6 @@ LPDIRECT3DTEXTURE9 CEffect::m_pTexture = NULL; // テクスチャ
 //*****************************
 CEffect::CEffect() : CScene3d(OBJTYPE_EFFECT)
 {
-	// 変数のクリア
 	m_nLife = EFFECT_LIFE;
 }
 
@@ -58,7 +57,7 @@ CEffect * CEffect::Create(const D3DXVECTOR3 pos,const D3DXVECTOR3 size,const D3D
 	pEffect->SetPos(pos);                // 座標
 	pEffect->SetSize(size);              // サイズ
 	pEffect->SetColor(col);              // カラー
-	pEffect->SetObjType(OBJTYPE_EFFECT); // オブジェクトタイプ 
+	pEffect->SetPriority(OBJTYPE_EFFECT); // オブジェクトタイプ 
 	pEffect->BindTexture(pTexture);      // テクスチャ割り当て
 	pEffect->SetAddMode(true);           // 加算合成
 	return pEffect;
@@ -98,6 +97,9 @@ HRESULT CEffect::Init(void)
 	{
 		return E_FAIL;
 	}
+
+	//// テクスチャ割り当て
+	//BindTexture(m_pTexture);
 	
 	return S_OK;
 }
@@ -146,5 +148,8 @@ void CEffect::Update(void)
 //*****************************
 void CEffect::Draw(void)
 {
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
 	CScene3d::Draw();
 }

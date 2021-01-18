@@ -19,9 +19,6 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define BG_SCROLL_SPEED_1 0.002f
-#define BG_SCROLL_SPEED_2 0.001f
-#define BG_SCROLL_SPEED_3 0.0009f
 
 // テクスチャのパス
 #define BG_TEXTURE_PATH1 "./data/Textures/bg001.png"
@@ -113,7 +110,7 @@ HRESULT CBg::Init(void)
 			// サイズの設定
 			m_apScene3d[nCntBg]->SetSize(D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0));
 			// オブジェクトタイプの設定
-			m_apScene3d[nCntBg]->SetObjType(OBJTYPE_BG);
+			m_apScene3d[nCntBg]->SetPriority(OBJTYPE_BG);
 
 			// テクスチャ割り当て
 			m_apScene3d[nCntBg]->BindTexture(m_apTexture[nCntBg]);
@@ -154,12 +151,12 @@ void CBg::Update(void)
 	D3DXVECTOR2 uv[NUM_VERTEX];
 
 	// テクスチャを下にずらす
-	// 少しずつずらすスピードを変える
-	m_afTexMoveV[0] -= BG_SCROLL_SPEED_1;
-	m_afTexMoveV[1] -= BG_SCROLL_SPEED_2;
-	m_afTexMoveV[2] -= BG_SCROLL_SPEED_3;
+	m_afTexMoveV[0] -= 0.002f;
+	m_afTexMoveV[1] -= 0.001f;
+	m_afTexMoveV[2] -= 0.0009f;
 
 	
+
 	for (int nCntBg = 0; nCntBg < BG_PARTS_NUM; nCntBg++)
 	{
 		if (m_apScene3d[nCntBg] != NULL)

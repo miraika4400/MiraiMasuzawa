@@ -22,9 +22,10 @@
 //==================================
 CRenderer::CRenderer()
 {
-	// NULLクリア
+	// 変数のクリア
 	m_pD3D = NULL;
 	m_pD3DDevice = NULL;	
+	m_buffCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 #ifdef _DEBUG
 	m_pFont = NULL;
 #endif
@@ -132,7 +133,8 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	D3DXCreateFont(m_pD3DDevice, 18, 0, 0, 0, FALSE, SHIFTJIS_CHARSET,
 		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Terminal", &m_pFont);
 #endif
-
+	// バックバッファのカラーの初期化
+	m_buffCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	return S_OK;
 }
 
@@ -170,7 +172,7 @@ void CRenderer::Update(void)
 void CRenderer::Draw(void)
 {
 	// バックバッファ＆Ｚバッファのクリア
-	m_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), D3DCOLOR_RGBA(255, 255, 255, 255), 1.0f, 0);
+	m_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), 1.0f, 0);
 
 	// Direct3Dによる描画の開始
 	if (SUCCEEDED(m_pD3DDevice->BeginScene()))

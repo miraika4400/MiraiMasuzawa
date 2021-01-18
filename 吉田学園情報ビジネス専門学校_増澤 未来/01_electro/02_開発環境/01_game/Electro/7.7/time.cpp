@@ -48,7 +48,7 @@ CTime * CTime::Create(void)
 	pTime->Init();
 
 	// オブジェクトタイプの設定
-	pTime->SetObjType(OBJTYPE_UI);
+	pTime->SetPriority(OBJTYPE_UI);
 
 	return pTime;
 }
@@ -63,7 +63,7 @@ HRESULT CTime::Init(void)
 	{
 		// ナンバー生成
 		m_apNumber[nCntDigit] = CNumber::Create(0,
-			D3DXVECTOR3(SCREEN_WIDTH/2-30*2+(nCntDigit*40), 50.0f, 0.0f),
+			D3DXVECTOR3(SCREEN_WIDTH/2-30*2+(nCntDigit*40), 120.0f, 0.0f),
 			D3DXVECTOR3(20, 20, 0),
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
@@ -132,7 +132,6 @@ void CTime::Update(void)
 void CTime::Draw(void)
 {
 #ifdef _DEBUG
-	// デバッグ時時間の描画
 	// 最大分ループ
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_NUM; nCntDigit++)
 	{

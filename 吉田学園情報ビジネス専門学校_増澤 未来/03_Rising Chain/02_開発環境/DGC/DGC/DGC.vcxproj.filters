@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_scene">
+      <UniqueIdentifier>{44f32121-f871-45be-a5e9-7d24de388dbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_2d">
+      <UniqueIdentifier>{180f4dc2-817d-46b2-b781-d8fa8651383c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\04_3d">
+      <UniqueIdentifier>{e1626a8c-fd52-4a13-ac32-e44aa6fa51ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\04_3d\model">
+      <UniqueIdentifier>{a85d2945-625f-4a09-b7ac-2740b01e4012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\04_3d\polygon">
+      <UniqueIdentifier>{16fab1d8-46f4-43df-a2e5-733393ac87bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_important">
+      <UniqueIdentifier>{448eca75-6aec-4d00-a4ca-ea27d8e79c15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\05_mode">
+      <UniqueIdentifier>{402f9bf9-e8cb-4bad-aab8-8555c6a1f10c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\06_input">
+      <UniqueIdentifier>{717dde0a-4860-4f30-b9c8-12be2e32fcd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_important">
+      <UniqueIdentifier>{0db1743c-6386-447e-ba8c-671203346783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_scene">
+      <UniqueIdentifier>{353ba7ca-cd94-4820-a062-41d20d43396a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_2d">
+      <UniqueIdentifier>{045c8dff-4f54-4783-b24d-b96089333925}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\04_3d">
+      <UniqueIdentifier>{c4a98a1a-7596-452d-a8a4-3960c8481589}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\04_3d\model">
+      <UniqueIdentifier>{705295f4-9bc5-4ce8-adc2-8c8ec92a7498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\04_3d\polygon">
+      <UniqueIdentifier>{c77fbf32-9480-4b34-ade2-56effdeb9281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\05_mode">
+      <UniqueIdentifier>{0fd826fe-aa34-4e67-a261-39ae306711ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\06_input">
+      <UniqueIdentifier>{bee6c571-b6d7-4612-a1a5-688789932282}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="collision.cpp">
+      <Filter>ソース ファイル\04_3d\model</Filter>
+    </ClCompile>
+    <ClCompile Include="course.cpp">
+      <Filter>ソース ファイル\04_3d\model</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>ソース ファイル\05_mode</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>ソース ファイル\06_input</Filter>
+    </ClCompile>
+    <ClCompile Include="joypad.cpp">
+      <Filter>ソース ファイル\06_input</Filter>
+    </ClCompile>
+    <ClCompile Include="keyboard.cpp">
+      <Filter>ソース ファイル\06_input</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>ソース ファイル\04_3d\model</Filter>
+    </ClCompile>
+    <ClCompile Include="mouse.cpp">
+      <Filter>ソース ファイル\06_input</Filter>
+    </ClCompile>
+    <ClCompile Include="number.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>ソース ファイル\04_3d\model</Filter>
+    </ClCompile>
+    <ClCompile Include="polygon.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>ソース ファイル\05_mode</Filter>
+    </ClCompile>
+    <ClCompile Include="scene2d.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="scene3d.cpp">
+      <Filter>ソース ファイル\04_3d\polygon</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>ソース ファイル\05_mode</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>ソース ファイル\05_mode</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル\01_important</Filter>
+    </ClCompile>
+    <ClCompile Include="manager.cpp">
+      <Filter>ソース ファイル\01_important</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>ソース ファイル\01_important</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>ソース ファイル\04_3d</Filter>
+    </ClCompile>
+    <ClCompile Include="bg.cpp">
+      <Filter>ソース ファイル\04_3d\polygon</Filter>
+    </ClCompile>
+    <ClCompile Include="debug_log.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>ソース ファイル\02_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="checkpoint.cpp">
+      <Filter>ソース ファイル\02_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>ソース ファイル\01_important</Filter>
+    </ClCompile>
+    <ClCompile Include="wall.cpp">
+      <Filter>ソース ファイル\04_3d\model</Filter>
+    </ClCompile>
+    <ClCompile Include="item.cpp">
+      <Filter>ソース ファイル\04_3d\model</Filter>
+    </ClCompile>
+    <ClCompile Include="model_hierarchy.cpp">
+      <Filter>ソース ファイル\04_3d\model</Filter>
+    </ClCompile>
+    <ClCompile Include="motion.cpp">
+      <Filter>ソース ファイル\02_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="destination.cpp">
+      <Filter>ソース ファイル\02_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="start.cpp">
+      <Filter>ソース ファイル\04_3d\polygon</Filter>
+    </ClCompile>
+    <ClCompile Include="rank.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="gauge.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>ソース ファイル\04_3d</Filter>
+    </ClCompile>
+    <ClCompile Include="file.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="title_menu.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="chain_ui.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="goal_ui.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="accelfloor.cpp">
+      <Filter>ソース ファイル\04_3d\model</Filter>
+    </ClCompile>
+    <ClCompile Include="evolution_effect.cpp">
+      <Filter>ソース ファイル\04_3d\model</Filter>
+    </ClCompile>
+    <ClCompile Include="title_camera.cpp">
+      <Filter>ソース ファイル\04_3d</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bg.h">
+      <Filter>ヘッダー ファイル\04_3d\polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>ヘッダー ファイル\04_3d</Filter>
+    </ClInclude>
+    <ClInclude Include="collision.h">
+      <Filter>ヘッダー ファイル\04_3d\model</Filter>
+    </ClInclude>
+    <ClInclude Include="course.h">
+      <Filter>ヘッダー ファイル\04_3d\model</Filter>
+    </ClInclude>
+    <ClInclude Include="debug_log.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>ヘッダー ファイル\05_mode</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>ヘッダー ファイル\06_input</Filter>
+    </ClInclude>
+    <ClInclude Include="joypad.h">
+      <Filter>ヘッダー ファイル\06_input</Filter>
+    </ClInclude>
+    <ClInclude Include="keyboard.h">
+      <Filter>ヘッダー ファイル\06_input</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>ヘッダー ファイル\04_3d</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>ヘッダー ファイル\01_important</Filter>
+    </ClInclude>
+    <ClInclude Include="manager.h">
+      <Filter>ヘッダー ファイル\01_important</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>ヘッダー ファイル\04_3d\model</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse.h">
+      <Filter>ヘッダー ファイル\06_input</Filter>
+    </ClInclude>
+    <ClInclude Include="number.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ヘッダー ファイル\04_3d\model</Filter>
+    </ClInclude>
+    <ClInclude Include="polygon.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>ヘッダー ファイル\01_important</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>ヘッダー ファイル\05_mode</Filter>
+    </ClInclude>
+    <ClInclude Include="scene2d.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="scene3d.h">
+      <Filter>ヘッダー ファイル\04_3d\polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>ヘッダー ファイル\05_mode</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>ヘッダー ファイル\05_mode</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>ヘッダー ファイル\02_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="checkpoint.h">
+      <Filter>ヘッダー ファイル\02_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>ヘッダー ファイル\01_important</Filter>
+    </ClInclude>
+    <ClInclude Include="wall.h">
+      <Filter>ヘッダー ファイル\04_3d\model</Filter>
+    </ClInclude>
+    <ClInclude Include="start.h">
+      <Filter>ヘッダー ファイル\04_3d\polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="item.h">
+      <Filter>ヘッダー ファイル\04_3d\model</Filter>
+    </ClInclude>
+    <ClInclude Include="model_hierarchy.h">
+      <Filter>ヘッダー ファイル\04_3d\model</Filter>
+    </ClInclude>
+    <ClInclude Include="motion.h">
+      <Filter>ヘッダー ファイル\02_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="destination.h">
+      <Filter>ヘッダー ファイル\02_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="rank.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="file.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="title_menu.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="chain_ui.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="goal_ui.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="accelfloor.h">
+      <Filter>ヘッダー ファイル\04_3d\model</Filter>
+    </ClInclude>
+    <ClInclude Include="evolution_effect.h">
+      <Filter>ヘッダー ファイル\04_3d\model</Filter>
+    </ClInclude>
+    <ClInclude Include="title_camera.h">
+      <Filter>ヘッダー ファイル\04_3d</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

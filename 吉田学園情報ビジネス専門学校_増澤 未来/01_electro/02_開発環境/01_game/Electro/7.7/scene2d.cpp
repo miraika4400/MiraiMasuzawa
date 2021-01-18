@@ -29,9 +29,11 @@ CScene2d::CScene2d(int nPriority):CScene(nPriority)
 	m_pTexture = NULL;
 	m_pVtxBuff = NULL;
 	m_pos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f);
+	
 	m_col={ 1.0f,1.0f,1.0f,1.0f };
 	m_size = { 0.0f,0.0f,0.0f };
 	m_fAngle = 0.0f;
+	m_bAddMode = false;
 }
 
 //===================================
@@ -146,8 +148,26 @@ void CScene2d::Draw(void)
 		pDevice->SetTexture(0, m_pTexture);
 	}
 
+	// ‰ÁŽZƒ‚[ƒh‚ÌŽž
+	if (m_bAddMode)
+	{
+		// ‰ÁŽZ‡¬
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	}
+
 	//ƒ|ƒŠƒSƒ“‚Ì•`‰æ
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+
+	// ‰ÁŽZƒ‚[ƒh‚ÌŽž
+	if (m_bAddMode)
+	{
+		// ’Êí‡¬‚É–ß‚·
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	}
 
 	pDevice->SetTexture(0, 0);
 }

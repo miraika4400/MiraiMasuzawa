@@ -28,6 +28,10 @@ class CScene2d;
 class CBulletEx : public CBullet
 {
 public:
+	//============
+	// 列挙定義
+	//============
+	// 弾の種類
 	typedef enum
 	{
 		BULLETTYPE_ROTATION,       // 撃った位置を中心に回る
@@ -37,9 +41,13 @@ public:
 		BULLETTYPE_MAX
 	}BULLETTYPE;
 
-	//メンバ関数
+	//============
+	// メンバ関数
+	//============
 	CBulletEx();
 	~CBulletEx();
+
+	// 各タイプの弾の生成
 
 	static CBulletEx *Create_Rotation(const D3DXVECTOR3 pos, const D3DXVECTOR3 posParent, const D3DXVECTOR3 move, const D3DXVECTOR3 size,
 		const int nLife, const BULLETUSER user, const D3DCOLOR col);
@@ -54,20 +62,20 @@ public:
 		const int nLife, const BULLETUSER user, const D3DCOLOR col,const int nTargetNum);
 	
 
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	HRESULT Init(void); // 初期化
+	void Uninit(void);  // 終了
+	void Update(void);  // 更新
+	void Draw(void);    // 描画
 
 private:
 	// メンバ変数
-	D3DXVECTOR3 m_posParent; // 親座標
-	D3DXVECTOR3 m_move;      // 移動量
-	int m_nLife;             // 寿命
-	BULLETTYPE m_bulletType; // 弾の種類
-	float m_fRotAngle;       // 回転角度
-	float m_fDistance;       // 親座標との距離
-	int m_nTargetNum;
+	D3DXVECTOR3 m_posParent;  // 親座標
+	D3DXVECTOR3 m_move;       // 移動量
+	int         m_nLife;      // 寿命
+	BULLETTYPE  m_bulletType; // 弾の種類
+	float       m_fRotAngle;  // 回転角度
+	float       m_fDistance;  // 親座標との距離
+	int         m_nTargetNum; // ターゲットの識別用
 };
 
 #endif

@@ -23,15 +23,19 @@
 class CScene2d : public CScene
 {
 public:
+	//============
 	// メンバ関数
+	//============
 	CScene2d(int nPriority = 3);
 	~CScene2d();
-	static CScene2d *Create(void);
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
-	void BindTexture(const LPDIRECT3DTEXTURE9 pTexture) { m_pTexture = pTexture; }
+
+	static CScene2d *Create(void); // クラス生成
+
+	HRESULT Init(void);                                                            // 初期化
+	void Uninit(void);                                                             // 終了
+	void Update(void);                                                             // 更新
+	void Draw(void);                                                               // 描画
+	void BindTexture(const LPDIRECT3DTEXTURE9 pTexture) { m_pTexture = pTexture; } // テクスチャの割り当て
 
 	// 中心座標のセット、取得
 	void SetPos(const D3DXVECTOR3 pos);
@@ -47,15 +51,18 @@ public:
 	D3DXCOLOR GetColor(void) { return m_col; }
 
 	void SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX]); // テクスチャのUV座標のセット
-	
+	void SetAddMode(bool bBool) { m_bAddMode = bBool; }  // 加算モードのセット
 private:
+	//============
 	// メンバ変数
+	//============
 	LPDIRECT3DTEXTURE9		m_pTexture;	 // テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	 // 頂点バッファへのポインタ
 	D3DXVECTOR3	m_pos;                   // ポリゴンの位置
 	float m_fAngle;                      // ポリゴンの回転角度
     D3DXVECTOR3 m_size;                  // ポリゴンのサイズ
-	D3DXCOLOR m_col;
+	D3DXCOLOR m_col;                     // 色
+	bool m_bAddMode;                     // 加算合成か
 };
 
 #endif

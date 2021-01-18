@@ -25,6 +25,9 @@
 class CScene
 {
 public:
+	//============
+	// 状態列挙
+	//============
 	// オブジェクトタイプ列挙
 	// 描画順
 	typedef enum
@@ -46,33 +49,39 @@ public:
 		OBJTYPE_MAX,        // タイプの最大数
 	}OBJTYPE;
 
+	//============
 	// メンバ関数
+	//============
 	CScene(int nPriority = OBJTYPE_NONE);
 	virtual ~CScene();
-	static void ReleaseAll(void);
-	static void UpdateAll(void);
-	static void DrawAll(void);
-	static int GetNumAll(void) { return m_nIDAll; }
-	void SetObjType(const OBJTYPE objType) { m_type = objType; }
-	OBJTYPE GetType(void) { return m_type; }
-	int GetID(void) { return m_nNumID; } // 配列番号の取得
+	static void ReleaseAll(void);                   // すべて解放
+	static void UpdateAll(void);                    // すべて更新
+	static void DrawAll(void);                      // すべて描画
+	static int GetNumAll(void) { return m_nIDAll; } // これまで生成されたオブジェクトの数
+
+	void SetPriority(const int  nPriority);   // プライオリティの設定
+	OBJTYPE GetType(void) { return m_type; }  // オブジェクトタイプの取得
+	int GetID(void) { return m_nNumID; }      // 配列番号の取得
+
 	// 純粋仮想関数
-	virtual HRESULT Init(void) = 0;
-	virtual void Uninit(void) = 0;
-	virtual void Update(void) = 0;
-	virtual void Draw(void) = 0;
+	virtual HRESULT Init(void) = 0; // 初期化
+	virtual void Uninit(void) = 0;  // 終了
+	virtual void Update(void) = 0;  // 更新
+	virtual void Draw(void) = 0;    // 描画
 	
 protected:
-	void Release(void);
+	void Release(void);      // 解放処理
 private:
+	void ReConnection(void); // リスト構造から自身を消してつなぎなおす
+	//============
 	// メンバ変数
-	void ReConnection(void);
-	//static CScene *m_apScene[MAX_SCENE]; // ポリゴン管理用
+	//============
 	static int m_nIDAll;                   // 生成したポリゴン数
-	int m_nNumID;                          // 生成したポリゴンの配列
+
+	int     m_nNumID;                      // 生成したポリゴンの配列
 	OBJTYPE m_type;                        // オブジェクトタイプ
-	int m_nPriority;                       // プライオリティ
-	bool m_bReleasFlag;                    // 削除フラグ
+	int     m_nPriority;                   // プライオリティ
+	bool    m_bReleasFlag;                 // 削除フラグ
 
 	// リスト構造
 	static CScene * m_pTop[PRIORITY_NUM];  // 先頭

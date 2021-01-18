@@ -24,6 +24,7 @@
 #include "enemy.h"
 #include "sound.h"
 #include "particle.h"
+#include "gauge.h"
 
 //*****************************
 // マクロ定義
@@ -39,14 +40,14 @@
 #define BOSS_MAX_ANIMATION_Y 1      // アニメーション数 縦
 #define BOSS_ATTACK_PATARN 3        // 攻撃パターン数
 #define BOSS_ATTACK_ON_COUNT 300    // 攻撃状態へ移行するカウント
-#define BOSS_ATTACK_OFF_COUNT 500   // 非攻撃状態へ移行するカウント
+#define BOSS_ATTACK_OFF_COUNT 300   // 非攻撃状態へ移行するカウント
 #define BOSS_TEXTURE_PATH "./data/Textures/balor000.png"//テクスチャのパス
 
 //**********************************
 //静的メンバ変数宣言
 //**********************************
-LPDIRECT3DTEXTURE9 CBoss::m_pTexture  = NULL; // テクスチャ
-bool CBoss::m_bIsAlive = false;               // 生きているかのフラグ
+LPDIRECT3DTEXTURE9 CBoss::m_pTexture  = NULL;
+bool CBoss::m_bIsAlive = false;
 
 //==================================
 // コンストラクタ
@@ -57,13 +58,14 @@ CBoss::CBoss():CScene3d(OBJTYPE_ENEMY)
 	m_fBulletAngle = 0.0f;
 	m_state = STATE_NORMAL;
 	m_nStateCount = 0;
-	m_nLife = BOSS_MAX_LIFE;
+	m_fLife = BOSS_MAX_LIFE;
 	m_nCntBullet = 0;
 	m_nCntAnim = 0;
 	m_nAnimX = 0;
 	m_nAnimY = 0;
 	m_bAttack = false;
 	m_nRandAttack = 0;
+	m_pGauge = NULL;
 }
 
 //==================================
@@ -87,7 +89,7 @@ CBoss * CBoss::Create(const D3DXVECTOR3 pos)
 	pBoss->SetPos(pos);
 
 	// オブジェクトタイプの設定
-	pBoss->SetObjType(OBJTYPE_ENEMY);
+	pBoss->SetPriority(OBJTYPE_ENEMY);
 
 	return pBoss;
 }
@@ -148,9 +150,9 @@ HRESULT CBoss::Init(void)
 	float fu = 1.0f / BOSS_MAX_ANIMATION_X;
 	float fv = 1.0f / BOSS_MAX_ANIMATION_Y;
 
-	uv[0] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY);
+	uv[0] = D3DXVECTOR2(fu*m_nAnimX     , fv*m_nAnimY);
 	uv[1] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY);
-	uv[2] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY + fv);
+	uv[2] = D3DXVECTOR2(fu*m_nAnimX     , fv*m_nAnimY + fv);
 	uv[3] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY + fv);
 
 	// UV座標セット
@@ -159,6 +161,9 @@ HRESULT CBoss::Init(void)
 	CEnemy::PlusEnemy();
 	// 警告SEの停止
 	CManager::GetSound()->Stop(CSound::LABEL_SE_WARNING);
+	// 体力
+	m_pGauge = CGauge::Create(&m_fLife, D3DXVECTOR3(BOSS_HP_POS_X, BOSS_HP_POS_Y, 0.0f), BOSS_HP_WIDTH, BOSS_HP_HEGHT,
+		BOSS_MAX_LIFE, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f), true);
 	return S_OK;
 }
 
@@ -167,10 +172,16 @@ HRESULT CBoss::Init(void)
 //==================================
 void CBoss::Uninit(void)
 {
-	
 	m_bIsAlive = false;
 	// エネミー数のカウントを減らす
 	CEnemy::MinusEnemy();
+
+	// ゲージを消す
+	if (m_pGauge != NULL)
+	{
+		m_pGauge->Uninit();
+		m_pGauge = NULL;
+	}
 
 	CScene3d::Uninit();
 }
@@ -238,32 +249,32 @@ void CBoss::Draw(void)
 //==================================
 void CBoss::HitAttack(int nDamage)
 {
-	m_nLife -= nDamage;
+	m_fLife -= nDamage;
 
 
-	if (m_nLife <= 0)
+	if (m_fLife <= 0.0f)
 	{// ライフが0以下
 	    
 		// ライフがマイナスにならないように
-		m_nLife = 0;
+		m_fLife = 0.0f;
 	    // 爆発の生成
-		CExplosion::Create(GetPos(), D3DXVECTOR3(160, 160, 0), D3DXCOLOR(1.0f, 0.4f, 0.4f, 1.0f));
+		CExplosion::Create(GetPos(), D3DXVECTOR3(2200, 2200, 0), D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f))->SetAddMode(true);
 
 		// パーティクル200個生成
-		for (int nCntPart = 0; nCntPart < 200; nCntPart++)
+		for (int nCntPart = 0; nCntPart < 100; nCntPart++)
 		{
 			// ランダムなサイズ
-			int nRadSize = rand() % 30 + 10;
+			int nRadSize = rand() % 20 + 70;
 			// ランダムな角度
 			float fRandAngle = D3DXToRadian(rand() % 360);
 			// ランダムなスピード
-			float fRandSpeed = (rand() % 600 + 100) / 100;
+			float fRandSpeed = (float)(rand() % 600 + 700) / 100.0f;
 			// パーティクル生成
 			CParticle::Create(GetPos(),
 				D3DXVECTOR3(cosf(fRandAngle)*fRandSpeed, sinf(fRandAngle)*fRandSpeed, 0.0f),
 				D3DXVECTOR3(nRadSize, nRadSize, 0.0f),
 				rand() % 30 + 60,
-				D3DXCOLOR(((float)(rand() % 100) / 100.0f), ((float)(rand() % 100) / 100.0f) , ((float)(rand() % 100) / 100.0f) , 1.0f),
+				D3DXCOLOR(((float)(rand() % 100) / 100.0f), ((float)(rand() % 100) / 100.0f) , ((float)(rand() % 100) / 100.0f) , 0.8f),
 				CParticle::PARTICLE_STAR);
 		}
 

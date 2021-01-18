@@ -21,18 +21,21 @@
 class CTcpClient
 {
 public:
+	//============
+	// メンバ関数
+	//============
 	CTcpClient();
 	~CTcpClient();
 
-	//メンバ関数
-	static CTcpClient*Create(const char * pHostName, int nPortNum);
-	static CTcpClient* Create(SOCKET sock);
-	bool Init(const char * pHostName, int nPortNum);
-	bool CTcpClient::Init(SOCKET sock);
-	int Send(char*pSendData, int nSendDataSize);
-	int Recv(char*pRecvBuf, int nRecvBufSize);
-	void Close();
-	void Release(void);
+	static CTcpClient*Create(const char * pHostName, int nPortNum); // クラス生成
+	static CTcpClient* Create(SOCKET sock);                         // クラス生成
+
+	bool Init(const char * pHostName, int nPortNum); // 初期化
+	bool CTcpClient::Init(SOCKET sock);              // 終了
+	int Send(char*pSendData, int nSendDataSize);     // 送る
+	int Recv(char*pRecvBuf, int nRecvBufSize);       // 受け取る
+	void Close();                                    // ソケットを閉じる
+	void Release(void);                              // 解放
 
 private:
 	//メンバ変数

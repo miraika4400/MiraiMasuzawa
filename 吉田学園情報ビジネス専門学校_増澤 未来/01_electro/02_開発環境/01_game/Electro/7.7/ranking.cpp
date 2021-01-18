@@ -22,7 +22,6 @@
 #define NOW_SCORE_INIT_POS_X 510.0f  // 現在スコア配置のX初期位置
 #define NOW_SCORE_POS_Y 665.0f       // 現在スコアのY位置
 #define FLASH_COUNT 30               // 点滅のカウント
-
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
@@ -70,7 +69,7 @@ void CRanking::GetRanking(void)
 	if (pTcpClient == NULL)
 	{
 		//メモリの確保
-		pTcpClient = CTcpClient::Create(SERVER_IP, SERVER_PORT_NUM);
+		pTcpClient = CTcpClient::Create();
 
 		if (pTcpClient == NULL)
 		{
@@ -133,7 +132,7 @@ int CRanking::SetRanking(void)
 	if (pTcpClient == NULL)
 	{
 		//メモリの確保
-		pTcpClient = CTcpClient::Create(SERVER_IP, SERVER_PORT_NUM);
+		pTcpClient = CTcpClient::Create();
 
 		if (pTcpClient == NULL)
 		{
@@ -193,7 +192,7 @@ CRanking * CRanking::Create(void)
 	pRanking->Init();
 
 	// オブジェクトタイプの設定
-	pRanking->SetObjType(OBJTYPE_UI);
+	pRanking->SetPriority(OBJTYPE_UI);
 
 	return pRanking;
 }
@@ -287,6 +286,8 @@ void CRanking::Uninit(void)
 		if (m_apRankNumber[nCntRank] != NULL)
 		{
 			m_apRankNumber[nCntRank]->Uninit();
+			delete m_apRankNumber[nCntRank];
+			m_apRankNumber[nCntRank] = NULL;
 		}
 		// 最大桁数
 		for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
@@ -326,8 +327,6 @@ void CRanking::Update(void)
 			// スコアとランキングの比較
 			if (m_nNowScore != 0 && m_nNowScore == m_nRanking[nCntRank])
 			{
-
-
 				// 点滅させる
 				if (m_nCntFlash % (FLASH_COUNT * 2) == 0)
 				{// ON
@@ -341,7 +340,6 @@ void CRanking::Update(void)
 					col.a = 1.0f;
 					m_apScoreNumber[nCntRank][nCntDigit]->SetColor(col);
 				}
-
 			}
 
 			// 更新処理

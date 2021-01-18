@@ -23,7 +23,7 @@ class CPolygon;
 //*****************************
 // マクロ定義
 //*****************************
-#define TUTORIAL_NUM 3
+#define TUTORIAL_NUM 3 // チュートリアルページ数
 
 //*****************************
 //クラス定義
@@ -33,18 +33,22 @@ class CPolygon;
 class CTutorial : public CScene
 {
 public:
+	//============
 	// メンバ関数
+	//===========
 	CTutorial();
 	~CTutorial();
-	static CTutorial *Create(void);
+	static CTutorial *Create(void); // クラス生成
 
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	HRESULT Init(void); // 初期化
+	void Uninit(void);  // 終了
+	void Update(void);  // 更新
+	void Draw(void);    // 描画
 
 private:
+	//============
 	// メンバ変数
+	//===========
 	static LPDIRECT3DTEXTURE9 m_pTexture[TUTORIAL_NUM]; // テクスチャへのポインタ
 	CPolygon *m_pPolygon;                               // ポリゴン
 	int m_nNumTutorial;                                 // チュートリアル数

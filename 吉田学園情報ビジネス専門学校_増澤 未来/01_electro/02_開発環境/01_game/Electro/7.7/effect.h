@@ -23,20 +23,24 @@
 class CEffect : public CScene3d
 {
 public:
-	//メンバ関数
+	//============
+	// メンバ関数
+	//============
 	CEffect();
 	~CEffect();
 
-	static CEffect *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size,const D3DXCOLOR col,const LPDIRECT3DTEXTURE9 pTexture);
-	static HRESULT Load(void);
-	static void Unload(void);
+	static CEffect *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size,const D3DXCOLOR col,const LPDIRECT3DTEXTURE9 pTexture); // クラス生成
+	static HRESULT Load(void); // テクスチャロード
+	static void Unload(void);  // テクスチャアンロード
 
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	HRESULT Init(void); // 初期化
+	void Uninit(void);  // 終了
+	void Update(void);  // 更新
+	void Draw(void);    // 描画
 private:
+	//============
 	// メンバ変数
+	//============
 	static LPDIRECT3DTEXTURE9 m_pTexture; // テクスチャ
 	int m_nLife;                          // 寿命
 };

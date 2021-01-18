@@ -5,13 +5,18 @@
 //
 //=============================================================================
 
-#ifndef _TITLEMENU_H_
-#define _TITLEMENU_H_
+// 二重インクルード防止
+#ifndef _PAUSE_H_
+#define _PAUSE_H_
+
 //***************************************************************************************
 // インクルードファイル
 //***************************************************************************************
 #include "scene.h"
 
+//***************************************************************************************
+// 前方宣言
+//***************************************************************************************
 class CPolygon;
 
 //***************************************************************************************
@@ -22,6 +27,11 @@ class CPolygon;
 class CPause
 {
 public:
+
+	//============
+	// 状態列挙
+	//============
+	// ポーズパーツ数
 	typedef enum
 	{
 		BACK = 0,
@@ -31,17 +41,26 @@ public:
 		PARTS_MAX
 	}MENU_PARTS;
 	
+	//============
+	// メンバ関数
+	//============
 	CPause();
 	~CPause();
-	static CPause* Create(void);
-	static HRESULT Load(void);
-	static void CPause::UnLoad(void);
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+
+	// staic
+	static CPause* Create(void); // クラス生成
+	static HRESULT Load(void);   // テクスチャロード
+	static void Unload(void);    // テクスチャアンロード
+
+	HRESULT Init(void); // 初期化
+	void Uninit(void);  // 終了
+	void Update(void);  // 更新
+	void Draw(void);    // 描画
 
 private:
+	//============
+	// メンバ変数
+	//============
 	static LPDIRECT3DTEXTURE9 m_apTexture[PARTS_MAX]; // テクスチャ
 	CPolygon* m_pPolygon[PARTS_MAX];                  // ポリゴン
 	int m_nMenu;                                      // メニュー選択用

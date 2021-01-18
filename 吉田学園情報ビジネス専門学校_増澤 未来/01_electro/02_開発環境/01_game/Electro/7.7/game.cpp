@@ -16,7 +16,7 @@
 #include "enemy.h"
 #include "number.h"
 #include "score.h" 
-#include "gage.h"
+#include "gauge.h"
 #include "effect.h"
 #include "mouse.h"
 #include "cursor.h"
@@ -32,6 +32,16 @@
 #include "keyboard.h"
 #include "particle.h"
 #include "time.h"
+#include "manager.h"
+#include "renderer.h"
+
+//=============================
+// マクロ定義
+//=============================
+#define DEFFICULT_UI_POS  D3DXVECTOR3(150.0f,50.0f,0.0f)             // 難易度UI位置
+#define DEFFICULT_UI_SIZE D3DXVECTOR3(120.0f,40.0f ,0.0f)             // 難易度UIサイズ
+#define DEFFICULT_UI_COL_NORMAL D3DXCOLOR(0.8f,0.8f ,0.0f,1.0f)      // 難易度UIカラー*ノーマル
+#define DEFFICULT_UI_COL_HARD   D3DXCOLOR(0.8f,0.0f ,0.0f,1.0f)      // 難易度UIカラー*ハード
 
 //=============================
 // 静的メンバ変数宣言
@@ -41,7 +51,9 @@ CCursor *CGame::m_pCursor = NULL;   // カーソル
 CCamera *CGame::m_pCamera = NULL;   // カメラ
 CStage  *CGame::m_pStage  = NULL;   // ステージ
 CBoss   *CGame::m_pBoss   = NULL;   // ボス
-CGame::GAME_WAVES CGame::m_wave = CGame::WAVE_NORMAL; // Wave数
+
+CGame::GAME_WAVES CGame::m_wave = CGame::WAVE_NORMAL;                // Wave数
+CGame::GAME_DEFFICULT CGame::m_defficult = CGame::DEFFICULT_NORMAL;  // 難易度
 
 //=============================
 // コンストラクタ
@@ -76,14 +88,17 @@ HRESULT CGame::Init(void)
 {
 	// タイムクラスの生成
 	CTime::Create();
+	
 	// 背景生成
 	CBg::Create();
+	
 	// ステージの生成
 	m_pStage = CStage::Create();
-	
+
 	// プレイヤー生成
 	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0, -400.0f, 0.0f));
-	//// カーソル生成
+	
+	// カーソル生成
 	m_pCursor = CCursor::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0));
 
 	// Waveの初期化
@@ -95,11 +110,10 @@ HRESULT CGame::Init(void)
 
 	// スコア生成
 	CScore::Create();
-	// ゲージ生成
-	CGage::Create(CGage::GAGE_PLAYER_HP);
-	CGage::Create(CGage::GAGE_PLAYER_MP);
+	
 	// ミニマップの生成
 	CMiniMap::Create();
+	
 	// ボムUIの生成
 	CBombUi::Create();
 
@@ -108,6 +122,48 @@ HRESULT CGame::Init(void)
 
 	// ポーズの初期化
 	CManager::SetActivePause(false);
+
+	// 難易度の読み込み
+	CEnemy::LoadDefficult();
+
+	// 難易度UIの生成
+	
+	// ポリゴンのポインタ
+	CScene2d*pScene2d = NULL;
+	// ポリゴンの生成
+	pScene2d = CScene2d::Create();
+	// NULLチェック
+	if (pScene2d != NULL)
+	{
+		// サイズの設定
+		pScene2d->SetSize(DEFFICULT_UI_SIZE);
+		// 座標の設定
+		pScene2d->SetPos(DEFFICULT_UI_POS);
+		// プライオリティの設定
+		pScene2d->SetPriority(OBJTYPE_UI);
+		// テクスチャ
+		LPDIRECT3DTEXTURE9 pTex = NULL;
+		// デバイスの取得
+		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+		// 難易度によって読み込むテクスチャ・色を変える
+		if (m_defficult == DEFFICULT_NORMAL)
+		{// ノーマル
+			// テクスチャの読み込み
+			D3DXCreateTextureFromFile(pDevice, "data/Textures/LOGO_Normal.png", &pTex);
+			// 色の設定
+			pScene2d->SetColor(DEFFICULT_UI_COL_NORMAL);
+		}
+		else
+		{// ハード
+			// テクスチャの読み込み
+			D3DXCreateTextureFromFile(pDevice, "data/Textures/LOGO_Hard.png", &pTex);
+			// 色の設定
+			pScene2d->SetColor(DEFFICULT_UI_COL_HARD);
+		}
+		// テクスチャの割り当て
+		pScene2d->BindTexture(pTex);
+	}
+	
 	return S_OK;
 }
 
@@ -118,7 +174,8 @@ void CGame::Uninit(void)
 {
 	// 開放処理
 	CCamera::Release();
-
+	// 難易度の読み込み
+	CEnemy::UnloadDefficult();
 	// 開放処理
 	Release();
 }
@@ -132,13 +189,11 @@ void CGame::Update(void)
 	// サークル数の管理
 	CManaCircle::SpawnManager();
 
-	// カメラの更新
 	if (m_pCamera != NULL)
 	{
 		m_pCamera->Update();
 	}
 	
-	// エネミーのわきの管理
 	if (m_wave == WAVE_NORMAL)
 	{
 		CEnemy::SpawnManager();
@@ -150,7 +205,6 @@ void CGame::Update(void)
 	{
 		SetWave(WAVE_BOSS);
 	}
-
 #endif // _DEBUG
 
 }
@@ -171,11 +225,10 @@ void CGame::SetWave(GAME_WAVES wave)
 {
 	m_wave = wave;
 
-	// ボス戦移行時
 	if (m_wave == WAVE_BOSS)
 	{
 		// ボスの生成
 		m_pBoss = CBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		CGage::Create(CGage::GAGE_BOSS_HP);
+		//CGauge::Create(CGauge::GAUGE_BOSS_HP);
 	}
 }

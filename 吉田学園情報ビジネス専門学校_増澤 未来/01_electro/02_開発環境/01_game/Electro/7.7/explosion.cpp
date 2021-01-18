@@ -20,7 +20,7 @@ LPDIRECT3DTEXTURE9 CExplosion::m_pTexture = NULL;
 //*****************************
 // マクロ定義
 //*****************************
-#define EXPLOSION_ANIM_SPEED 4       // アニメーション速度
+#define EXPLOSION_ANIM_SPEED 6       // アニメーション速度
 #define EXPLOSION_MAX_ANIMATION_X 7  // アニメーション数　横
 #define EXPLOSION_MAX_ANIMATION_Y 1  // アニメーション数　縦
 
@@ -31,7 +31,6 @@ LPDIRECT3DTEXTURE9 CExplosion::m_pTexture = NULL;
 //******************************
 CExplosion::CExplosion() :CScene3d(OBJTYPE_EXPLOSION)
 {
-	// 変数のクリア
 	m_nCntAnim = 0;
 	m_nAnimX = 0;
 	m_nAnimY = 0;
@@ -60,7 +59,7 @@ CExplosion * CExplosion::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXCOLOR col
 	pExplosion->SetPos(pos);   // 座標
 	pExplosion->SetSize(size); // サイズ
 	pExplosion->SetColor(col); // 色
-	pExplosion->SetObjType(OBJTYPE_EXPLOSION); // オブジェクトタイプ
+	pExplosion->SetPriority(OBJTYPE_EXPLOSION); // オブジェクトタイプ
 
 	return pExplosion;
 }

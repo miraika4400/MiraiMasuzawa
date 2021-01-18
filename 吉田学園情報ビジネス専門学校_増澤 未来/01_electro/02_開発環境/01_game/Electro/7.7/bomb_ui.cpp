@@ -19,14 +19,15 @@
 //**********************************
 // マクロ定義
 //**********************************
-#define BOMB_UI_POS D3DXVECTOR3(100.0f,632.0f,0.0f)  // UIの座標
-#define BOMB_UI_SIZE D3DXVECTOR3(25.0f,25.0f,0.0f)   // UIのサイズ
+#define BOMB_UI_POS D3DXVECTOR3(100.0f,632.0f,0.0f)
+#define BOMB_UI_SIZE D3DXVECTOR3(25.0f,25.0f,0.0f)
 #define BOMB_UI_TEXTURE_PATH "./data/Textures/Bomb.png" //テクスチャ
 
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
-LPDIRECT3DTEXTURE9 CBombUi::m_pTexture = NULL; // テクスチャ
+LPDIRECT3DTEXTURE9 CBombUi::m_pTexture = NULL;
+//int CBombUi::m_nBombUi = MAX_LIFE;
 
 //==================================
 // コンストラクタ
@@ -55,7 +56,7 @@ CBombUi * CBombUi::Create(void)
 	// 初期化
 	pBombUi->Init();
 	// オブジェクトタイプの設定
-	pBombUi->SetObjType(OBJTYPE_UI);
+	pBombUi->SetPriority(OBJTYPE_UI);
 
 	return pBombUi;
 }
@@ -70,10 +71,8 @@ HRESULT CBombUi::Init(void)
 	// テクスチャの生成
 	D3DXCreateTextureFromFile(pDevice, BOMB_UI_TEXTURE_PATH, &m_pTexture);
 
-	// ポリゴンの生成
 	m_pPolygon = CPolygon::Create(BOMB_UI_POS, BOMB_UI_SIZE, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	// ポリゴンのテクスチャのセット
-	m_pPolygon->SetTexture(m_pTexture);
+	m_pPolygon->BindTexture(m_pTexture);
 	return S_OK;
 }
 
@@ -116,7 +115,7 @@ void CBombUi::Update(void)
 void CBombUi::Draw(void)
 {
 	if (CGame::GetPlayer()->HaveBomb())
-	{// プレイヤーがボムを持っているとき
+	{
 		m_pPolygon->Draw();
 	}
 }

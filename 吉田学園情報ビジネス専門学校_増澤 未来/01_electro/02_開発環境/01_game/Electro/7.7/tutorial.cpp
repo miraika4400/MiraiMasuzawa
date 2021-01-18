@@ -75,7 +75,7 @@ HRESULT CTutorial::Init(void)
 		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
-	m_pPolygon->SetTexture(m_pTexture[0]);
+	m_pPolygon->BindTexture(m_pTexture[0]);
 	return S_OK;
 }
 
@@ -120,31 +120,26 @@ void CTutorial::Update(void)
 		CManager::GetMouse()->GetMouseTrigger(0) ||
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
 	{
-		// ページを進める
 		m_nNumTutorial++;
 		if (m_nNumTutorial >= TUTORIAL_NUM)
 		{
-			// ゲーム画面に移行
 			CManager::GetFade()->SetFade(CManager::MODE_GAME);
 		}
 		else
 		{
-			// 次の画面に移行 テクスチャの切り替え
-			m_pPolygon->SetTexture(m_pTexture[m_nNumTutorial]);
+			m_pPolygon->BindTexture(m_pTexture[m_nNumTutorial]);
 		}
 	}
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_BACKSPACE) ||
 		CManager::GetJoypad()->GetJoystickTrigger(2, 0))
 	{
-		// ページを戻す
 		m_nNumTutorial--;
 		if (m_nNumTutorial < 0)
 		{
-			// マイナスに行かないように
 			m_nNumTutorial = 0;
 		}
-		// テクスチャの切り替え
-		m_pPolygon->SetTexture(m_pTexture[m_nNumTutorial]);
+
+		m_pPolygon->BindTexture(m_pTexture[m_nNumTutorial]);
 	}
 }
 

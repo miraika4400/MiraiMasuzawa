@@ -12,18 +12,19 @@
 
 CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 {
-	{ "./data/Sounds/BGM/title.wav", -1 },   // タイトルBGM
-	{ "./data/Sounds/BGM/gameBGM.wav", -1 }, // ゲームBGM
-	{ "./data/Sounds/BGM/result.wav", -1 },  // リザルトBGM
-	{ "./data/Sounds/SE/shot2.wav", 0 },     // ショットSE
-	{ "./data/Sounds/SE/explosion.wav", 0 }, // 爆発SE
-	{ "./data/Sounds/SE/enter.wav", 0 },     // エンターSE
-	{ "./data/Sounds/SE/neon.wav", 0 },      // ネオン灯SE
-	{ "./data/Sounds/SE/circle.wav", 0 },    // サークルSE
-	{ "./data/Sounds/SE/bomb.wav", 0 },      // ボムSE
-	{ "./data/Sounds/SE/count.wav", 0 },     // カウントSE
-	{ "./data/Sounds/SE/warning.wav", 0 },   // 警告SE
-	{ "./data/Sounds/SE/death.wav", 0 },     // 死亡SE
+	{ "./data/Sounds/BGM/title.wav", -1 },
+	{ "./data/Sounds/BGM/gameBGM.wav", -1 },
+	{ "./data/Sounds/BGM/feverBGM.wav", -1 },
+	{ "./data/Sounds/BGM/result.wav", -1 },
+	{ "./data/Sounds/SE/shot2.wav", 0 },
+	{ "./data/Sounds/SE/explosion.wav", 0 },
+	{ "./data/Sounds/SE/enter.wav", 0 },
+	{ "./data/Sounds/SE/neon.wav", 0 },
+	{ "./data/Sounds/SE/circle.wav", 0 },
+	{ "./data/Sounds/SE/bomb.wav", 0 },
+	{ "./data/Sounds/SE/count.wav", 0 },
+	{ "./data/Sounds/SE/warning.wav", 0 },
+	{ "./data/Sounds/SE/death.wav", 0 },
 };
 
 //=============================================================================

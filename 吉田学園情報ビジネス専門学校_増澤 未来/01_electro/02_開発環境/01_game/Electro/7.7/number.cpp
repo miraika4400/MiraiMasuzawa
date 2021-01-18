@@ -20,14 +20,13 @@
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
-LPDIRECT3DTEXTURE9 CNumber::m_pTexture = NULL; // テクスチャ
+LPDIRECT3DTEXTURE9 CNumber::m_pTexture = NULL;
 
 //==================================
 // コンストラクタ
 //==================================
 CNumber::CNumber()
 {
-	// 変数のクリア
 	m_pVtxBuff = NULL;
 	m_nNumber = 0;
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
@@ -106,14 +105,13 @@ HRESULT CNumber::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXC
 	pVtx[1].tex = D3DXVECTOR2(0.1f + (0.1f * m_nNumber), 0.0f);
 	pVtx[2].tex = D3DXVECTOR2(0.0f + (0.1f * m_nNumber)        , 1.0f);
 	pVtx[3].tex = D3DXVECTOR2(0.1f + (0.1f * m_nNumber), 1.0f);
-	
+
 	m_col = col;
 	for (int nCnt = 0; nCnt < NUM_VERTEX; nCnt++)
-	{// カラー、rhwの設定
+	{
 		pVtx[nCnt].col = m_col;
 		pVtx[nCnt].rhw = 1.0f;
 	}
-
 	// アンロック
 	m_pVtxBuff->Unlock();
 
@@ -172,7 +170,6 @@ void CNumber::SetNumber(const int nNumber)
 {
 	VERTEX_2D *pVtx;// 頂点情報ポインタ
 
-	// ナンバーの設定
 	m_nNumber = nNumber;
 
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
@@ -186,9 +183,7 @@ void CNumber::SetNumber(const int nNumber)
 	m_pVtxBuff->Unlock();
 }
 
-//==================================
-// カラーのセット
-//==================================
+
 void CNumber::SetColor(const D3DXCOLOR col)
 {
 	VERTEX_2D *pVtx;// 頂点情報ポインタ

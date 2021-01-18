@@ -24,7 +24,7 @@ class CParticle;
 //*****************************
 // マクロ定義
 //*****************************
-#define ENEMYSPAWN_PARTICLE_NUM 6
+#define ENEMYSPAWN_PARTICLE_NUM 6 // 一回のスポーンで使うパーティクル数
 
 //*****************************
 // クラス定義
@@ -35,18 +35,23 @@ class CEnemySpawn : public CScene
 {
 public:
 
-	//メンバ関数
+	//============
+	// メンバ関数
+	//============
 	CEnemySpawn();
 	~CEnemySpawn();
 
-	static CEnemySpawn *Create(const D3DXVECTOR3 pos, const CEnemy::ENEMYTYPE type);
+	static CEnemySpawn *Create(const D3DXVECTOR3 pos, const CEnemy::ENEMYTYPE type); // クラス生成
 
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	HRESULT Init(void); // 初期化
+	void Uninit(void);  // 終了
+	void Update(void);  // 更新
+	void Draw(void);    // 描画
 
 private:
+	//============
+	// メンバ変数
+	//============
 	D3DXVECTOR3 m_pos;                              // 座標
 	CParticle*m_pParticle[ENEMYSPAWN_PARTICLE_NUM]; // パーティクルのポインタ
 	CEnemy::ENEMYTYPE m_enemyType;                  // エネミータイプ

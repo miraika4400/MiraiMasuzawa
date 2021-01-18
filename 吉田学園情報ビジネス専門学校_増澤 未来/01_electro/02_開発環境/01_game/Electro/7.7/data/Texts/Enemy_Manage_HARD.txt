@@ -1,0 +1,32 @@
+PHAZE_NUM = 4
+
+INDEX = 0
+SEC = 0
+MAX_ENEMY = 10
+SPAWN_COUNT = 200
+CIRCLE_NUM = 3
+
+INDEX = 1
+SEC = 20
+MAX_ENEMY = 15
+SPAWN_COUNT = 150
+CIRCLE_NUM = 3
+
+INDEX = 2
+SEC = 30
+MAX_ENEMY = 20
+SPAWN_COUNT = 125
+CIRCLE_NUM = 4
+
+INDEX = 3
+SEC = 40
+MAX_ENEMY = 25
+SPAWN_COUNT = 100
+CIRCLE_NUM = 5
+
+//======================
+INDEX       :配列数
+SEC         :経過時間
+MAX_ENEMY   :敵の最大数
+SPAWN_COUNT :敵の枠頻度
+CIRCLE_NUM  :サークル数

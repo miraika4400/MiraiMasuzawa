@@ -60,7 +60,7 @@ CMiniMap * CMiniMap::Create(void)
 	// 初期化
 	pMiniMap->Init();
 	// オブジェクトタイプの設定
-	pMiniMap->SetObjType(OBJTYPE_UI);
+	pMiniMap->SetPriority(OBJTYPE_UI);
 
 	return pMiniMap;
 }
@@ -107,7 +107,7 @@ HRESULT CMiniMap::Init(void)
 		D3DXVECTOR3(MINIMAP_POS_X, MINIMAP_POS_Y, 0.0f),
 		size,
 		D3DXCOLOR(0.5f, 0.5f, 1.0f, 0.8f));
-	m_apPolygon[0]->SetTexture(m_pTexture);
+	m_apPolygon[0]->BindTexture(m_pTexture);
 
 	
 	return S_OK;
@@ -151,6 +151,7 @@ void CMiniMap::Update(void)
 		if (m_apPolygon[nCntMiniMap] != NULL)
 		{
 			m_apPolygon[nCntMiniMap]->Uninit();
+			delete m_apPolygon[nCntMiniMap];
 			m_apPolygon[nCntMiniMap] = NULL;
 		}
 	}
@@ -189,7 +190,7 @@ void CMiniMap::Update(void)
 						pos,
 						size,
 						D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f));
-					m_apPolygon[nCntMiniMap]->SetTexture(m_pTexture);
+					m_apPolygon[nCntMiniMap]->BindTexture(m_pTexture);
 
 					break;
 				}
@@ -228,7 +229,7 @@ void CMiniMap::Update(void)
 					pos,
 					size,
 					D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
-				m_apPolygon[nCntMiniMap]->SetTexture(m_pTexture);
+				m_apPolygon[nCntMiniMap]->BindTexture(m_pTexture);
 
 				break;
 			}
@@ -266,7 +267,7 @@ void CMiniMap::Update(void)
 					pos,
 					size,
 					D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
-				m_apPolygon[nCntMiniMap]->SetTexture(m_pTexture);
+				m_apPolygon[nCntMiniMap]->BindTexture(m_pTexture);
 
 				break;
 			}
@@ -305,7 +306,7 @@ void CMiniMap::Update(void)
 					size,
 					D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
 
-				m_apPolygon[nCntMiniMap]->SetTexture(m_pTexture);
+				m_apPolygon[nCntMiniMap]->BindTexture(m_pTexture);
 
 				break;
 			}
@@ -343,7 +344,7 @@ void CMiniMap::Update(void)
 					size,
 					D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 
-				m_apPolygon[nCntMiniMap]->SetTexture(m_pTexture);
+				m_apPolygon[nCntMiniMap]->BindTexture(m_pTexture);
 
 				break;
 			}

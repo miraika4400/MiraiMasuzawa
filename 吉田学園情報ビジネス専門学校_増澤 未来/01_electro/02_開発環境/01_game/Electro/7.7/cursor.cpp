@@ -23,6 +23,7 @@
 #define CURSOR_TEXTURE_PATH "./data/Textures/cursor001.png" // テクスチャのパス
 #define CURSOR_RATE_SPEED 60.0f   // ジョイパッドの感度調整用
 #define CURSOR_SIZE 30            // カーソルサイズ
+//#define CURSOR_DISTANCE 100       // カーソルサイズ
 #define CURSOR_ANIM_SPEED 6       // アニメーション速度
 #define CURSOR_MAX_ANIMATION_X 11 // アニメーション数 横
 #define CURSOR_MAX_ANIMATION_Y 1  // アニメーション数 縦
@@ -37,7 +38,7 @@ LPDIRECT3DTEXTURE9 CCursor::m_pTexture = NULL;
 //==================================
 CCursor::CCursor():CScene2d(OBJTYPE_UI)
 {
-	// 変数のクリア
+	m_fRotAngle = 0.0f;
 	m_nCntAnim = 0;
 	m_nAnimX = 0;
 	m_nAnimY = 0;
@@ -61,6 +62,7 @@ CCursor * CCursor::Create(const D3DXVECTOR3 pos)
 	// 初期化
 	pCursor->Init();
 
+	pCursor->m_fRotAngle = 0.0f;
 
 	D3DXVECTOR3 playerPos = CGame::GetPlayer()->GetPos();
 
@@ -71,7 +73,7 @@ CCursor * CCursor::Create(const D3DXVECTOR3 pos)
 	// サイズの設定
 	pCursor->SetSize(D3DXVECTOR3(CURSOR_SIZE, CURSOR_SIZE, 0.0f));
 	// オブジェクトタイプの設定
-	pCursor->SetObjType(OBJTYPE_UI);
+	pCursor->SetPriority(OBJTYPE_UI);
 
 	return pCursor;
 }
@@ -115,6 +117,9 @@ HRESULT CCursor::Init(void)
 	// テクスチャ割り当て
 	BindTexture(m_pTexture);
 
+	// 回転角度の初期化
+	m_fRotAngle = 0.0f;
+
 	// UV座標の設定
 	D3DXVECTOR2 uv[NUM_VERTEX];
 	float fu = 1.0f / CURSOR_MAX_ANIMATION_X;
@@ -137,7 +142,6 @@ HRESULT CCursor::Init(void)
 void CCursor::Uninit(void)
 {
 	CScene2d::Uninit();
-	// マウスカーソルの可視化
 	ShowCursor(true);
 }
 
@@ -155,6 +159,28 @@ void CCursor::Update(void)
 	// ジョイパッドの取得
 	DIJOYSTATE js = CInputJoypad::GetStick(0);
 
+	//// ジョイパッドでカーソルの操作
+	//pos.x += cosf(45) * js.lZ / CURSOR_RATE_SPEED;
+	//pos.y += sinf(45) * js.lRz / CURSOR_RATE_SPEED;
+
+	//// 画面端の判定
+	//if (pos.y < 0.0f + CURSOR_SIZE / 2)
+	//{// ↑
+	//	pos.y = 0.0f + CURSOR_SIZE / 2;
+	//}
+	//if (pos.y > SCREEN_HEIGHT - CURSOR_SIZE / 2)
+	//{ // ↓
+	//	pos.y = SCREEN_HEIGHT - CURSOR_SIZE / 2;
+	//}
+	//if (pos.x < 0.0f + CURSOR_SIZE / 2)
+	//{// ←
+	//	pos.x = 0.0f + CURSOR_SIZE / 2;
+	//}
+	//if(pos.x > SCREEN_WIDTH - CURSOR_SIZE / 2)
+	//{ // →
+	//	pos.x = SCREEN_WIDTH - CURSOR_SIZE / 2;
+	//}
+
 	// ジョイスティックの角度でカーソルの位置を変える
 	if (js.lRz >= 600 || js.lRz <= -600 || js.lZ >= 600 || js.lZ <= -600)
 	{
@@ -170,6 +196,9 @@ void CCursor::Update(void)
 	// 座標のセット
 	SetPos(pos);
 	pMouse->SetMousePos(pos);
+
+	/*m_fRotAngle += 2.0f;
+	SetAngle(m_fRotAngle);*/
 
 	// アニメーションカウントを進める
 	m_nCntAnim++;
@@ -209,9 +238,6 @@ void CCursor::Draw(void)
 	CScene2d::Draw();
 }
 
-//==================================
-// スクリーン座標からワールド座標に変換
-//==================================
 D3DXVECTOR3 CCursor::GetPos3d(void)
 {
 	D3DXVECTOR3 pos;

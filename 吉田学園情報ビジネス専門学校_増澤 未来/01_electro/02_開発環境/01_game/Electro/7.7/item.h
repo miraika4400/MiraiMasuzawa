@@ -23,34 +23,40 @@
 class CItem : public CScene3d
 {
 public:
-
+	//============
 	// 状態列挙
+	//============
 	typedef enum
 	{
-		ITEMTYPE_RECOVERY = 0,
-		ITEMTYPE_BOMB,
-		ITEMTYPE_MAX,
+		ITEMTYPE_RECOVERY = 0, // 回復
+		ITEMTYPE_BOMB,         // ボム
+		ITEMTYPE_MAX,          // タイプの最大数
 	}ITEMTYPE;
 
+	//============
 	//メンバ関数
+	//============
 	CItem();
 	~CItem();
 
-	static CItem *Create(const D3DXVECTOR3 pos, const ITEMTYPE type);
-	static HRESULT Load(void);
-	static void Unload(void);
+	static CItem *Create(const D3DXVECTOR3 pos, const ITEMTYPE type);   // クラス生成
+	static HRESULT Load(void);                                          // テクスチャロード
+	static void Unload(void);                                           // テクスチャアンロード
+	static std::list<CItem*>*GetItemlist(void) { return &m_itemList; }  // リストの取得
 
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	HRESULT Init(void); // 初期化
+	void Uninit(void);  // 終了
+	void Update(void);  // 更新
+	void Draw(void);    // 描画
 
-	static std::list<CItem*>*GetItemlist(void) { return &m_itemList; }
+	
 private:
+	//============
 	// メンバ変数
+	//============
 	static LPDIRECT3DTEXTURE9 m_apTexture[ITEMTYPE_MAX]; // テクスチャ
-	static std::list<CItem*> m_itemList;  // エネミーリスト
-	ITEMTYPE m_itemType;                  // アイテムタイプ
+	static std::list<CItem*> m_itemList;                 // エネミーリスト
+	ITEMTYPE m_itemType;   // アイテムタイプ
 };
 
 #endif
