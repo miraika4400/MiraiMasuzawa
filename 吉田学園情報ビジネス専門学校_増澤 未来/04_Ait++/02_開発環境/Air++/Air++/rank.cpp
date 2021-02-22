@@ -82,6 +82,7 @@ void CRank::Uninit(void)
 //=============================
 void CRank::Update(void)
 {
+	// 順位の管理
 	RankManager();
 }
 
@@ -174,16 +175,16 @@ void CRank::RankManager(void)
 						//}
 
 						D3DXVECTOR3 checkPos = CGame::GetCheckPoint()->GetCollision(pCharacter[nCnt]->GetRankData().nCheck)->GetPos();
-
+						
 						// チェックポイントとの距離でソート
 						float fDistance = sqrtf(powf(checkPos.x - pCharacter[nCnt]->GetPos().x, 2) +
 							powf(checkPos.y - pCharacter[nCnt]->GetPos().y, 2) +
 							powf(checkPos.z - pCharacter[nCnt]->GetPos().z, 2));
-
+						
 						if (fDistance < sqrtf(powf(checkPos.x - pCharacter[nCnt2]->GetPos().x, 2) +
 							powf(checkPos.y - pCharacter[nCnt2]->GetPos().y, 2) +
 							powf(checkPos.z - pCharacter[nCnt2]->GetPos().z, 2)))
-
+						
 						{
 							CCharacter*pSave = pCharacter[nCnt];
 							pCharacter[nCnt] = pCharacter[nCnt2];
@@ -225,15 +226,15 @@ float CRank::CheckProgress(int nCheckNum , D3DXVECTOR3 pos)
 	// 次のチェックポイントの座標の取得
 	D3DXVECTOR3 nextCheckPos = CGame::GetCheckPoint()->GetCollision(nNextCheckNum)->GetPos();
 	
-	// 次の次のチェックポイント番号
-	int nNextNextCheckNum = nNextCheckNum + 1;
-	if (nNextNextCheckNum >= CGame::GetCheckPoint()->GetCheckPointNum()) nNextNextCheckNum = 0;
-	// 次の次のチェックポイントの座標の取得
-	D3DXVECTOR3 nextNextCheckPos = CGame::GetCheckPoint()->GetCollision(nNextNextCheckNum)->GetPos();
+	//// 次の次のチェックポイント番号
+	//int nNextNextCheckNum = nNextCheckNum + 1;
+	//if (nNextNextCheckNum >= CGame::GetCheckPoint()->GetCheckPointNum()) nNextNextCheckNum = 0;
+	//// 次の次のチェックポイントの座標の取得
+	//D3DXVECTOR3 nextNextCheckPos = CGame::GetCheckPoint()->GetCollision(nNextNextCheckNum)->GetPos();
 
 	// 進行方向への単位ベクトル
 	D3DXVECTOR3 progressDir;
-	D3DXVec3Normalize(&progressDir, &(nextNextCheckPos - nextCheckPos));
+	progressDir = nextCheckPos - nowCheckPos;
 	
 	// 内積を用いて進行度の算出して返す
 	return (float)D3DXVec3Dot(&progressDir, &(pos - nowCheckPos));

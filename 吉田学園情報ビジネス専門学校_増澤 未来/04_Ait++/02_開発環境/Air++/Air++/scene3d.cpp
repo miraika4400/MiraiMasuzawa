@@ -14,16 +14,18 @@
 #include "manager.h"
 #include "keyboard.h"
 #include "joypad.h"
+#include "model.h"
 
 //******************************
 // マクロ定義
 //******************************
 #define POLYGON_SIZE 200 // ポリゴンの初期サイズ
+#define MODEL_MAX 50	 // モデルの最大数
 
 //===================================
 // コンストラクタ
 //===================================
-CScene3d::CScene3d(int nPriority) :CScene(OBJTYPE_NONE)
+CScene3d::CScene3d(int nPriority) :CScene(nPriority)
 {
 	m_pTexture = NULL;
 	m_pVtxBuff = NULL;
@@ -35,6 +37,7 @@ CScene3d::CScene3d(int nPriority) :CScene(OBJTYPE_NONE)
 	m_mtxWorld = {};
 	m_pldxBuff = NULL;
 	m_bAddMode = false;
+	m_rot = { 0.0f,0.0f,0.0f };
 }
 
 //===================================
@@ -47,11 +50,14 @@ CScene3d::~CScene3d()
 //===================================
 // クリエイト関数
 //===================================
-CScene3d * CScene3d::Create(void)
+CScene3d * CScene3d::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
 	// メモリの確保
 	CScene3d *pScene3d;
 	pScene3d = new CScene3d;
+	// 引数の代入
+	pScene3d->m_pos = pos;
+	pScene3d->m_size = size;
 	// 初期化
 	pScene3d->Init();
 
@@ -65,30 +71,23 @@ HRESULT CScene3d::Init(void)
 {
 	VERTEX_3D *pVtx;// 頂点情報ポインタ
 
-	// デバイスの取得
+					// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D)*NUM_VERTEX, D3DUSAGE_WRITEONLY, FVF_VERTEX_3D, D3DPOOL_MANAGED, &m_pVtxBuff, NULL);
 
 	// メンバ変数の初期化
-	m_size = { POLYGON_SIZE,POLYGON_SIZE,0.0f };
 	m_col = { 1.0f,1.0f,1.0f,1.0f };
+	m_rot = { 0.0f,0.0f,0.0f };
 
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	// 中心から頂点の距離
-	float fDistance = sqrtf(powf(m_size.x, 2) + powf(m_size.y, 2));
-	// 中心から右上の頂点の角度
-	float fAngle = atan2f(m_size.y, m_size.x);
-	// 中心から左上の頂点の角度
-	float  fAngle2 = atan2f(m_size.y, -m_size.x);
-
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x + (cosf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x + (cosf(fAngle + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(fAngle + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x + (cosf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (cosf(-fAngle + D3DXToRadian(m_fAngle))  * fDistance), m_pos.y + (sinf(-fAngle + D3DXToRadian(m_fAngle))  * fDistance), 0);
+	pVtx[0].pos = D3DXVECTOR3(+m_size.x, +m_size.y, +m_size.z);
+	pVtx[1].pos = D3DXVECTOR3(-m_size.x, +m_size.y, +m_size.z);
+	pVtx[2].pos = D3DXVECTOR3(+m_size.x, -m_size.y, -m_size.z);
+	pVtx[3].pos = D3DXVECTOR3(-m_size.x, -m_size.y, -m_size.z);
 
 	// テクスチャUV座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -101,7 +100,7 @@ HRESULT CScene3d::Init(void)
 		// 色の設定
 		pVtx[nCnt].col = m_col;
 		// 法線
-		pVtx[nCnt].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+		pVtx[nCnt].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	}
 
 	// アンロック
@@ -138,9 +137,9 @@ void CScene3d::Update(void)
 void CScene3d::Draw(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	D3DXMATRIX mtxRot, mtxTrans,mtxScail;//行列計算用マトリクス
+	D3DXMATRIX mtxRot, mtxTrans, mtxScail;//行列計算用マトリクス
 
-	// 加算モードの時
+										  // 加算モードの時
 	if (m_bAddMode)
 	{
 		// 加算合成
@@ -160,7 +159,7 @@ void CScene3d::Draw(void)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxScail);
 
 	// 向きを反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, 0.0f, 0.0f, 0.0f);
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 	// 位置を反映
@@ -204,18 +203,12 @@ void CScene3d::SetPos(const D3DXVECTOR3 pos)
 	// ロック
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	// 中心から頂点の距離
-	float fDistance = sqrtf(powf(m_size.x, 2) + powf(m_size.y, 2));
-	// 中心から右上の頂点の角度
-	float fAngle = atan2f(m_size.y, m_size.x);
-	// 中心から左上の頂点の角度
-	float  fAngle2 = atan2f(m_size.y, -m_size.x);
-
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x + (cosf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x + (cosf(fAngle + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(fAngle + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x + (cosf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (cosf(-fAngle + D3DXToRadian(m_fAngle))  * fDistance), m_pos.y + (sinf(-fAngle + D3DXToRadian(m_fAngle))  * fDistance), 0);
+	pVtx[0].pos = D3DXVECTOR3(+m_size.x, +m_size.y, +m_size.z);
+	pVtx[1].pos = D3DXVECTOR3(-m_size.x, +m_size.y, +m_size.z);
+	pVtx[2].pos = D3DXVECTOR3(+m_size.x, -m_size.y, -m_size.z);
+	pVtx[3].pos = D3DXVECTOR3(-m_size.x, -m_size.y, -m_size.z);
+
 
 	// アンロック
 	m_pVtxBuff->Unlock();
@@ -226,7 +219,7 @@ void CScene3d::SetPos(const D3DXVECTOR3 pos)
 //===================================
 void CScene3d::SetAngle(const float fAngle)
 {
-	m_fAngle = fAngle; 
+	m_fAngle = fAngle;
 	SetPos(m_pos);
 }
 

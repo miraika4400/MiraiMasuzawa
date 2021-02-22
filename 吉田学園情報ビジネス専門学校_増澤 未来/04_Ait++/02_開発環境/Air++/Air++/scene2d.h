@@ -36,8 +36,9 @@ public:
 	void Update(void);                                                             // 更新
 	void Draw(void);                                                               // 描画
 	void BindTexture(const LPDIRECT3DTEXTURE9 pTexture) { m_pTexture = pTexture; } // テクスチャの割り当て
+	LPDIRECT3DTEXTURE9 GetTexture(void) { return m_pTexture; }                     // テクスチャの取得
 
-																				   // 中心座標のセット、取得
+	// 中心座標のセット、取得
 	void SetPos(const D3DXVECTOR3 pos);
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
 	// 回転角度のセット、取得

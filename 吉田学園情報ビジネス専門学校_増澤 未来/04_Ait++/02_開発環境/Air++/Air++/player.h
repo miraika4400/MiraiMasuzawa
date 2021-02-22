@@ -65,6 +65,8 @@ public:
 	// 移動目標の取得処理
 	CDestination * GetDest(void) { return m_pDest; }
 
+	// ゴール時の処理
+	void GoalAction(void);
 private:
 	void Move(void);      // 移動処理
 	void UseItem(void);   // アイテム使用の処理

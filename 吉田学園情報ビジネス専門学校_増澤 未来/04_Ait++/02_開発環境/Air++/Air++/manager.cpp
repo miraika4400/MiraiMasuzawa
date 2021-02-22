@@ -37,6 +37,8 @@
 #include "trap.h"
 #include "attack.h"
 #include "lap_ui.h"
+#include "goal_ui.h"
+#include "start.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -141,6 +143,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CTrap::Load();      // トラップ
 	CAttack::Load();    // アタック
 	CLapUi::Load();     // ラップ数UI
+	CGoalUi::Load();    // ゴールUI
+	CStart::Load();     // スタート時カウントダウン
 
 	// ポーズ状態の時
 	return S_OK;
@@ -170,6 +174,8 @@ void CManager::Uninit(void)
 	CTrap::Unload();      // トラップ
 	CAttack::Unload();    // アタック
 	CLapUi::Unload();     // ラップ数UI
+	CGoalUi::Unload();    // ゴールUI
+	CStart::Unload();     // スタート時カウントダウン
 
 	if (m_pSound != NULL)
 	{

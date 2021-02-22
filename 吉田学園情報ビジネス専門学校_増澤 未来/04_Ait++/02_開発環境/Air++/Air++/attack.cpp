@@ -171,6 +171,8 @@ HRESULT CAttack::Init(void)
 	// ルートランダムで設定
 	m_nRoot = rand() % ROOT_NUM;
 
+	// 移動フラグ
+	SetMoveFlag(true);
 	return S_OK;
 }
 

@@ -22,6 +22,7 @@
 #include "destination.h"
 #include "joypad.h"
 #include "lap_ui.h"
+#include "goal_ui.h"
 
 //*****************************
 // マクロ定義
@@ -261,6 +262,14 @@ void CPlayer::Update(void)
 void CPlayer::Draw(void)
 {
 	CCharacter::Draw();
+}
+
+void CPlayer::GoalAction(void)
+{
+	CCharacter::GoalAction();
+	
+	// ゴールUIの生成
+	CGoalUi::Create(m_nPlayerNum);
 }
 
 //******************************

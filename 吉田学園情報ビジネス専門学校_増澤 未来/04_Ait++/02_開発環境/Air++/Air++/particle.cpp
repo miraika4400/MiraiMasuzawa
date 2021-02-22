@@ -147,8 +147,5 @@ void CParticle::Update(void)
 //******************************
 void CParticle::Draw(void)
 {
-	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
 	CBillboard::Draw();
 }

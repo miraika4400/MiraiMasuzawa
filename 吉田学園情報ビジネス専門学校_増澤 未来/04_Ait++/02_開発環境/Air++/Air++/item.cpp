@@ -264,7 +264,6 @@ void CItem::Update(void)
 //******************************
 void CItem::Draw(void)
 {
-
 	CModel::Draw();
 }
 

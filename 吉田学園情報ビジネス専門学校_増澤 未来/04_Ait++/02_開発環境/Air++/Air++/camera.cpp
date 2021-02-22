@@ -174,6 +174,11 @@ void CCamera::Update(void)
 	//高さをCPUのロットXに対応させる
 	m_fPhi += ((-pCpu->GetRot().x) + CAMERA_THETA_BASE - m_fPhi)*DAMERA_PHI_RATE;
 
+	// 球面座標の設定
+	m_posV.x = m_posR.x + (m_fRad)* sinf(m_fPhi)*cosf(m_fTheta);
+	m_posV.y = m_posR.y + (m_fRad)* cosf(m_fPhi);
+	m_posV.z = m_posR.z + (m_fRad)* sinf(m_fPhi)*sinf(m_fTheta);
+
 #else
 	// プレイヤーに追従するカメラ
 	CPlayer* pPlayer = (CPlayer*)CScene::GetTop(CScene::OBJTYPE_PLAYER);
@@ -227,17 +232,20 @@ void CCamera::Update(void)
 			{// 通常
 				m_fFov += (CAMERA_FOV_BASE - m_fFov)*CAMERA_FOV_RATE;
 			}
+
+			// 球面座標の設定
+			m_posV.x = pPlayer->GetPos().x + (m_fRad)* sinf(m_fPhi)*cosf(m_fTheta);
+			m_posV.y = pPlayer->GetPos().y + (m_fRad)* cosf(m_fPhi);
+			m_posV.z = pPlayer->GetPos().z + (m_fRad)* sinf(m_fPhi)*sinf(m_fTheta);
+
 			break;
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
-	
+
 #endif // CPU_CAMERA
 	
-	// 球面座標の設定
-	m_posV.x = m_posR.x + (m_fRad)* sinf(m_fPhi)*cosf(m_fTheta);
-	m_posV.y = m_posR.y + (m_fRad)* cosf(m_fPhi);
-	m_posV.z = m_posR.z + (m_fRad)* sinf(m_fPhi)*sinf(m_fTheta);
+
 
 }
 

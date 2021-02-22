@@ -23,7 +23,6 @@
 #define CHECKPOINT_RADIUS 700                   // 当たり判定の半径
 #define CPUPOINT_TEXT_1 "data/Texts/CpuPoint.txt" // チェックポイントテキストのパス
 #define CPUPOINT_TEXT_2 "data/Texts/CpuPoint2.txt" // チェックポイントテキストのパス
-#define GOAL_LAP_NUM 3                          // 何週でゴールか
 #define POINT_SET_INTERVAL 40                   // ポイントセットインターバール
 
 // チェックポイント配置モード切り替えマクロ

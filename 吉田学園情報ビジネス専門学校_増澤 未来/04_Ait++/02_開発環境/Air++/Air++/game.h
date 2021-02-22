@@ -49,6 +49,12 @@ public:
 	//*****************************
 	// 列挙定義
 	//*****************************
+	typedef enum
+	{
+		GAME_NORMAL,
+		GAME_RESULT,
+		GAME_MAX
+	}GAME_STATE;
 
 	//*****************************
 	// メンバ関数
@@ -71,8 +77,10 @@ public:
 	static CCourse     *GetCourse(void) { return m_pCourse; }                      // チェックポイント
 	static int          GetCharacterNum(void) { return m_nNumCaracter; }           // キャラクター数
 	static int          GetPlayerNum(void) { return m_nNumPlayer; }                // プレイヤー数
+	static GAME_STATE   GetState(void) { return m_gameState; }
 
 private:
+	void CheckGoal(void); // プレイヤーがゴールかチェックしてリザルトフラグを立てる
 	//*****************************
 	// メンバ変数
 	//*****************************
@@ -85,6 +93,9 @@ private:
 	static CCheckPoint*m_pCheckPoint;                     // チェックポイント
 	static CItemPoint *m_pItemPoint;                      // アイテム座標の管理
 	static CCourse    *m_pCourse;                         // コースポインタ
+	static GAME_STATE m_gameState;                        // ゲームの状態
+	int  m_nCntResult;                                    // リザルト遷移までのカウント
+	bool m_bResult;                                       // リザルト遷移フラグ
 };
 
 #endif

@@ -116,8 +116,11 @@ public:
 	bool GetIsPlayer(void) { return m_bIsPlayer; }
 	// コリジョン取得処理
 	CCollision* GetCollision(void) { return m_pCollision; }
-
+	// 奇跡情報のセット
 	void SetLocusData(LocusData data) { m_locusData = data; }
+	// ゴール時のアクション
+	virtual void GoalAction(void) { m_bGoal = true; }
+
 protected:
 	void SetItem(void);                    // アイテムのセット処理
 private:
@@ -126,6 +129,7 @@ private:
 	virtual void CollisionCharacter(void); // キャラクター同士の当たり判定
 	void SpeedManager(void);               // スピード管理処理
 	virtual void FallAction(void) = 0;     // 落下時のアクション
+	
 
 	//==========================
 	// メンバ変数

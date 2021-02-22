@@ -94,7 +94,7 @@ HRESULT CCharacter::Init(void)
 	m_pCollision = CCollision::CreateSphere(GetPos(), CHARACTER_RADIUS);
 
 	// 変数の取得
-	m_bMove = true;                  // 移動フラグ
+	m_bMove = false;                 // 移動フラグ
 	m_bGoal = false;                 // ゴールフラグ
 	m_item = CItem::ITEM_NONE;       // 所持しているアイテム
 	m_bAcceleration = false;         // 加速フラグ
@@ -143,21 +143,21 @@ void CCharacter::Update(void)
 	// 重力処理
 	Gravity();
 	
-	if (m_bMove && !m_bGoal)
+	if (m_bMove)
 	{// 移動フラグがtrueの時
 
 		// 向きの処理
 		Direction();
 		// スピードの管理
 		SpeedManager();
+
+		// 移動量*徐々に目標値に近づける
+		m_move += (m_moveDist - m_move)*CHARACTER_MOVE_RATE;
+
+		// 座標に移動量を足す
+		SetPos(GetPos() + m_move);
 	}
 	
-	// 移動量*徐々に目標値に近づける
-	m_move += (m_moveDist - m_move)*CHARACTER_MOVE_RATE;
-
-	// 座標に移動量を足す
-	SetPos(GetPos() + m_move);
-
 	// モデルクラスの更新処理
 	CModelShader::Update();
 

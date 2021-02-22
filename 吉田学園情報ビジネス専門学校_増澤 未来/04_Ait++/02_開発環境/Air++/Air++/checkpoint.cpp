@@ -22,7 +22,7 @@
 //*****************************
 #define CHECKPOINT_RADIUS 700                        // 当たり判定の半径
 #define CHECKPOINT_TEXT "data/Texts/CoursePoint.txt" // チェックポイントテキストのパス
-#define GOAL_LAP_NUM 99                               // 何週でゴールか
+#define GOAL_LAP_NUM 3                               // 何週でゴールか
 
 // チェックポイント配置モード切り替えマクロ
 #define SET_MODE
@@ -149,7 +149,7 @@ void CCheckPoint::Update(void)
 							if (rankData.nLap >= GOAL_LAP_NUM)
 							{
 								// ゴール状態にする
-								pChara->SetGoalFlag(true);
+								pChara->GoalAction();
 							}
 						}
 						// キャラクタークラスにランクデータをセットする

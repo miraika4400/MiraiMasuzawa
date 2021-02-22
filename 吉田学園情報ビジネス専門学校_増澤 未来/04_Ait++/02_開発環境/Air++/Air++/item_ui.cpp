@@ -209,14 +209,21 @@ void CItemUi::Update(void)
 		{
 			if (pPlayer->GetItem() != CItem::ITEM_NONE)
 			{
+				// テクスチャの割り当て
 				m_pItemPolygon->BindTexture(m_apTexture[pPlayer->GetItem()]);
 			}
 			else
 			{
+				// テクスチャをNULLにする
 				m_pItemPolygon->BindTexture(NULL);
 			}
 			break;
 		}
+	}
+
+	if (CGame::GetState() == CGame::GAME_RESULT)
+	{// リザルト時消す
+		Uninit();
 	}
 	
 }

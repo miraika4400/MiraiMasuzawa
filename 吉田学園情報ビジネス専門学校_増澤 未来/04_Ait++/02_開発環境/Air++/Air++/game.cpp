@@ -28,6 +28,17 @@
 #include "rank.h"
 #include "item_point.h"
 #include "item.h"
+#include "start.h"
+
+//=============================
+// マクロ定義
+//=============================
+#define RESULT_COUNT 250 // リザルトへの遷移カウント
+#define INIT_POS_X 400   // キャラクター配置初期X位置
+#define INIT_POS_Z 0     // キャラクター配置初期Y位置
+#define SPACE_X 300      // キャラクター配置Xの間隔
+#define SPACE_Z 100      // キャラクター配置Yの間隔
+#define X_RESET_NUM 4    // キャラクター配置Xをリセットする間隔
 
 //=============================
 // 静的メンバ変数宣言
@@ -41,6 +52,7 @@ CCpuPoint *CGame::m_pCpuPoint = NULL;                      // CPU用コースデータ
 CCheckPoint *CGame::m_pCheckPoint = NULL;                  // チェックポイント
 CItemPoint *CGame::m_pItemPoint = NULL;                    // アイテムポイント
 CCourse    *CGame::m_pCourse = NULL;                       // コースポインタ
+CGame::GAME_STATE CGame::m_gameState = CGame::GAME_NORMAL; // ゲームの状態
 
 //=============================
 // コンストラクタ
@@ -49,6 +61,8 @@ CGame::CGame()
 {
 	// 変数のクリア
 	m_nNumCaracter = 0;
+	m_nCntResult= 0;
+	m_bResult = false;
 }
 
 //=============================
@@ -75,7 +89,6 @@ CGame * CGame::Create(void)
 //=============================
 HRESULT CGame::Init(void)
 {
-
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 
@@ -89,6 +102,12 @@ HRESULT CGame::Init(void)
 			return -1;
 		}
 	}
+	// リザルトカウントの初期化
+	m_nCntResult = 0;
+	// リザルトフラグの初期化
+	m_bResult = false;
+	// ゲームの状態の初期化
+	m_gameState = GAME_NORMAL;
 
 	// 背景の生成
 	CBg::Create();
@@ -108,36 +127,41 @@ HRESULT CGame::Init(void)
 	// アイテム座標
 	m_pItemPoint = CItemPoint::Create();
 
+
+	float fPosX = INIT_POS_X;
+	float fPosZ = INIT_POS_Z;
+
 	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 	{
 		// カメラクラスの生成
 		m_apCamera[nCnt] = CCamera::Create(nCnt);
 		// プレイヤー生成
-		m_apCharacter[m_nNumCaracter] = CPlayer::Create(D3DXVECTOR3(400.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), 0);
+		m_apCharacter[m_nNumCaracter] = CPlayer::Create(D3DXVECTOR3(fPosX, 0.0f, fPosZ), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), 0);
 		// キャラクター数加算
-		m_nNumCaracter++;	
+		m_nNumCaracter++;
+		fPosX -= SPACE_X;
+		fPosZ += SPACE_Z;
 	}
 	
-	// CPU生成
-	m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(-150.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), CCpu::CPU_TYPE_RUIN, 10);
-	// キャラクター数加算
-	m_nNumCaracter++;
-	
-	// CPU生成
-	m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(150.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), CCpu::CPU_TYPE_STAR , 7);
-	// キャラクター数加算
-	m_nNumCaracter++;
-	
-	// CPU生成
-	m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(-150.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), CCpu::CPU_TYPE_RUIN, 1);
-	// キャラクター数加算
-	m_nNumCaracter++;
-	
-	// CPU生成
-	m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(150.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), CCpu::CPU_TYPE_STAR, 5);
-	// キャラクター数加算
-	m_nNumCaracter++;
 
+	for (int nCnt = 0; nCnt < MAX_NPC_NUM; nCnt++)
+	{
+		if (m_nNumCaracter % X_RESET_NUM == 0)
+		{
+			fPosX = INIT_POS_X;
+		}
+
+		// CPU生成
+		m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(fPosX, 0.0f, fPosZ), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), (CCpu::CPUTYPE)(rand() % CCpu::CPU_TYPE_MAX), rand() % 10 + 1);
+		// キャラクター数加算
+		m_nNumCaracter++;
+		fPosX -= SPACE_X;
+		fPosZ += SPACE_Z;
+
+	}
+
+	// スタートのカウントダウンの生成
+	CStart::Create();
 	return S_OK;
 }
 
@@ -181,7 +205,22 @@ void CGame::Update(void)
 	}
 
 #endif // _DEBUG
-	CItem::RotationItem();
+
+	if (m_gameState == GAME_NORMAL)
+	{
+		// アイテムを回転させる
+		CItem::RotationItem();
+
+		// ゴール状態のチェック
+		CheckGoal();
+	}
+	else
+	{
+		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
+		{
+			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
+		}
+	}
 
 	// カメラクラスの更新処理
 	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
@@ -192,7 +231,6 @@ void CGame::Update(void)
 		}
 	}
 }
-
 
 //=============================
 // 描画処理
@@ -205,6 +243,35 @@ void CGame::Draw(void)
 		if (m_apCamera[nCnt] != NULL)
 		{
 			m_apCamera[nCnt]->SetCamera();
+		}
+	}
+}
+
+//=============================
+// プレイヤーがゴールしているかチェック
+//=============================
+void CGame::CheckGoal(void)
+{
+	if (!m_bResult)
+	{
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+		{
+			// 一人でもゴールしてなかったら処理終了
+			if (!CPlayer::GetPlayer(nCnt)->GetGoalFlag()) return;
+		}
+
+		// ここまで処理が来たらすべてのプレイヤーがゴールしている
+		m_bResult = true;
+	}
+	else
+	{
+		// カウントを進める
+		m_nCntResult++;
+
+		if (m_nCntResult > RESULT_COUNT)
+		{// 一定のカウント超えたら
+			// リザルトに移行
+			m_gameState = GAME_RESULT;
 		}
 	}
 }

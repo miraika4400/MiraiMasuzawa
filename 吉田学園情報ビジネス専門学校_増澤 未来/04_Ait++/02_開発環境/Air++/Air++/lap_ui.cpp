@@ -162,6 +162,11 @@ void CLapUi::Update(void)
 
 	// UV座標セット
 	SetTextureUV(uv);
+
+	if (CGame::GetState() == CGame::GAME_RESULT)
+	{// リザルト時消す
+		Uninit();
+	}
 }
 
 //******************************
