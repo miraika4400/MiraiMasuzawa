@@ -113,32 +113,30 @@ HRESULT CGame::Init(void)
 		// カメラクラスの生成
 		m_apCamera[nCnt] = CCamera::Create(nCnt);
 		// プレイヤー生成
-		m_apCharacter[m_nNumCaracter] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), 0);
+		m_apCharacter[m_nNumCaracter] = CPlayer::Create(D3DXVECTOR3(400.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), 0);
 		// キャラクター数加算
 		m_nNumCaracter++;	
 	}
 	
 	// CPU生成
-	m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(-150.0f, 0.0f, 2000.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), CCpu::CPU_TYPE_RUIN, 5);
-	// キャラクター数加算
-	m_nNumCaracter++;
-
-	// CPU生成
-	m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(150.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), CCpu::CPU_TYPE_STAR , 4);
+	m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(-150.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), CCpu::CPU_TYPE_RUIN, 10);
 	// キャラクター数加算
 	m_nNumCaracter++;
 	
 	// CPU生成
-	m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(-150.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), CCpu::CPU_TYPE_RUIN, 2);
+	m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(150.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), CCpu::CPU_TYPE_STAR , 7);
 	// キャラクター数加算
 	m_nNumCaracter++;
-
+	
 	// CPU生成
-	m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(150.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), CCpu::CPU_TYPE_STAR, 10);
+	m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(-150.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), CCpu::CPU_TYPE_RUIN, 1);
 	// キャラクター数加算
 	m_nNumCaracter++;
-
-
+	
+	// CPU生成
+	m_apCharacter[m_nNumCaracter] = CCpu::Create(D3DXVECTOR3(150.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), CCpu::CPU_TYPE_STAR, 5);
+	// キャラクター数加算
+	m_nNumCaracter++;
 
 	return S_OK;
 }

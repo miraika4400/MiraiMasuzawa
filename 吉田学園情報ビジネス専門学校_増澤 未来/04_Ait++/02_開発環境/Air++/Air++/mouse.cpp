@@ -1,6 +1,23 @@
+//===============================
+//
+// マウスクラスの処理 [mouse.cpp]
+// Author:増澤 未来
+//
+//===============================
+
+//===============================
+// インクルード
+//===============================
 #include "mouse.h"
 
+//===============================
+// マクロ定義
+//===============================
+#define MOUSE_SEINSI 0.0025f // 操作感度
 
+//===============================
+// コンストラクタ
+//===============================
 CInputMouse::CInputMouse()
 {
 	memset(m_aMouseState, 0, sizeof(m_aMouseState));
@@ -12,10 +29,16 @@ CInputMouse::CInputMouse()
 	m_mousState.lZ = 0;
 }
 
+//===============================
+// デストラクタ
+//===============================
 CInputMouse::~CInputMouse()
 {
 }
 
+//===============================
+// 初期化処理
+//===============================
 HRESULT CInputMouse::Init(HINSTANCE hInstance, HWND hWnd)
 {
 	CInput::Init(hInstance, hWnd);
@@ -44,11 +67,17 @@ HRESULT CInputMouse::Init(HINSTANCE hInstance, HWND hWnd)
 	return S_OK;
 }
 
+//===============================
+// 終了処理
+//===============================
 void CInputMouse::Uninit(void)
 {
 	CInput::Uninit();
 }
 
+//===============================
+// 更新処理
+//===============================
 void CInputMouse::Update(void)
 {
 	int nCntKey;
@@ -141,5 +170,5 @@ void CInputMouse::SetMousePos(D3DXVECTOR3 pos)
 //******************************
 D3DXVECTOR3 CInputMouse::GetMouseMove(void)
 {
-	return D3DXVECTOR3((float)m_mousState.lX, (float)m_mousState.lY, (float)m_mousState.lZ);
+	return D3DXVECTOR3((float)m_mousState.lX, (float)m_mousState.lY, (float)m_mousState.lZ) *MOUSE_SEINSI;
 }

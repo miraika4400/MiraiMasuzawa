@@ -17,24 +17,27 @@
 #include "collision.h"
 #include "course.h"
 #include "checkpoint.h"
+#include "cpu_point.h"
+#include "player.h"
+#include "destination.h"
+#include "attack.h"
+#include "trap.h"
+#include "locus.h"
 
 //*****************************
 // マクロ定義
 //*****************************
 #define CHARACTER_GRAVITY D3DXVECTOR3(0.0f,-50.0f,0.0f) // 重力量
 #define CHARACTER_GRAVITY_RATE 0.03f                    // 重力の係数
-#define CHARACTER_DIRECTION_RATE 0.3f                   // 回転角度の係数
-#define CHARACTER_MOVE_RATE 0.05f                       // 移動量の係数
 //#define CHARACTER_MOVE_RATE 1.0f                      // 移動量の係数
-#define CHARACTER_ROT_X_ADJUST_RANGE 300.0f             // 地面と角度を合わせるときの地面との距離の範囲
-#define RAY_DISTANCE 50.0f                              // レイを出す距離*向き調整に使用
-#define RAY_HEIGHT   100.0f                             // レイを出す高さ*向き調整に使用
 #define CHARACTER_SPEED_BASE 30.0f                      // 移動スピード
 #define CHARACTER_SPEED_ACCELERATION 45.0f              // 移動スピード*加速時
 #define CHARACTER_ACCELERATION_RATE 0.06f               // 加速時のスピード変化の係数
-#define CHARACTER_ACCELERATION_COUNT 70                 // 加速フレーム数
-#define CHARACTER_STAN_FRAME 70                         // スタンの長さ(フレーム)
-#define CHARACTER_FALL_COUNT 40                         // 重力フラグが一定フレーム経ってたら落下と判定する
+#define CHARACTER_ACCELERATION_COUNT 80                 // 加速フレーム数
+#define CHARACTER_STAN_FRAME 60                         // スタンの長さ(フレーム)
+#define LOCUS_DISTANCE_DEFAULT 80.0f                        // 軌跡を出す距離デフォルト
+#define LOCUS_ADJUST_DEFAULT 10.0f                          // 軌跡を出す高さの調整デフォルト
+#define LOCUS_COL_DEFAULT D3DXCOLOR(1.0f, 0.5f, 0.5f, 1.0f) // 奇跡カラーデフォルト
 
 //*****************************
 // 静的メンバ変数宣言
@@ -47,6 +50,7 @@ CCharacter::CCharacter(int nPliority) :CModelShader(nPliority)
 {
 	// 変数のクリア
 	m_move       = VEC3_ZERO;  // 移動量
+	m_bMove      = false;      // 移動フラグ
 	m_moveDist   = VEC3_ZERO;  // 移動量の目標値
 	m_gravityVec = VEC3_ZERO;  // 重力量
 	m_bGravity   = false;       // 重力フラグ
@@ -61,6 +65,7 @@ CCharacter::CCharacter(int nPliority) :CModelShader(nPliority)
 	m_bStan = false;           // スタンフラグ
 	m_nCntStan = 0;            // スタンカウント
 	m_nCntGravity = 0;         // 重力フラグが経っている間のカウント
+	m_locusData = { LOCUS_DISTANCE_DEFAULT,LOCUS_ADJUST_DEFAULT ,LOCUS_COL_DEFAULT }; // 奇跡情報
 
 	// オブジェクトタイプがプレイヤーの時、プレイヤーフラグをtrueにする
 	if (nPliority == OBJTYPE_PLAYER) m_bIsPlayer = true;
@@ -84,11 +89,12 @@ HRESULT CCharacter::Init(void)
 	{
 		return E_FAIL;
 	}
-
+	
 	// コリジョンの生成
 	m_pCollision = CCollision::CreateSphere(GetPos(), CHARACTER_RADIUS);
 
 	// 変数の取得
+	m_bMove = true;                  // 移動フラグ
 	m_bGoal = false;                 // ゴールフラグ
 	m_item = CItem::ITEM_NONE;       // 所持しているアイテム
 	m_bAcceleration = false;         // 加速フラグ
@@ -125,19 +131,28 @@ void CCharacter::Uninit(void)
 //******************************
 void CCharacter::Update(void)
 {
+	// 軌跡用データの保持
+	D3DXVECTOR3 posOld = GetPos();
+	float fAngeleOld = -GetRot().y;
+
+	if (m_bIsPlayer)
+	{// プレイヤーの時
+		((CPlayer*)this)->GetDest()->Update();
+	}
+
 	// 重力処理
 	Gravity();
 	
-	// 向きの処理
-	Direction();
+	if (m_bMove && !m_bGoal)
+	{// 移動フラグがtrueの時
 
-	// キャラ同士の当たり判定の処理
-	CollisionCharacter();
-
-	// スピードの管理
-	SpeedManager();
-
-	// 移動量徐々に目標値に近づける
+		// 向きの処理
+		Direction();
+		// スピードの管理
+		SpeedManager();
+	}
+	
+	// 移動量*徐々に目標値に近づける
 	m_move += (m_moveDist - m_move)*CHARACTER_MOVE_RATE;
 
 	// 座標に移動量を足す
@@ -151,6 +166,38 @@ void CCharacter::Update(void)
 		// 当たり判定の位置更新
 		m_pCollision->SetPos(GetPos());
 	}
+
+	// コースのと当たり判定
+	CGame::GetCourse()->CollisionCharacter(this);
+
+	// キャラ同士の当たり判定の処理
+	CollisionCharacter();
+
+	// 加速状態時に奇跡を出す
+
+	if (GetActiveAcceleration())
+	{// 加速状態の時
+
+		// 軌跡を出す
+		// プレイヤーの向いている向きの取得
+		float fAngele = -GetRot().y;
+
+		// 頂点座標の計算
+		D3DXVECTOR3 aPos[NUM_VERTEX / 2] =
+		{
+			{ GetPos().x + cosf(fAngele) *  m_locusData.fWidth, GetPos().y + m_locusData.fHeight, GetPos().z + sinf(fAngele) *  m_locusData.fWidth },
+			{ GetPos().x + cosf(fAngele) * -m_locusData.fWidth, GetPos().y + m_locusData.fHeight, GetPos().z + sinf(fAngele) * -m_locusData.fWidth },
+		};
+
+		D3DXVECTOR3 aPosOld[NUM_VERTEX / 2] =
+		{
+			{ posOld.x + cosf(fAngeleOld) *  m_locusData.fWidth , posOld.y + m_locusData.fHeight, posOld.z + sinf(fAngeleOld) *  m_locusData.fWidth },
+			{ posOld.x + cosf(fAngeleOld) * -m_locusData.fWidth , posOld.y + m_locusData.fHeight, posOld.z + sinf(fAngeleOld) * -m_locusData.fWidth },
+		};
+
+		CLocus::Create(aPos, aPosOld, m_locusData.col);
+	}
+
 }
 
 //******************************
@@ -190,9 +237,58 @@ void CCharacter::SetStan(bool bBool)
 	if (m_bStan)
 	{// 引数がtrueだった時
 
+		// カウントの初期化
+		m_nCntStan = 0;
 		// 加速状態の解除
 		m_bAcceleration = false;
 	}
+}
+
+//******************************
+// アイテムのセット処理
+//******************************
+void CCharacter::SetItem(void)
+{
+	switch (m_item)
+	{
+	case CItem::ITEM_ACCELERATION:
+		// 加速モードにする
+		SetActiveAcceleration(true);
+
+		break;
+	case CItem::ITEM_ATTACK:
+	{
+		// 頭から出す
+		D3DXVECTOR3 attackPos = GetPos();
+		// プレイヤーの後ろ座標の取得
+		float fAngle = (-GetRot().y) + D3DXToRadian(90);
+		attackPos.x += cosf(fAngle) * ATTACK_SET_DISTACE;
+		attackPos.z += sinf(fAngle) * ATTACK_SET_DISTACE;
+
+		// 攻撃生成
+		CAttack::Create(attackPos, D3DXVECTOR3(0.0f, GetRot().y + D3DXToRadian(90), 0.0f), m_rankData.nRank, GetID());
+
+	}
+	break;
+
+	case CItem::ITEM_TRAP:
+	{
+		// けつから出す
+		D3DXVECTOR3 trapPos = GetPos();
+		// プレイヤーの後ろ座標の取得
+		float fAngle = (-GetRot().y) + D3DXToRadian(-90);
+		trapPos.x += cosf(fAngle) * TRAP_SET_DISTACE;
+		trapPos.z += sinf(fAngle) * TRAP_SET_DISTACE;
+
+		// トラップ生成
+		CTrap::Create(trapPos);
+	}
+	break;
+	default:
+		break;
+	}
+	// アイテム情報の初期化
+	SetItem(CItem::ITEM_NONE);
 }
 
 //******************************
@@ -208,8 +304,9 @@ void CCharacter::Gravity(void)
 
 		// 座標に重力量のプラス
 		SetPos(GetPos() + m_gravityVec);
+		// カウントを進める
 		m_nCntGravity++;
-
+		// 一定カウントで落ちた判定
 		if (m_nCntGravity >= CHARACTER_FALL_COUNT)
 		{
 			if (m_rankData.nCheck != 0)
@@ -218,8 +315,33 @@ void CCharacter::Gravity(void)
 			}
 			else
 			{
-				SetPos(VEC3_ZERO);
+				SetPos(CGame::GetCheckPoint()->GetCollision(0)->GetPos());
 			}
+
+			// 機体の向きを進行方向に合わせる
+
+			// 一番近い座標の次の座標配列番号の取得
+			int nDist = CGame::GetCpuPoint()->GetNearPosIndex(0, GetPos()) + 1;
+			// 最大値を越さないようにする
+			if (nDist > CGame::GetCpuPoint()->GetPointNum(0)) nDist = 0;
+			// 目標位置
+			D3DXVECTOR3 distPos = CGame::GetCpuPoint()->GetPointData(0, nDist).pos;
+
+			D3DXVECTOR3 rot = GetRot();
+			rot.y = atan2f(distPos.x - GetPos().x, distPos.z - GetPos().z);
+
+			SetRot(rot);
+
+			// 移動量の初期化
+			m_move = VEC3_ZERO;
+			m_moveDist = VEC3_ZERO;
+
+			// 加速・スタンのフラグ解除
+			m_bAcceleration = false;
+			SetStan(true);
+
+			// 各派生クラスの落ちたときのアクション
+			FallAction();
 		}
 	}
 	else
@@ -336,7 +458,7 @@ void CCharacter::CollisionCharacter(void)
 				// 外に押し出す
 				D3DXVECTOR3 vec = (GetPos() - pTarget->GetPos());
 				D3DXVec3Normalize(&vec, &vec);
-				vec *= (m_pCollision->GetCollisionRadius() + pTarget->GetCollision()->GetCollisionRadius());
+				vec *= (m_pCollision->GetCollisionRadius() + pTarget->GetCollision()->GetCollisionRadius())+10;
 				// 座標の更新
 				SetPos(pTarget->GetPos() + vec);
 			}
@@ -353,7 +475,7 @@ void CCharacter::SpeedManager(void)
 	{// 加速
 
 		// 加速状態のスピードに近づける
-		m_fSpeed += (CHARACTER_SPEED_ACCELERATION- m_fSpeed)*CHARACTER_ACCELERATION_RATE;
+		m_fSpeed = CHARACTER_SPEED_ACCELERATION;
 		
 		// カウントを進める
 		m_nCntAccleration++;
@@ -369,24 +491,32 @@ void CCharacter::SpeedManager(void)
 	{// スタン状態
 
 		// 加速状態のスピードに近づける
-		m_fSpeed += (0.0f - m_fSpeed)*CHARACTER_MOVE_RATE;
+		m_fSpeed =0.0f;
+
+		// スタン中機体を回転させる
+		D3DXVECTOR3 rot = GetRot();
+		rot.y += D3DXToRadian(360 / (CHARACTER_STAN_FRAME));
+		SetRot(rot);
 
 		// カウントを進める
 		m_nCntStan++;
-		D3DXVECTOR3 rot = GetRot();
-		rot.y += D3DXToRadian(360 / CHARACTER_STAN_FRAME);
-		SetRot(rot);
 		if (m_nCntStan > CHARACTER_STAN_FRAME)
 		{// 加速カウントが一定に達したら
 		 // 加速終了
 			m_bStan = false;
 			// カウントの初期化
 			m_nCntStan = 0;
+
+			if (m_bIsPlayer)
+			{//プレイヤーだった時
+				//rot.y = ((CPlayer*)this)->GetDir() - D3DXToRadian(90);
+				SetRot(rot);
+			}
 		}
 	}
 	else
 	{
 		// 非加速状態のスピードに近づける
-		m_fSpeed += (CHARACTER_SPEED_BASE - m_fSpeed)*CHARACTER_MOVE_RATE;
+		m_fSpeed = CHARACTER_SPEED_BASE;
 	}
 }

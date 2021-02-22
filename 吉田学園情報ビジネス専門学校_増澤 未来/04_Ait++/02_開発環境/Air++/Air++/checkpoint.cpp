@@ -15,14 +15,14 @@
 #include "collision.h"
 #include "game.h"
 #include "character.h"
-
+#include "player.h"
 
 //*****************************
 // マクロ定義
 //*****************************
 #define CHECKPOINT_RADIUS 700                        // 当たり判定の半径
 #define CHECKPOINT_TEXT "data/Texts/CoursePoint.txt" // チェックポイントテキストのパス
-#define GOAL_LAP_NUM 3                               // 何週でゴールか
+#define GOAL_LAP_NUM 99                               // 何週でゴールか
 
 // チェックポイント配置モード切り替えマクロ
 #define SET_MODE
@@ -152,8 +152,7 @@ void CCheckPoint::Update(void)
 								pChara->SetGoalFlag(true);
 							}
 						}
-
-						// キャラクタークラスにランキデータをセットする
+						// キャラクタークラスにランクデータをセットする
 						pChara->SetRankData(rankData);
 					}
 				}

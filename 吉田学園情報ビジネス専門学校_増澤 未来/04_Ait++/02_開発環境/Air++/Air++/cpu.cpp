@@ -27,6 +27,14 @@
 #define DIST_RAND_AMPLITUDE 800                    // 目標地点設定の乱数の振幅
 #define CPU_LEVEL_MAX 10                           // CPU強さレベルの上限
 
+#define LOCUS_DISTANCE_STAR 50.0f                        // 軌跡を出す距離*ワープスター
+#define LOCUS_ADJUST_STAR 0.0f                           // 軌跡を出す高さの調整*ワープスター
+#define LOCUS_COL_STAR D3DXCOLOR(1.0f, 1.0f, 0.5f, 1.0f) // 奇跡カラー*ワープスター
+
+#define LOCUS_DISTANCE_RUIN 95.0f                          // 軌跡を出す距離*ルインスター
+#define LOCUS_ADJUST_RUIN 35.0f                            // 軌跡を出す高さの調整*ルインスター
+#define LOCUS_COL_RUIN D3DXCOLOR(0.5, 1.0f, 0.5f, 1.0f)    // 奇跡カラー*ルインスター
+
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
@@ -42,6 +50,8 @@ CCpu::CCpu() :CCharacter(OBJTYPE_CPU)
 	m_cpuType = CPU_TYPE_STAR; // CPUの種類
 	m_pDIstCollision = NULL;   // 移動目標値当たり判定
 	m_nLevel = 0;              // CPUの強さ
+	m_nItemCnt = 0;            // アイテムを使うまでのカウント 
+	m_nRoot = 0;               // ルート
 }
 
 //******************************
@@ -70,6 +80,7 @@ CCpu * CCpu::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CPUTYPE cpuTyp
 	pCpu->SetPos(pos);       // 座標のセット
 	pCpu->SetRot(rot);       // 座標のセット
 	pCpu->m_nLevel = nLevel; // レベルのセット 
+	pCpu->GetCollision()->SetPos(pos);// 当たり判定の位置設定
 
 	// レベルの上限、下限の範囲
 	pCpu->m_nLevel = min(max(pCpu->m_nLevel, 1), CPU_LEVEL_MAX);
@@ -165,12 +176,13 @@ HRESULT CCpu::Init(void)
 
 	// コースデータ配列管理用変数の初期化
 	m_nCpuPointNum = 0;
-	
+	// アイテムを使うまでのカウント初期化
+	m_nItemCnt = 0;
 	
 	// 初期目標座標の設定
 
 	// コースデータの取得
-	CCpuPoint::CpuPointData pointData = CGame::GetCpuPoint()->GetPointData(m_nCpuPointNum);
+	CCpuPoint::CpuPointData pointData = CGame::GetCpuPoint()->GetPointData(m_nRoot, m_nCpuPointNum);
 	// 次の目標地点
 	D3DXVECTOR3 distPos = pointData.pos;
 	// 次の目標地点の角度
@@ -185,7 +197,16 @@ HRESULT CCpu::Init(void)
 	distPos.z = distPos.z + sinf(-fDistAngle)*nRand;
 
 	// 目標地点
-	m_pDIstCollision = CCollision::CreateSphere(CGame::GetCpuPoint()->GetPointData(m_nCpuPointNum).pos, CPU_DIST_RADIUS);
+	m_pDIstCollision = CCollision::CreateSphere(CGame::GetCpuPoint()->GetPointData(m_nRoot, m_nCpuPointNum).pos, CPU_DIST_RADIUS);
+
+	// 奇跡の情報の設定
+	LocusData locusData = {};
+	if(m_cpuType == CPU_TYPE_STAR) locusData = { LOCUS_DISTANCE_STAR, LOCUS_ADJUST_STAR, LOCUS_COL_STAR }; // ワープスター
+	else locusData = { LOCUS_DISTANCE_RUIN, LOCUS_ADJUST_RUIN, LOCUS_COL_RUIN };                           // ルインスター
+	SetLocusData(locusData);
+
+	// ルートランダム設定
+	m_nRoot = rand() % ROOT_NUM;
 
 	return S_OK;
 }
@@ -210,6 +231,12 @@ void CCpu::Update(void)
 
 		// 目標地点の管理
 		DistManager();
+
+		if (GetItem() != CItem::ITEM_NONE)
+		{// アイテムを持っているとき
+			UseItem();
+		}
+
 	}
 	else
 	{
@@ -219,9 +246,6 @@ void CCpu::Update(void)
 
 	// キャラクタークラスの更新処理
 	CCharacter::Update();
-
-	// コースの当たり判定
-	CGame::GetCourse()->CollisionCharacter((CCharacter*)this);
 }
 
 //******************************
@@ -251,27 +275,17 @@ void CCpu::Move(void)
 	
 	// 移動量のセット
 	SetMoveDist(moveDist);
-
 }
 
 //******************************
 // 目標地点の管理
 //******************************
-void CCpu::DistManager(void)
+void CCpu::DistManager(bool bChange)
 {
-	// 目標地点にぶつかったとき
-	if (CCollision::CollisionSphere(GetCollision(), m_pDIstCollision))
-	{
-		// 目標地点インデックスを進める
-		m_nCpuPointNum++;
-
-		// 目標値点数を超えたらインデックスを0にする
-		if (m_nCpuPointNum >= CGame::GetCpuPoint()->GetPointNum())
-		{
-			m_nCpuPointNum = 0;
-		}
-
-		CCpuPoint::CpuPointData pointData = CGame::GetCpuPoint()->GetPointData(m_nCpuPointNum);
+	// 目標座標の設定*ラムダ式
+	auto randDist = [&] 
+	{ 
+		CCpuPoint::CpuPointData pointData = CGame::GetCpuPoint()->GetPointData(m_nRoot, m_nCpuPointNum);
 		// 次の目標地点
 		D3DXVECTOR3 distPos = pointData.pos;
 		// 次の目標地点の角度
@@ -298,7 +312,7 @@ void CCpu::DistManager(void)
 
 			nRand -= nAdjust;
 		}
-			break;
+		break;
 
 		case CCpuPoint::POINT_TYPE_IN_RIGHT:
 		{
@@ -308,7 +322,7 @@ void CCpu::DistManager(void)
 			int nAdjust = DIST_RAND_AMPLITUDE / 2 - (((DIST_RAND_AMPLITUDE / 2) / CPU_LEVEL_MAX) *m_nLevel);
 			nRand += nAdjust;
 		}
-			break;
+		break;
 
 		default:
 			break;
@@ -319,7 +333,61 @@ void CCpu::DistManager(void)
 		distPos.y = distPos.y;
 		distPos.z = distPos.z + sinf(-fDistAngle)*nRand;
 
-		// 次の目標地点に移動
-		m_pDIstCollision->SetPos(distPos);
+		return distPos;
+	};
+
+	if (!bChange)
+	{
+		// 目標地点にぶつかったとき
+		if (CCollision::CollisionSphere(GetCollision(), m_pDIstCollision))
+		{
+			// 目標地点インデックスを進める
+			m_nCpuPointNum++;
+
+			// 目標値点数を超えたらインデックスを0にする
+			if (m_nCpuPointNum >= CGame::GetCpuPoint()->GetPointNum(m_nRoot))
+			{
+				m_nCpuPointNum = 0;
+				// ルートランダム設定
+				m_nRoot = rand() % ROOT_NUM;
+			}
+
+			// 次の目標地点に移動
+			m_pDIstCollision->SetPos(randDist());
+		}
 	}
+	else
+	{
+		// 次の目標地点の更新
+		m_pDIstCollision->SetPos(randDist());
+	}
+	
+}
+
+//******************************
+// アイテム仕様処理
+//******************************
+void CCpu::UseItem(void)
+{
+	// カウントを減らす
+	m_nItemCnt--;
+	// カウントが0以下になったら
+	if (m_nItemCnt <= 0)
+	{
+		// カウントの初期化
+		m_nItemCnt = 0;
+		// アイテムのセット
+		SetItem();
+	}
+}
+
+//******************************
+// 落下時のアクション
+//******************************
+void CCpu::FallAction(void)
+{
+	// 目標ポイント数の更新
+	m_nCpuPointNum = CGame::GetCpuPoint()->GetNearPosIndex(m_nRoot, GetPos()) + 1;
+	// 目標地点の更新
+	DistManager(true);
 }

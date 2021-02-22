@@ -51,7 +51,8 @@ public:
 	void Draw(void);
 
 private:
-	void CollisionCharacter(void); // プレイヤーとの当たり判定
+	bool CollisionCharacter(void); // プレイヤーとの当たり判定
+	bool CollisionAttack(void);      // 攻撃オブジェクトとの当たり判定
 
 	//==========================
 	// メンバ変数

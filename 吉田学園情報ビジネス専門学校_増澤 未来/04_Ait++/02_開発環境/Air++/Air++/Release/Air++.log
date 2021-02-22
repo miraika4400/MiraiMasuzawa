@@ -1,0 +1,47 @@
+﻿  attack.cpp
+  bg.cpp
+  billboard.cpp
+  camera.cpp
+  checkpoint.cpp
+  collision.cpp
+  course.cpp
+  cpu.cpp
+  cpu_point.cpp
+  destination.cpp
+  game.cpp
+  item.cpp
+  item_point.cpp
+  item_ui.cpp
+  lap_ui.cpp
+  locus.cpp
+  manager.cpp
+  model.cpp
+  model_hierarchy.cpp
+  model_shader.cpp
+  コンパイル中...
+  motion.cpp
+  character.cpp
+  particle.cpp
+  pause.cpp
+  player.cpp
+  rank.cpp
+  rank_ui.cpp
+  renderer.cpp
+  result.cpp
+  scene.cpp
+  scene2d.cpp
+  scene3d.cpp
+  score.cpp
+score.cpp(61): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+score.cpp(99): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+score.cpp(99): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
+  title.cpp
+  trap.cpp
+  tutorial.cpp
+  コード生成しています。
+  125 of 542 functions (23.1%) were compiled, the rest were copied from previous compilation.
+    21 functions were new in current compilation
+    42 functions had inline decision re-evaluated but remain unchanged
+  コード生成が終了しました。
+  Air++.vcxproj -> C:\Users\gsp030\Desktop\進行中プロジェクト\Air++\Release\Air++.exe
+  Air++.vcxproj -> C:\Users\gsp030\Desktop\進行中プロジェクト\Air++\Release\Air++.pdb (Full PDB)

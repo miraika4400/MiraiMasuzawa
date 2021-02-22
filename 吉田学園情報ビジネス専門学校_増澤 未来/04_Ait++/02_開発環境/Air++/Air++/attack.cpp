@@ -39,13 +39,14 @@ CScene::Shader CAttack::m_shader = {}; // シェーダー構造体
 //******************************
 // コンストラクタ
 //******************************
-CAttack::CAttack() :CCharacter(OBJTYPE_ITEM)
+CAttack::CAttack() :CCharacter(OBJTYPE_ATTACK)
 {
-	m_nPointNum = 0;          // コースデータ配列管理用
-	m_pDIstCollision = NULL;  // 移動目標値当たり判定
-	m_nRank = 0;              // 放った人の順位
-	m_nLife = 0;              // 寿命
-	m_pTargetCollision = NULL;// 攻撃目標当たり判定
+	m_nPointNum = 0;           // コースデータ配列管理用
+	m_pDIstCollision = NULL;   // 移動目標値当たり判定
+	m_nRank = 0;               // 放った人の順位
+	m_nLife = 0;               // 寿命
+	m_pTargetCollision = NULL; // 攻撃目標当たり判定
+	m_nRoot = 0;               // ルート
 }
 
 //******************************
@@ -61,25 +62,25 @@ CAttack::~CAttack()
 CAttack * CAttack::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot,int nRank,int nUseID)
 {
 	// メモリの確保
-	CAttack *pCpu;
-	pCpu = new CAttack;
+	CAttack *pAttack;
+	pAttack = new CAttack;
 
 	// 初期化
-	pCpu->Init();
+	pAttack->Init();
 
 	// 各値の代入・セット
-	pCpu->SetPos(pos);       // 座標のセット
-	pCpu->SetRot(rot);       // 座標のセット
-	pCpu->m_nRank = nRank;   // 順位のセット 
-	pCpu->m_nUseID = nUseID; // 放った人のオブジェクト番号
+	pAttack->SetPos(pos);       // 座標のセット
+	pAttack->SetRot(rot);       // 座標のセット
+	pAttack->m_nRank = nRank;   // 順位のセット 
+	pAttack->m_nUseID = nUseID; // 放った人のオブジェクト番号
+	pAttack->GetCollision()->SetPos(pos); // 当たり判定の位置の設定
 
 	// 一番近い地点の次の番号を初期インデックスにする*一番目だと一回逆走しそう*
-	pCpu->m_nPointNum = CGame::GetCpuPoint()->GetNearPosIndex(pos) + 1;
-	// クランプ処理
-	pCpu->m_nPointNum = min(max(pCpu->m_nPointNum, 0), CGame::GetCpuPoint()->GetPointNum());
+	pAttack->m_nPointNum = CGame::GetCpuPoint()->GetNearPosIndex(pAttack->m_nRoot,pos) + 1;
+	if (CGame::GetCpuPoint()->GetPointNum(pAttack->m_nRoot) < pAttack->m_nPointNum) pAttack->m_nPointNum = 0;
 	// 目標地点
-	pCpu->m_pDIstCollision = CCollision::CreateSphere(CGame::GetCpuPoint()->GetPointData(pCpu->m_nPointNum).pos, ATTACK_DIST_RADIUS);
-	return pCpu;
+	pAttack->m_pDIstCollision = CCollision::CreateSphere(CGame::GetCpuPoint()->GetPointData(pAttack->m_nRoot , pAttack->m_nPointNum).pos, ATTACK_DIST_RADIUS);
+	return pAttack;
 }
 
 //******************************
@@ -167,6 +168,9 @@ HRESULT CAttack::Init(void)
 	// 攻撃対象検索当たり判定の生成
 	m_pTargetCollision = CCollision::CreateSphere(GetPos(), ATTACK_TARGET_RADIUS);
 
+	// ルートランダムで設定
+	m_nRoot = rand() % ROOT_NUM;
+
 	return S_OK;
 }
 
@@ -202,22 +206,14 @@ void CAttack::Update(void)
 	// 目標地点の管理
 	DistManager();
 
-	// キャラクタークラスの更新処理*移動、重力、当たり判定、etc.
-	CCharacter::Update();
 	if (m_pTargetCollision != NULL)
 	{
 		// 当たり判定の位置を更新
 		m_pTargetCollision->SetPos(GetPos());
 	}
-	// 一度コースの更新処理を呼び出してプレイヤーの位置調整
-	CGame::GetCourse()->CollisionCharacter((CCharacter*)this);
 
-	// 一生走ってたら怖いので一定のフレームで消す
-	m_nLife++;
-	if (m_nLife > ATTACK_LIFE)
-	{
-		Uninit();
-	}
+	// キャラクタークラスの更新処理*移動、重力、当たり判定、etc.
+	CCharacter::Update();
 }
 
 //******************************
@@ -265,13 +261,13 @@ void CAttack::DistManager(void)
 		m_nPointNum++;
 
 		// 目標値点数を超えたらインデックスを0にする
-		if (m_nPointNum >= CGame::GetCpuPoint()->GetPointNum())
+		if (m_nPointNum >= CGame::GetCpuPoint()->GetPointNum(m_nRoot))
 		{
 			m_nPointNum = 0;
 		}
 
 		// コースデータの取得
-		CCpuPoint::CpuPointData pointData = CGame::GetCpuPoint()->GetPointData(m_nPointNum);
+		CCpuPoint::CpuPointData pointData = CGame::GetCpuPoint()->GetPointData(m_nRoot,m_nPointNum);
 		if (m_pDIstCollision != NULL)
 		{
 			// 次の目標地点
@@ -290,23 +286,25 @@ void CAttack::DistManager(void)
 
 			if (pChara->GetID() != m_nUseID)
 			{// 放った人には追従市内
-			
-				if (CCollision::CollisionSphere(pChara->GetCollision(), m_pTargetCollision) && fDistance > D3DXVec3Length(&(GetPos() - pChara->GetPos())))
-				{// 索敵範囲にキャラが入っていた時&&距離が他のキャラより近かった時
+				if (m_pTargetCollision != NULL&&pChara->GetCollision() != NULL)
+				{
+					if (CCollision::CollisionSphere(pChara->GetCollision(), m_pTargetCollision) && fDistance > D3DXVec3Length(&(GetPos() - pChara->GetPos())))
+					{// 索敵範囲にキャラが入っていた時&&距離が他のキャラより近かった時
 
-					// 距離の保存
-					fDistance = D3DXVec3Length(&(GetPos() - pChara->GetPos()));
-					
-					// ポイントのインデックスを一番近い地点の次の番号をにする*一番目だと一回逆走しそう*
-					m_nPointNum = CGame::GetCpuPoint()->GetNearPosIndex(GetPos()) + 1;
-					// クランプ処理
-					m_nPointNum = min(max(m_nPointNum, 0), CGame::GetCpuPoint()->GetPointNum());
-					
-					if (m_pDIstCollision != NULL)
-					{
-						// 次の目標地点
-						m_pDIstCollision->SetPos(pChara->GetPos());
-					} 
+						// 距離の保存
+						fDistance = D3DXVec3Length(&(GetPos() - pChara->GetPos()));
+
+						// ポイントのインデックスを一番近い地点の次の番号をにする*一番目だと一回逆走しそう*
+						m_nPointNum = CGame::GetCpuPoint()->GetNearPosIndex(m_nRoot, GetPos()) + 1;
+						// クランプ処理
+						if (CGame::GetCpuPoint()->GetPointNum(m_nRoot) < m_nPointNum) m_nPointNum = 0;
+
+						if (m_pDIstCollision != NULL)
+						{
+							// 次の目標地点
+							m_pDIstCollision->SetPos(pChara->GetPos());
+						}
+					}
 				}
 			}
 		}
@@ -325,6 +323,7 @@ void CAttack::CollisionCharacter(void)
 		CCharacter*pChara = CGame::GetCharacter(nCnt);
 		if (pChara->GetID() != m_nUseID)
 		{// 放った人には当たらないようにする
+
 			if (CCollision::CollisionSphere(GetCollision(), pChara->GetCollision()))
 			{// 当たったとき
 
@@ -334,15 +333,24 @@ void CAttack::CollisionCharacter(void)
 					if (pChara->GetIsPlayer())
 					{// プレイヤーだった時
 
-					 // カメラのブレの設定
+						// カメラを揺らす
 						CGame::GetCamera(((CPlayer*)pChara)->GetPlayerNum())->Shake(true);
 					}
 				}
+
 				// 消す
 				Uninit();
-
 				break;
 			}
 		}
 	}
+}
+
+//******************************
+// 落下時のアクション
+//******************************
+void CAttack::FallAction(void)
+{
+	// 消す
+	Uninit();
 }

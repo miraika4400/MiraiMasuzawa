@@ -19,6 +19,7 @@
 // マクロ定義
 //*****************************
 #define MAX_CPUPOINT_NUM 256 // CPUポイント最大数
+#define ROOT_NUM 2           // ルート分岐数
 
 //*****************************
 // 前方宣言
@@ -68,12 +69,13 @@ public:
 	void Update(void);  // 更新
 	void Draw(void);    // 描画
 
-	int GetNearPosIndex(D3DXVECTOR3 pos); // 引き数の座標から最も近い座標のインデックスの取得
+	D3DXVECTOR3 GetNearPos(int nRoot, D3DXVECTOR3 pos); // 引き数の座標から最も近い座標の取得
+	int GetNearPosIndex(int nRoot, D3DXVECTOR3 pos); // 引き数の座標から最も近い座標のインデックスの取得
 	// ポイント数の取得
-	int GetPointNum(void) { return m_nNumPoint; }
+	int GetPointNum(int nRoot) { return m_anNumPoint[nRoot]; }
 
 	// ポイント数の取得
-	CpuPointData GetPointData(int nIndex) { return m_CpuPoint[nIndex]; }
+	CpuPointData GetPointData(int nRoot,int nIndex) { return m_aCpuPoint[nRoot][nIndex]; }
 private:
 	void SavePoint(void); // テキストファイルにポイントを書き込む
 	void LoadPoint(void); // テキストファイルのポイントを読み込む
@@ -81,9 +83,10 @@ private:
 	//============
 	// メンバ変数
 	//============
-	int m_nNumPoint;                           // ポイントの数
+	static char *m_apPath[ROOT_NUM];           // テキストファイルのパス
+	int m_anNumPoint[ROOT_NUM];                           // ポイントの数
 	int m_nCntSet;                             // 設置時のカウント
-	CpuPointData m_CpuPoint[MAX_CPUPOINT_NUM]; // CPU用コースデータ構造体
+	CpuPointData m_aCpuPoint[ROOT_NUM][MAX_CPUPOINT_NUM]; // CPU用コースデータ構造体
 	int m_nCpuPointNum;                        // コースデータ配列管理用
 };
 

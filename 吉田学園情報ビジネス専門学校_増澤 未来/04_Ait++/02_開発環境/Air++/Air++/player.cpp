@@ -15,21 +15,25 @@
 #include "camera.h"
 #include "keyboard.h"
 #include "rank_ui.h"
-#include "locus.h"
 #include "course.h"
 #include "item_ui.h"
-#include "trap.h"
-#include "attack.h"
+#include "mouse.h"
+#include "collision.h"
+#include "destination.h"
+#include "joypad.h"
+#include "lap_ui.h"
 
 //*****************************
 // マクロ定義
 //*****************************
-#define MODEL_PATH     "./data/Models/player.x" // モデルのパス
-#define SHADER_PATH    "./data/HLSL/Shader.fx"  // HLSLファイルのパス
-#define LOCUS_DISTANCE 80.0f                    // 軌跡を出す距離
-#define LOCUS_ADJUST 10.0f                      // 軌跡を出す高さの調整
-#define TRAP_SET_DISTACE 150.0f                 // トラップを置く距離
-#define ATTACK_SET_DISTACE 300.0f                 // トラップを置く距離
+#define MODEL_PATH     "./data/Models/player.x"     // モデルのパス
+#define SHADER_PATH    "./data/HLSL/Shader.fx"      // HLSLファイルのパス
+#define VIEW_MOVE_SPEED_MAX 0.03f                   // マウス移動最大値
+#define DRIFT_STICK_TIP 10                          // スティックがどれくらい傾いていたらドリフトになるか
+#define DRIFT_ROT_SPEED 0.015f                      // ドリフト時にプラスする値
+#define LOCUS_DISTANCE 80.0f                        // 軌跡を出す距離
+#define LOCUS_ADJUST 10.0f                          // 軌跡を出す高さの調整
+#define LOCUS_COL D3DXCOLOR(1.0f, 0.5f, 0.5f, 1.0f) // 奇跡カラー
 
 //*****************************
 // 静的メンバ変数宣言
@@ -44,6 +48,9 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE_PLAYER)
 {
 	// 変数のクリア
 	m_nPlayerNum = -1;  // プレイヤーID
+	m_fDir = 0.0f;
+	m_bDriftLeft  = false;      // ドリフト左
+	m_bDriftRight = false;      // ドリフト右
 }
 
 //******************************
@@ -71,7 +78,11 @@ CPlayer * CPlayer::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, int nPla
 	// 各値の代入・セット
 	pPlayer->SetPos(pos); // 座標のセット
 	pPlayer->SetRot(rot); // 回転のセット
-	
+	pPlayer->GetCollision()->SetPos(pos); // 当たり判定の位置の設定
+
+	// 移動目標クラスの生成
+	pPlayer->m_pDest = CDestination::Create(pPlayer->m_nPlayerNum, pos);
+
 	return pPlayer;
 }
 
@@ -131,6 +142,29 @@ void CPlayer::Unload(void)
 }
 
 //******************************
+// プレイヤーの取得処理
+//******************************
+CPlayer * CPlayer::GetPlayer(int nPlayerNum)
+{
+	// return用
+	CPlayer*pOut = NULL;
+	// プレイヤーリストの取得
+	pOut = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+
+	while(pOut != NULL)
+	{
+		if (pOut->GetPlayerNum()==nPlayerNum)
+		{// 引数とプレイヤー番号が一致しているときにポインタを返す
+			return pOut;
+		}
+
+		// リストのネクストにする
+		pOut = (CPlayer*)pOut->GetNext();
+	}
+	return pOut;
+}
+
+//******************************
 // 初期化処理
 //******************************
 HRESULT CPlayer::Init(void)
@@ -156,6 +190,20 @@ HRESULT CPlayer::Init(void)
 	CRankUi::Create(m_nPlayerNum);
 	// アイテムUIの生成
 	CItemUi::Create(m_nPlayerNum);
+	// ラップ数UIの生成
+	CLapUi::Create(m_nPlayerNum);
+
+	// プレイヤーの正面への角度
+	m_fDir = GetRot().y + D3DXToRadian(90);
+
+	// ドリフト初期化
+	m_bDriftLeft = false;   // ドリフト左
+	m_bDriftRight = false;  // ドリフト右
+
+	// 奇跡の情報
+	LocusData locusData = { LOCUS_DISTANCE, LOCUS_ADJUST, LOCUS_COL };
+	SetLocusData(locusData);
+
 	return S_OK;
 }
 
@@ -164,22 +212,35 @@ HRESULT CPlayer::Init(void)
 //******************************
 void CPlayer::Uninit(void)
 {
+	// 移動目標クラスの終了処理
+	if (m_pDest != NULL)
+	{
+		m_pDest->Uninit();
+		m_pDest = NULL;
+	}
+
 	CCharacter::Uninit();
 }
+	
 
 //******************************
 // 更新処理
 //******************************
 void CPlayer::Update(void)
 {
-	// 軌跡用データの保持
-	D3DXVECTOR3 posOld = GetPos();
-	float fAngeleOld = -GetRot().y;
+	//m_pDest->Update();
 
-	if (!GetGoalFlag())
+	// 移動不能時意外に処理したいもの
+	if (!GetGoalFlag()&& GetMoveFlag() && !GetStan())
 	{
 		// 移動量の設定
-		Move();
+		//Move();
+
+		// ドリフト処理
+		Drift();
+
+		// プレイヤーの正面への角度の保存
+		m_fDir = (-GetRot().y) + D3DXToRadian(90);
 	}
 	else
 	{
@@ -190,36 +251,8 @@ void CPlayer::Update(void)
 	// キャラクタークラスの更新処理*移動処理・向きの処理・重力処理・当たり判定
 	CCharacter::Update();
 
-	// コースの当たり判定
-	CGame::GetCourse()->CollisionCharacter((CCharacter*)this);
-
 	// アイテム使用
 	UseItem();
-
-	//***********************************************************
-	// 後で関数化したい
-	
-	if (GetActiveAcceleration())
-	{// 加速状態の時
-
-		// 軌跡を出す
-		// プレイヤーの向いている向きの取得
-		float fAngele = -GetRot().y;
-
-		D3DXVECTOR3 aPos[NUM_VERTEX / 2] =
-		{
-			{ GetPos().x + cosf(fAngele) *  LOCUS_DISTANCE, GetPos().y + LOCUS_ADJUST, GetPos().z + sinf(fAngele) *  LOCUS_DISTANCE },
-			{ GetPos().x + cosf(fAngele) * -LOCUS_DISTANCE, GetPos().y + LOCUS_ADJUST, GetPos().z + sinf(fAngele) * -LOCUS_DISTANCE },
-		};
-
-		D3DXVECTOR3 aPosOld[NUM_VERTEX / 2] =
-		{
-			{ posOld.x + cosf(fAngeleOld) *  LOCUS_DISTANCE , posOld.y + LOCUS_ADJUST, posOld.z + sinf(fAngeleOld) *  LOCUS_DISTANCE },
-			{ posOld.x + cosf(fAngeleOld) * -LOCUS_DISTANCE , posOld.y + LOCUS_ADJUST, posOld.z + sinf(fAngeleOld) * -LOCUS_DISTANCE },
-		};
-		CLocus::Create(aPos, aPosOld, D3DXCOLOR(1.0f, 0.5f, 0.5f, 1.0f));
-	}
-	//***********************************************************
 }
 
 //******************************
@@ -237,27 +270,39 @@ void CPlayer::Move(void)
 {
 	// 移動方向ベクトル
 	D3DXVECTOR3 move = { 0.0f,0.0f,0.0f };
+#if 0
+	// 移動方向ベクトル
+	D3DXVECTOR3 move = { 0.0f,0.0f,0.0f };
 
 	if (CManager::GetKeyboard()->GetKeyPress(DIK_W)||GetActiveAcceleration())
 	{
-		// 座標の取得
-		D3DXVECTOR3 pos = GetPos();
-		// カメラの位置の取得
-		D3DXVECTOR3 cameraPos = CGame::GetCamera(m_nPlayerNum)->GetPos();
+		//// 座標の取得
+		//D3DXVECTOR3 pos = GetPos();
+		//// カメラの位置の取得
+		//D3DXVECTOR3 cameraPos = CGame::GetCamera(m_nPlayerNum)->GetPos();
+		//
+		//// カメラから自分の方向ベクトル
+		//move = pos - cameraPos;
+		//// Y方向には移動しない
+		//move.y = 0.0f;
+		//// 正規化
+		//D3DXVec3Normalize(&move, &move);
 
-		// カメラから自分の方向ベクトル
-		move = pos - cameraPos;
-		// Y方向には移動しない
+		// 移動方向
+		move.x = cosf(m_fDir);
 		move.y = 0.0f;
-		// 正規化
-		D3DXVec3Normalize(&move, &move);
+		move.z = sinf(m_fDir);
 		// スピードをかける
 		move *= GetSpeed();
 	}
 	
 	// 移動量のセット
 	SetMoveDist(move);
-
+#else
+	// 移動量のセット
+	SetMoveDist(move);
+	SetMove(move);
+#endif
 }
 
 //******************************
@@ -267,58 +312,146 @@ void CPlayer::UseItem(void)
 {
 	if (GetItem() != CItem::ITEM_NONE && CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
 	{
-		
-		switch (GetItem())
-		{
-		case CItem::ITEM_ACCELERATION:
-			// 加速モードにする
-			SetActiveAcceleration(true);
-
-			break;
-		case CItem::ITEM_ATTACK:
-		{
-			// 頭から出す
-			D3DXVECTOR3 attackPos = GetPos();
-			// プレイヤーの後ろ座標の取得
-			float fAngle = (-GetRot().y) + D3DXToRadian(90);
-			attackPos.x += cosf(fAngle) * ATTACK_SET_DISTACE;
-			attackPos.z += sinf(fAngle) * ATTACK_SET_DISTACE;
-
-			// 攻撃生成
-			CAttack::Create(attackPos, D3DXVECTOR3(0.0f, GetRot().y + D3DXToRadian(90), 0.0f), GetRankData().nRank ,GetID());
-
-		}
-			break;
-
-		case CItem::ITEM_TRAP:
-		{
-			// けつから出す
-			D3DXVECTOR3 trapPos = GetPos();
-			// プレイヤーの後ろ座標の取得
-			float fAngle = (-GetRot().y) + D3DXToRadian(-90);
-			trapPos.x += cosf(fAngle) * TRAP_SET_DISTACE;
-			trapPos.z += sinf(fAngle) * TRAP_SET_DISTACE;
-
-			// トラップ生成
-			CTrap::Create(trapPos);
-		}
-			break;
-		default:
-			break;
-		}
-		// アイテム情報の初期化
-		SetItem(CItem::ITEM_NONE);
+		// アイテムセット
+		SetItem();
 	}
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
+}
+
+//******************************
+// 向きの管理*characterクラスからオーバーライド
+//******************************
+void CPlayer::Direction(void)
+{
+	D3DXVECTOR3 rot = GetRot();
+	if (GetMoveFlag() && !GetStan())
+	{// 移動フラグがtrueかつスタン状態なじゃいとき
+		// マウスで視点操作
+		rot.y += min(max(CManager::GetMouse()->GetMouseMove().x, -VIEW_MOVE_SPEED_MAX), VIEW_MOVE_SPEED_MAX);
+	}
+	// X軸
+
+	if (CGame::GetCourse() != NULL)
 	{
-		// 頭から出す
-		D3DXVECTOR3 attackPos = GetPos();
-		// プレイヤーの後ろ座標の取得
-		float fAngle = (-GetRot().y) + D3DXToRadian(90);
-		attackPos.x += cosf(fAngle) * ATTACK_SET_DISTACE;
-		attackPos.z += sinf(fAngle) * ATTACK_SET_DISTACE;
+		// レイを出す位置
+		D3DXVECTOR3 rayPos = VEC3_ZERO;
+		rayPos.x = GetPos().x + (cosf(m_fDir)*RAY_DISTANCE);
+		rayPos.y = GetPos().y + RAY_HEIGHT;
+		rayPos.z = GetPos().z + (sinf(m_fDir)*RAY_DISTANCE);
 
-		// 攻撃生成
-		CAttack::Create(attackPos, D3DXVECTOR3(0.0f, GetRot().y + D3DXToRadian(90), 0.0f), GetRankData().nRank, GetID());
+		// コースメッシュの取得
+		LPD3DXMESH pCourseMesh = CGame::GetCourse()->GetMesh();
+		// 
+		BOOL bHit = false;
+		float fHitDistance;
+
+		// レイによる当たり判定
+		D3DXIntersect(pCourseMesh,
+			&rayPos,
+			&D3DXVECTOR3(0.0f, -1.0f, 0.0f),
+			&bHit,
+			NULL,
+			NULL,
+			NULL,
+			&fHitDistance,
+			NULL,
+			NULL);
+
+		if (bHit)
+		{// 当たっていた時
+
+			if (fHitDistance <= CHARACTER_ROT_X_ADJUST_RANGE)
+			{
+				// 当たっている座標
+				D3DXVECTOR3 hitPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+				hitPos.x = rayPos.x;
+				hitPos.y = rayPos.y - fHitDistance;
+				hitPos.z = rayPos.z;
+
+				// X軸の目標値
+				float fRotDistX = atan2f((-(hitPos.y - (GetPos().y - HOVER_HEIGHT))), RAY_DISTANCE);
+
+				// 徐々に目標値に近づける
+				rot.x += (fRotDistX - rot.x) * CHARACTER_DIRECTION_RATE;
+				
+			}
+		}
 	}
+
+	// 向きのセット
+	SetRot(rot);
+}
+
+//******************************
+// ドリフト判定
+//******************************
+void CPlayer::Drift(void)
+{
+	if (!m_bDriftLeft && !m_bDriftRight)
+	{// ドリフトが左右どちらもfalse状態の時
+
+		// キーボード
+		if (CManager::GetKeyboard()->GetKeyPress(DIK_LSHIFT))
+		{
+			if (CManager::GetMouse()->GetMouseMove().x > 0)
+			{// 右ドリフト
+				m_bDriftRight = true;
+
+			}
+			else if (CManager::GetMouse()->GetMouseMove().x < 0)
+			{// 左ドリフト
+				m_bDriftLeft = true;
+			}
+		}
+		// コントローラー
+		if (CManager::GetJoypad()->GetJoystickPress(5, m_nPlayerNum))
+		{
+			if (CManager::GetJoypad()->GetStick(m_nPlayerNum).lX >= DRIFT_STICK_TIP)
+			{// 右ドリフト
+				m_bDriftRight = true;
+			}
+			else if (CManager::GetJoypad()->GetStick(m_nPlayerNum).lX <= -DRIFT_STICK_TIP)
+			{// 左ドリフト
+				m_bDriftLeft = true;
+			}
+		}
+	}
+	else
+	{// どっちかのドリフトのフラグが立っていた時
+
+		// 現在の角度の取得
+		D3DXVECTOR3 rot = GetRot();
+
+		// 角度の加算
+		if (m_bDriftLeft)
+		{// 左にドリフト
+			rot.y -= DRIFT_ROT_SPEED;
+		}
+		else if (m_bDriftRight)
+		{// 右にドリフト
+			rot.y += DRIFT_ROT_SPEED;
+		}
+
+		// 角度のセット
+		SetRot(rot);
+
+		// ドリフト状態の解除
+		if (!CManager::GetJoypad()->GetJoystickPress(5, m_nPlayerNum) && !CManager::GetKeyboard()->GetKeyPress(DIK_LSHIFT))
+		{
+			m_bDriftLeft = false;
+			m_bDriftRight = false;
+		}
+	}
+}
+
+//******************************
+// 落下時のアクション
+//******************************
+void CPlayer::FallAction(void)
+{
+
+	m_pDest->Init();
+	m_pDest->SetMove(VEC3_ZERO);
+
+	m_bDriftLeft = false;
+	m_bDriftRight = false;
 }

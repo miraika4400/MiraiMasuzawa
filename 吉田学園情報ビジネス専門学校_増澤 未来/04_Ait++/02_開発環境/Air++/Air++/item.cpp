@@ -15,17 +15,18 @@
 #include "billboard.h"
 #include "character.h"
 #include "game.h"
+#include "cpu.h"
 
 //*****************************
 // マクロ定義
 //*****************************
 #define MODEL_PATH   "./data/Models/ItemBox.x"            // モデルのパス
 #define TEXTURE_PATH "./data/Textures/QuestionMark.png"   // クエスチョンマークテクスチャのパス
-#define ITEM_RADIUS 70                                    // 半径
+#define ITEM_RADIUS 60                                    // 半径
 #define ITEM_BOX_SIZE D3DXVECTOR3(0.4f,0.4f,0.4f)         // サイズ*ボックス(拡大率)
 #define QUESTION_SIZE D3DXVECTOR3(30.0f,30.0f,0.0f)       // サイズ*?マーク
 #define ITEM_ROTASION_VEC D3DXVECTOR3(0.02f,0.03f,0.008f) // アイテムの回転速度
-#define ITEM_REPOP_COUNT 150                              // アイテムのリポップのカウント
+#define ITEM_REPOP_COUNT 100                              // アイテムのリポップのカウント
 #define ITEM_SIZE_RATE_UP   0.15f                         // アイテムサイズ"拡大"時の係数
 #define ITEM_SIZE_RATE_DOWN 0.2f                          // アイテムサイズ"縮小"時の係数
 #define ITEM_SIZE_DIST D3DXVECTOR3(1.0f,1.0f,1.0f)        // アイテムサイズ拡大時目標値
@@ -291,6 +292,12 @@ void CItem::CollisionCharacter(void)
 			{// キャラがアイテムを持っていないとき
 				// ランダムでアイテムの取得
 				pChara->SetItem((ITEM_TYPE)(rand() % ITEM_MAX));
+
+				if (!pChara->GetIsPlayer())
+				{// NPCだった時
+					//	アイテムカウントのセット
+					((CCpu*)pChara)->SetItemCount((rand() % CPU_ITEM_USE_RAND_AMPLITUDE) + CPU_ITEM_USE_RAND_MIN);
+				}
 			}
 			break;
 		}

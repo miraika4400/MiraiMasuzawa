@@ -16,6 +16,7 @@
 #include "mouse.h"
 #include "player.h"
 #include "cpu.h"
+#include "destination.h"
 
 //******************************
 // マクロ定義
@@ -29,8 +30,10 @@
 #define CAMERA_FOV_RATE 0.05f                                // 視野角変化時の係数
 #define CAMERA_BACK_BUFFE D3DXCOLOR( 0.0f, 1.0f, 0.0f, 1.0f) // カメラの背景色
 #define CAMERA_MOVE_SPEED_MAX 0.04f                          // カメラ操作感度最大値
+#define DAMERA_THETA_RATE 0.03f                              // カメラのシータ調整時の係数
 #define CAMERA_THETA_BASE D3DXToRadian(75.0f)                // カメラのファイ(高さ)の基本角度
 #define DAMERA_PHI_RATE 0.01f                                // カメラのファイ(高さ)調整時の係数
+#define THETA_DIFFERENCE D3DXToRadian(20)     // シータとシータの目標値の差の最大
 #define SHAKE_VEC D3DXVECTOR3(60.0f,70.0f,30.0f)                // ブレの方向
 #define SHAKE_COUNT 6                                        // ブレの方向転換時インターバル
 #define SHAKE_RATE 0.05f                                     // ブレの係数
@@ -126,9 +129,25 @@ void CCamera::Uninit(void)
 void CCamera::Update(void)
 {
 #ifdef CPU_CAMERA
+	// CPUに追従するカメラ（デバッグ用）*ちょっと雑
 
-	// CPUに追従するカメラ（デバッグ用）
-	CCpu* pCpu = (CCpu*)CScene::GetTop(CScene::OBJTYPE_CPU);
+	static CCpu* pCpu = (CCpu*)CScene::GetTop(CScene::OBJTYPE_CPU);
+
+	// 見ているCPUの切り替え
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RIGHT))
+	{
+		if (pCpu->GetNext() != NULL)
+		{
+			pCpu = (CCpu*)pCpu->GetNext();
+		}
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_LEFT))
+	{
+		if (pCpu->GetPrev() != NULL)
+		{
+			pCpu = (CCpu*)pCpu->GetPrev();
+		}
+	}
 
 	// 注視点をCPUにする
 	if (pCpu != NULL)
@@ -170,10 +189,29 @@ void CCamera::Update(void)
 				Shake();
 
 				m_posR = pPlayer->GetPos() + m_shake;
+
+				float fThetaDist = -pPlayer->GetDest()->GetRot().y+D3DXToRadian(90);
+
+				// グルんと回転しないように調整
+				while (m_fTheta - fThetaDist > D3DXToRadian(180))  fThetaDist += D3DXToRadian(360);
+				while (m_fTheta - fThetaDist < D3DXToRadian(-180)) fThetaDist -= D3DXToRadian(360);
+
+				// シータの目標値の差の上限、下限
+				if (fThetaDist - m_fTheta >= THETA_DIFFERENCE)
+				{
+					m_fTheta = fThetaDist + -THETA_DIFFERENCE;
+				}
+				if (fThetaDist - m_fTheta <= -THETA_DIFFERENCE)
+				{
+					m_fTheta = fThetaDist + THETA_DIFFERENCE;
+				}
+				m_fTheta += (fThetaDist - m_fTheta)*DAMERA_THETA_RATE;
 			}
 
-			// マウスで視点操作
-			m_fTheta -= min(max(CManager::GetMouse()->GetMouseMove().x / 100, -CAMERA_MOVE_SPEED_MAX), CAMERA_MOVE_SPEED_MAX);
+			//// マウスで視点操作
+			//m_fTheta -= min(max(CManager::GetMouse()->GetMouseMove().x / 100, -CAMERA_MOVE_SPEED_MAX), CAMERA_MOVE_SPEED_MAX);
+
+			
 			//高さをプレイヤーのロットXに対応させる
 			m_fPhi += ((-pPlayer->GetRot().x) + CAMERA_THETA_BASE - m_fPhi)*DAMERA_PHI_RATE;
 

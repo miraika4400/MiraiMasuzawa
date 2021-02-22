@@ -18,6 +18,8 @@
 //*****************************
 // マクロ定義
 //*****************************
+#define CPU_ITEM_USE_RAND_MIN 20        // アイテムを使うまでのカウント乱数の最低値
+#define CPU_ITEM_USE_RAND_AMPLITUDE 200 // アイテムを使うまでのカウント乱数のふり幅
 
 //*****************************
 // 前方宣言
@@ -56,10 +58,14 @@ public:
 	void Update(void);  // 更新
 	void Draw(void);    // 描画
 
+	// アイテムカウントのセット
+	void SetItemCount(int nCnt) { m_nItemCnt = nCnt; }
+
 private:
 	void Move(void);        // 移動処理
-	void DistManager(void); // 目標地点の管理関数
-
+	void DistManager(bool bChange = false); // 目標地点の管理関数*引数：trueの時無理やり目標地点を変える
+	void UseItem(void);     // アイテム仕様処理
+	void FallAction(void); // 落下時のアクション
 	//==========================
 	// メンバ変数
 	//==========================
@@ -69,5 +75,7 @@ private:
 	CCollision * m_pDIstCollision;       // 移動目標値当たり判定
 	int m_nCpuPointNum;                  // コースポイント配列管理用
 	int m_nLevel;                        // CPUの強さ
+	int m_nItemCnt;                      // アイテムを使うまでのカウント
+	int m_nRoot;                         // ルート
 };
 #endif

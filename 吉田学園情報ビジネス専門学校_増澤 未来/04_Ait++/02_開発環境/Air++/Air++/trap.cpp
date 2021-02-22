@@ -17,6 +17,7 @@
 #include "game.h"
 #include "player.h"
 #include "camera.h"
+#include "attack.h"
 
 //*****************************
 // マクロ定義
@@ -171,8 +172,10 @@ void CTrap::Uninit(void)
 //******************************
 void CTrap::Update(void)
 {
-
-	CollisionCharacter();
+	// キャラクターとの当たり判定
+	if(CollisionCharacter()) return;
+	// 攻撃との当たり判定
+	if (CollisionAttack()) return;
 }
 
 //******************************
@@ -186,7 +189,7 @@ void CTrap::Draw(void)
 //******************************
 // プレイヤーとの当たり判定
 //******************************
-void CTrap::CollisionCharacter(void)
+bool CTrap::CollisionCharacter(void)
 {
 	// キャラクター数分ループ
 	for (int nCnt = 0; nCnt < CGame::GetCharacterNum(); nCnt++)
@@ -209,8 +212,38 @@ void CTrap::CollisionCharacter(void)
 			// 消す
 			Uninit();
 
-			break;
+			return true;
 		}
 	}
+	return false;
+}
 
+//*********************************
+// 攻撃オブジェクトとの当たり判定
+//*********************************
+bool CTrap::CollisionAttack(void)
+{
+	CAttack*pAttack = (CAttack*)GetTop(OBJTYPE_ATTACK);
+
+	while (pAttack != NULL)
+	{
+		if (m_pCollision != NULL&&pAttack->GetCollision() != NULL)
+		{
+			if (CCollision::CollisionSphere(m_pCollision, pAttack->GetCollision()))
+			{// 当たっていた時
+
+			 // 攻撃を消す
+				pAttack->Uninit();
+				// トラップを消す
+				Uninit();
+
+				// 処理の終了
+				return true;
+			}
+		}
+		
+		pAttack = (CAttack*)pAttack->GetNext();
+	}
+
+	return false;
 }

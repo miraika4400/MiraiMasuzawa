@@ -37,8 +37,8 @@ public:
 	void Draw(void);    // 描画
 
 private:
-
-	void RankManager(void);
+	void RankManager(void);   // 順位管理
+	float CheckProgress(int nCheckNum, D3DXVECTOR3 pos); // 進行度の算出
 
 	//============
 	// メンバ変数

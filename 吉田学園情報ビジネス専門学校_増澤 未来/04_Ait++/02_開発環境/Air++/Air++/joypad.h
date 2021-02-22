@@ -18,8 +18,9 @@
 //===============================
 //マクロ定義
 //===============================
-#define MAX_JOYSTICK_NUM 4 // JOYPAD接続上限
-#define	NUM_JOY_MAX 31     // ボタンの最大数
+#define MAX_JOYSTICK_NUM 4    // JOYPAD接続上限
+#define	NUM_JOY_MAX 31        // ボタンの最大数
+#define JOYSTICK_TIP_MAX 1000 // 傾けの値の最大値
 
 //ジョイパッドクラス
 class CInputJoypad : public CInput

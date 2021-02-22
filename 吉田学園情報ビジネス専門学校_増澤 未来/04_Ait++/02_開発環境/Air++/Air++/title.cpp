@@ -27,7 +27,7 @@ LPDIRECT3DTEXTURE9 CTitle::m_pTexture = NULL;
 //**********************************
 // マクロ定義
 //**********************************
-#define  TITLE_TEXTURE_PATH "./data/Textures/title000.png" // テクスチャ
+#define  TITLE_TEXTURE_PATH "./data/Textures/title.png" // テクスチャ
 
 //=============================
 // コンストラクタ

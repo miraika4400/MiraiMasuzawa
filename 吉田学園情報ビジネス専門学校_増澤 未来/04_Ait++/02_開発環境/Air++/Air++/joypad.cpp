@@ -218,8 +218,8 @@ BOOL CInputJoypad::EnumAxesCallback(const DIDEVICEOBJECTINSTANCE * pdidoi, VOID 
 	diprg.diph.dwHeaderSize = sizeof(DIPROPHEADER);
 	diprg.diph.dwHow = DIPH_BYID;
 	diprg.diph.dwObj = pdidoi->dwType;
-	diprg.lMin = 0 - 1000;
-	diprg.lMax = 0 + 1000;
+	diprg.lMin = 0 - JOYSTICK_TIP_MAX;
+	diprg.lMax = 0 + JOYSTICK_TIP_MAX;
 
 	for (int nCnt = 0; nCnt < m_nJoyStickCont; nCnt++)
 	{

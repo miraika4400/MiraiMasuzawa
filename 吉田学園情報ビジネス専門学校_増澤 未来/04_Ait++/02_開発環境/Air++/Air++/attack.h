@@ -55,6 +55,8 @@ private:
 	void Move(void);        // 移動処理
 	void DistManager(void); // 移動目標の管理
 	void CollisionCharacter(void);// プレイヤー・NPCとの当たり判定*キャラクタークラスの更新で呼ばれてる
+	void FallAction(void); // 落下時のアクション
+
 	//==========================
 	// メンバ変数
 	//==========================
@@ -66,5 +68,6 @@ private:
 	int m_nRank;                     // 放った人の順位
 	int m_nLife;                     // 寿命
 	int m_nUseID;                    // 使った人のオブジェクト番号
+	int m_nRoot;                     // ルート
 };
 #endif

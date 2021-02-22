@@ -42,14 +42,15 @@ public:
 	// 状態列挙
 	//============
 	// オブジェクトタイプ列挙
-	// 描画順
+	// 更新・描画順
 	typedef enum
 	{
 		OBJTYPE_NONE = 0,
 		OBJTYPE_BG,         // 背景
+		OBJTYPE_ITEM,       // アイテム
+		OBJTYPE_ATTACK,     // 攻撃
 		OBJTYPE_PLAYER,     // プレイヤー
 		OBJTYPE_CPU,        // CPU
-		OBJTYPE_ITEM,       // アイテム
 		OBJTYPE_CHECKPOINT, // チェックポイント
 		OBJTYPE_MAP,        // マップ
 		OBJTYPE_PARTICLE,   // パーティクル

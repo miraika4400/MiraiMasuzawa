@@ -160,6 +160,7 @@
     <ClCompile Include="cpu.cpp" />
     <ClCompile Include="cpu_point.cpp" />
     <ClCompile Include="debug_log.cpp" />
+    <ClCompile Include="destination.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="item_ui.cpp" />
     <ClCompile Include="joypad.cpp" />
     <ClCompile Include="keyboard.cpp" />
+    <ClCompile Include="lap_ui.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="locus.cpp" />
     <ClCompile Include="main.cpp" />
@@ -207,6 +209,7 @@
     <ClInclude Include="cpu.h" />
     <ClInclude Include="cpu_point.h" />
     <ClInclude Include="debug_log.h" />
+    <ClInclude Include="destination.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
@@ -215,6 +218,7 @@
     <ClInclude Include="item_ui.h" />
     <ClInclude Include="joypad.h" />
     <ClInclude Include="keyboard.h" />
+    <ClInclude Include="lap_ui.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="locus.h" />
     <ClInclude Include="main.h" />

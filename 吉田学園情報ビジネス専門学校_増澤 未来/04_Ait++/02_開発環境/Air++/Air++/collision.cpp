@@ -69,17 +69,24 @@ CCollision * CCollision::CreateSphere(D3DXVECTOR3 pos, float fRadius)
 //******************************
 bool CCollision::CollisionSphere(CCollision * pCollision1, CCollision * pCollision2)
 {
-	if (pow(pCollision1->GetPos().x - pCollision2->GetPos().x, 2) +
-		pow(pCollision1->GetPos().y - pCollision2->GetPos().y, 2) +
-		pow(pCollision1->GetPos().z - pCollision2->GetPos().z, 2) <= pow(pCollision1->m_fRadius + pCollision2->m_fRadius, 2))
-	{
-
-		return true;
-	}
-	else
+	if (pCollision1 == NULL || pCollision2 == NULL)
 	{
 		return false;
 	}
+	else
+	{
+		if (pow(pCollision1->GetPos().x - pCollision2->GetPos().x, 2) +
+			pow(pCollision1->GetPos().y - pCollision2->GetPos().y, 2) +
+			pow(pCollision1->GetPos().z - pCollision2->GetPos().z, 2) <= pow(pCollision1->m_fRadius + pCollision2->m_fRadius, 2))
+		{
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}	
 }
 
 //******************************
