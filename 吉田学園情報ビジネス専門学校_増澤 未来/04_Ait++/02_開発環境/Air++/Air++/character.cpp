@@ -23,6 +23,7 @@
 #include "attack.h"
 #include "trap.h"
 #include "locus.h"
+#include "stan_effect.h"
 
 //*****************************
 // マクロ定義
@@ -99,11 +100,11 @@ HRESULT CCharacter::Init(void)
 	m_item = CItem::ITEM_NONE;       // 所持しているアイテム
 	m_bAcceleration = false;         // 加速フラグ
 	m_fSpeed = CHARACTER_SPEED_BASE; // 移動速度
-	m_nCntAccleration = 0;     // 加速時のカウント
-	m_bStan = false;           // スタンフラグ
-	m_nCntStan = 0;            // スタンカウント
-	m_bGravity = false;        // 重力フラグ
-	m_nCntGravity = 0;         // 重力フラグが経っている間のカウント
+	m_nCntAccleration = 0;           // 加速時のカウント
+	m_bStan = false;                 // スタンフラグ
+	m_nCntStan = 0;                  // スタンカウント
+	m_bGravity = false;              // 重力フラグ
+	m_nCntGravity = 0;               // 重力フラグが経っている間のカウント
 
 	// 順位付けデータの初期化
 	m_rankData.nCheck = 0;
@@ -241,6 +242,8 @@ void CCharacter::SetStan(bool bBool)
 		m_nCntStan = 0;
 		// 加速状態の解除
 		m_bAcceleration = false;
+		// エフェクト生成
+		CStanEffect::SetEffect(GetPos());
 	}
 }
 
@@ -266,7 +269,7 @@ void CCharacter::SetItem(void)
 		attackPos.z += sinf(fAngle) * ATTACK_SET_DISTACE;
 
 		// 攻撃生成
-		CAttack::Create(attackPos, D3DXVECTOR3(0.0f, GetRot().y + D3DXToRadian(90), 0.0f), m_rankData.nRank, GetID());
+		CAttack::Create(attackPos, D3DXVECTOR3(0.0f, -GetRot().y + D3DXToRadian(90), 0.0f), m_rankData.nRank, GetID());
 
 	}
 	break;
@@ -421,7 +424,7 @@ void CCharacter::Direction(void)
 			if (fHitDistance <= CHARACTER_ROT_X_ADJUST_RANGE)
 			{
 				// 当たっている座標
-				D3DXVECTOR3 hitPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+				D3DXVECTOR3 hitPos = VEC3_ZERO;
 				hitPos.x = rayPos.x;
 				hitPos.y = rayPos.y - fHitDistance;
 				hitPos.z = rayPos.z;

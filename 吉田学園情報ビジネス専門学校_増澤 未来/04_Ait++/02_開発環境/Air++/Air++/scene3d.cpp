@@ -178,6 +178,8 @@ void CScene3d::Draw(void)
 
 	//ポリゴンの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+
+	// テクスチャの初期化
 	pDevice->SetTexture(0, 0);
 
 	// 加算モードの時

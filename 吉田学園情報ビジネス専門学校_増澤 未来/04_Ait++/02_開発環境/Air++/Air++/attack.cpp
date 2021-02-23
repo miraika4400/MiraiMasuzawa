@@ -25,7 +25,7 @@
 #define SHADER_PATH  "./data/HLSL/Shader.fx"  // HLSLファイルのパス
 #define ATTACK_SIZE D3DXVECTOR3( 0.5f, 0.5f, 0.5f) // モデルサイズ
 #define ATTACK_DIST_RADIUS 100.0f             // 目標の地点半径
-#define ATTACK_TARGET_RADIUS 600.0f           // 攻撃対象検索当たり判定
+#define ATTACK_TARGET_RADIUS 500.0f           // 攻撃対象検索当たり判定
 #define DIST_RAND_AMPLITUDE 800               // 目標地点設定の乱数の振幅
 #define ATTACK_SPEED 45.0f                    // 移動速度
 #define ATTACK_LIFE 1200.0f                   // 寿命
@@ -80,6 +80,9 @@ CAttack * CAttack::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot,int nRank
 	if (CGame::GetCpuPoint()->GetPointNum(pAttack->m_nRoot) < pAttack->m_nPointNum) pAttack->m_nPointNum = 0;
 	// 目標地点
 	pAttack->m_pDIstCollision = CCollision::CreateSphere(CGame::GetCpuPoint()->GetPointData(pAttack->m_nRoot , pAttack->m_nPointNum).pos, ATTACK_DIST_RADIUS);
+
+	// 攻撃対象検索当たり判定の生成
+	pAttack->m_pTargetCollision = CCollision::CreateSphere(pos, ATTACK_TARGET_RADIUS);
 	return pAttack;
 }
 
@@ -164,9 +167,6 @@ HRESULT CAttack::Init(void)
 	m_nPointNum = 0;
 	// サイズのセット
 	SetSize(ATTACK_SIZE);
-
-	// 攻撃対象検索当たり判定の生成
-	m_pTargetCollision = CCollision::CreateSphere(GetPos(), ATTACK_TARGET_RADIUS);
 
 	// ルートランダムで設定
 	m_nRoot = rand() % ROOT_NUM;

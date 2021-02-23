@@ -87,11 +87,11 @@ HRESULT CCourse::Load(void)
 	}
 
 	// HLSLƒtƒ@ƒCƒ‹‚Ì“Ç‚Ýž‚Ý
-	D3DXCreateEffectFromFile(CManager::GetRenderer()->GetDevice(), SHADER_PATH, NULL, NULL, 0, NULL, &m_shader.pEffect, NULL);
+	D3DXCreateEffectFromFile(pDevice, SHADER_PATH, NULL, NULL, 0, NULL, &m_shader.pEffect, NULL);
 
 	sprintf(&m_shader.achTechniqueName[0], "%s", "TShader");
 
-	D3DXCreateCubeTextureFromFile(CManager::GetRenderer()->GetDevice(), CUBE_TEX_PATH, &m_shader.pCubeTex);
+	D3DXCreateCubeTextureFromFile(pDevice, CUBE_TEX_PATH, &m_shader.pCubeTex);
 	return S_OK;
 }
 

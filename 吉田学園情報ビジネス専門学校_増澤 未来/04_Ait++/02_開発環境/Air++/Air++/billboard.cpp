@@ -78,11 +78,18 @@ HRESULT CBillboard::Init(void)
 
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
+	// 中心から頂点の距離
+	float fDistance = sqrtf(powf(m_size.x, 2) + powf(m_size.y, 2));
+	// 中心から右上の頂点の角度
+	float fAngle = atan2f(m_size.y, m_size.x);
+	// 中心から左上の頂点の角度
+	float  fAngle2 = atan2f(m_size.y, -m_size.x);
+
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3( -m_size.x,  m_size.y , 0);
-	pVtx[1].pos = D3DXVECTOR3( m_size.x ,  m_size.y , 0);
-	pVtx[2].pos = D3DXVECTOR3( -m_size.x, -m_size.y , 0);
-	pVtx[3].pos = D3DXVECTOR3( m_size. x, -m_size.y , 0);
+	pVtx[0].pos = D3DXVECTOR3((cosf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), (sinf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[1].pos = D3DXVECTOR3((cosf(fAngle + D3DXToRadian(m_fAngle)) * fDistance), (sinf(fAngle + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[2].pos = D3DXVECTOR3((cosf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), (sinf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[3].pos = D3DXVECTOR3((cosf(-fAngle + D3DXToRadian(m_fAngle))  * fDistance), (sinf(-fAngle + D3DXToRadian(m_fAngle)) * fDistance), 0);
 
 
 	// テクスチャUV座標の設定
@@ -213,8 +220,28 @@ void CBillboard::Draw(void)
 //===================================
 void CBillboard::SetPos(const D3DXVECTOR3 pos)
 {
-	//posの代入
+	VERTEX_3D *pVtx;// 頂点情報ポインタ
+
+					//posの代入
 	m_pos = pos;
+
+	// ロック
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 中心から頂点の距離
+	float fDistance = sqrtf(powf(m_size.x, 2) + powf(m_size.y, 2));
+	// 中心から右上の頂点の角度
+	float fAngle = atan2f(m_size.y, m_size.x);
+	// 中心から左上の頂点の角度
+	float  fAngle2 = atan2f(m_size.y, -m_size.x);
+	// 頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3((cosf(  fAngle2 + D3DXToRadian(m_fAngle)) * fDistance)  , (sinf( fAngle2  + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[1].pos = D3DXVECTOR3((cosf(  fAngle  + D3DXToRadian(m_fAngle)) * fDistance)  , (sinf( fAngle   + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[2].pos = D3DXVECTOR3((cosf( -fAngle2 + D3DXToRadian(m_fAngle)) * fDistance)  , (sinf( -fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[3].pos = D3DXVECTOR3((cosf( -fAngle  + D3DXToRadian(m_fAngle))  * fDistance) , (sinf( -fAngle  + D3DXToRadian(m_fAngle)) * fDistance), 0);
+
+	// アンロック
+	m_pVtxBuff->Unlock();
 }
 
 //===================================
@@ -233,7 +260,7 @@ void CBillboard::SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX])
 {
 	VERTEX_3D *pVtx;// 頂点情報ポインタ
 
-	// ロック
+					// ロック
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	pVtx[0].tex = uv[0];
@@ -253,18 +280,7 @@ void CBillboard::SetSize(const D3DXVECTOR3 size)
 	m_size = size;
 
 	// 頂点座標の再設定
-	VERTEX_3D *pVtx;// 頂点情報ポインタ
-
-	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(-m_size.x, m_size.y, 0);
-	pVtx[1].pos = D3DXVECTOR3(m_size.x, m_size.y, 0);
-	pVtx[2].pos = D3DXVECTOR3(-m_size.x, -m_size.y, 0);
-	pVtx[3].pos = D3DXVECTOR3(m_size.x, -m_size.y, 0);
-
-	// アンロック
-	m_pVtxBuff->Unlock();
+	SetPos(m_pos);
 }
 
 //===================================

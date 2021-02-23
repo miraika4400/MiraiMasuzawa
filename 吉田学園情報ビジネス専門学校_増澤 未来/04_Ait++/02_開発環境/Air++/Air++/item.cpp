@@ -16,6 +16,7 @@
 #include "character.h"
 #include "game.h"
 #include "cpu.h"
+#include "itembox_effect.h"
 
 //*****************************
 // マクロ定義
@@ -286,6 +287,9 @@ void CItem::CollisionCharacter(void)
 			m_bExpansion = true;
 			// はてなマークを消す
 			m_pBillboard->Uninit();
+
+			// 破片エフェクトの生成
+			CItemBoxEffect::SetEffect(GetPos(), -pChara->GetRot().y + D3DXToRadian(90));
 
 			if (pChara->GetItem() == ITEM_NONE)
 			{// キャラがアイテムを持っていないとき

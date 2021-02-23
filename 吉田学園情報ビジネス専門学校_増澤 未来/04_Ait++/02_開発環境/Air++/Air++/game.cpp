@@ -89,6 +89,9 @@ CGame * CGame::Create(void)
 //=============================
 HRESULT CGame::Init(void)
 {
+	// カーソルを消す
+	ShowCursor(FALSE);
+
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 

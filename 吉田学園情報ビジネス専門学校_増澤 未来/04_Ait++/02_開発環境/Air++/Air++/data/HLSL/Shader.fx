@@ -38,7 +38,7 @@ samplerCUBE SamplerCube = sampler_state {
 //******************************
 float4 PsTex(VS_OUTPUT In) :COLOR
 {
-	float4 fOut = tex2D(Sampler, In.TexCoord) * (In.Color + In.Specular);
+	float4 fOut = texCUBE(SamplerCube, In.CubeTexCoord)/10 + tex2D(Sampler, In.TexCoord) * (In.Color + In.Specular);
 	
 	return fOut;
 }
@@ -50,7 +50,7 @@ float4 PsTex(VS_OUTPUT In) :COLOR
 float4 PsNotTex(VS_OUTPUT In) :COLOR
 {
 	float4 fOut = In.Color + In.Specular;
-	fOut = texCUBE(SamplerCube, In.CubeTexCoord) / 5 + fOut;
+	fOut = texCUBE(SamplerCube, In.CubeTexCoord)/10  + fOut;
 	fOut.a = 1.0f;
 	return fOut;
 }

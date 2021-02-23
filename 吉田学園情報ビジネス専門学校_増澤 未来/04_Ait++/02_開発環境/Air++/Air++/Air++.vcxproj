@@ -166,6 +166,7 @@
     <ClCompile Include="goal_ui.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="itembox_effect.cpp" />
     <ClCompile Include="item_point.cpp" />
     <ClCompile Include="item_ui.cpp" />
     <ClCompile Include="joypad.cpp" />
@@ -195,6 +196,7 @@
     <ClCompile Include="scene3d.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="sound.cpp" />
+    <ClCompile Include="stan_effect.cpp" />
     <ClCompile Include="start.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="trap.cpp" />
@@ -217,6 +219,7 @@
     <ClInclude Include="goal_ui.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="itembox_effect.h" />
     <ClInclude Include="item_point.h" />
     <ClInclude Include="item_ui.h" />
     <ClInclude Include="joypad.h" />
@@ -246,6 +249,7 @@
     <ClInclude Include="scene3d.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="sound.h" />
+    <ClInclude Include="stan_effect.h" />
     <ClInclude Include="start.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="trap.h" />

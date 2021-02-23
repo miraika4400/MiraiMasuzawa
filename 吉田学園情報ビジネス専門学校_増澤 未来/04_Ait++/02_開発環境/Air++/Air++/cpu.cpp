@@ -22,7 +22,9 @@
 //*****************************
 #define MODEL_PATH_STAR "./data/Models/cpu_star.x" // モデルのパス*ワープスター
 #define MODEL_PATH_RUIN "./data/Models/cpu_ruin.x" // モデルのパス*ルインスター
+#define CUBE_TEX_PATH  "./data/Textures/cube_sky.dds" // キューブテクスチャのパス
 #define SHADER_PATH     "./data/HLSL/Shader.fx"    // HLSLファイルのパス
+
 #define CPU_DIST_RADIUS 150.0f                     // 目標の地点半径
 #define DIST_RAND_AMPLITUDE 800                    // 目標地点設定の乱数の振幅
 #define CPU_LEVEL_MAX 10                           // CPU強さレベルの上限
@@ -126,6 +128,7 @@ HRESULT CCpu::Load(void)
 
 	sprintf(&m_shader.achTechniqueName[0], "%s", "TShader");
 
+	D3DXCreateCubeTextureFromFile(pDevice, CUBE_TEX_PATH, &m_shader.pCubeTex);
 	return S_OK;
 }
 
@@ -224,14 +227,14 @@ void CCpu::Uninit(void)
 //******************************
 void CCpu::Update(void)
 {
+	// 移動量の設定
+	Move();
+
+	// 目標地点の管理
+	DistManager();
+	
 	if (!GetGoalFlag())
 	{
-		// 移動量の設定
-		Move();
-
-		// 目標地点の管理
-		DistManager();
-
 		if (GetItem() != CItem::ITEM_NONE)
 		{// アイテムを持っているとき
 			UseItem();

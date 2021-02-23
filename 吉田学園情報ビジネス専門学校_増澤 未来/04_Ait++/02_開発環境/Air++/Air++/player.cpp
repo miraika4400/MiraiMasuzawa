@@ -29,6 +29,8 @@
 //*****************************
 #define MODEL_PATH     "./data/Models/player.x"     // モデルのパス
 #define SHADER_PATH    "./data/HLSL/Shader.fx"      // HLSLファイルのパス
+#define CUBE_TEX_PATH  "./data/Textures/cube_sky.dds" // キューブテクスチャのパス
+
 #define VIEW_MOVE_SPEED_MAX 0.03f                   // マウス移動最大値
 #define DRIFT_STICK_TIP 10                          // スティックがどれくらい傾いていたらドリフトになるか
 #define DRIFT_ROT_SPEED 0.015f                      // ドリフト時にプラスする値
@@ -115,10 +117,11 @@ HRESULT CPlayer::Load(void)
 	}
 
 	// HLSLファイルの読み込み
-	D3DXCreateEffectFromFile(CManager::GetRenderer()->GetDevice(), SHADER_PATH, NULL, NULL, 0, NULL, &m_shader.pEffect, NULL);
+	D3DXCreateEffectFromFile(pDevice, SHADER_PATH, NULL, NULL, 0, NULL, &m_shader.pEffect, NULL);
 
 	sprintf(&m_shader.achTechniqueName[0], "%s", "TShader");
 
+	D3DXCreateCubeTextureFromFile(pDevice, CUBE_TEX_PATH, &m_shader.pCubeTex);
 	return S_OK;
 }
 

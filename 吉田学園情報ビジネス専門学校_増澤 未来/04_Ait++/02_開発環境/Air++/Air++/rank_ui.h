@@ -33,7 +33,7 @@ public:
 		RANK_UI_TEX_NORMAL,
 		RANK_UI_TEX_RESULT,
 		RANK_UI_TEX_MAX
-	};
+	}RANK_UI_TEX_TYPE;
 
 	//============
 	// ÉÅÉìÉoä÷êî

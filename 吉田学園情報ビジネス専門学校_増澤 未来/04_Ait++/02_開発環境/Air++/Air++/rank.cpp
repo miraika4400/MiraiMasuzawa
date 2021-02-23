@@ -162,35 +162,35 @@ void CRank::RankManager(void)
 					else if (pCharacter[nCnt]->GetRankData().nCheck == pCharacter[nCnt2]->GetRankData().nCheck)
 					{// チェックポイント数が一緒だった時
 
-						//int nCheck = pCharacter[nCnt]->GetRankData().nCheck;
-						//
-						//float fProgress = CheckProgress(nCheck, pCharacter[nCnt]->GetPos());
-						//
-						//if (fProgress < CheckProgress(nCheck, pCharacter[nCnt2]->GetPos()))
-						//{
-						//	CCharacter*pSave = pCharacter[nCnt];
-						//	pCharacter[nCnt] = pCharacter[nCnt2];
-						//	pCharacter[nCnt2] = pSave;
-						//	continue;
-						//}
-
-						D3DXVECTOR3 checkPos = CGame::GetCheckPoint()->GetCollision(pCharacter[nCnt]->GetRankData().nCheck)->GetPos();
+						int nCheck = pCharacter[nCnt]->GetRankData().nCheck;
 						
-						// チェックポイントとの距離でソート
-						float fDistance = sqrtf(powf(checkPos.x - pCharacter[nCnt]->GetPos().x, 2) +
-							powf(checkPos.y - pCharacter[nCnt]->GetPos().y, 2) +
-							powf(checkPos.z - pCharacter[nCnt]->GetPos().z, 2));
+						float fProgress = CheckProgress(nCheck, pCharacter[nCnt]->GetPos());
 						
-						if (fDistance < sqrtf(powf(checkPos.x - pCharacter[nCnt2]->GetPos().x, 2) +
-							powf(checkPos.y - pCharacter[nCnt2]->GetPos().y, 2) +
-							powf(checkPos.z - pCharacter[nCnt2]->GetPos().z, 2)))
-						
+						if (fProgress > CheckProgress(nCheck, pCharacter[nCnt2]->GetPos()))
 						{
 							CCharacter*pSave = pCharacter[nCnt];
 							pCharacter[nCnt] = pCharacter[nCnt2];
 							pCharacter[nCnt2] = pSave;
 							continue;
 						}
+
+						//D3DXVECTOR3 checkPos = CGame::GetCheckPoint()->GetCollision(pCharacter[nCnt]->GetRankData().nCheck)->GetPos();
+						//
+						//// チェックポイントとの距離でソート
+						//float fDistance = sqrtf(powf(checkPos.x - pCharacter[nCnt]->GetPos().x, 2) +
+						//	powf(checkPos.y - pCharacter[nCnt]->GetPos().y, 2) +
+						//	powf(checkPos.z - pCharacter[nCnt]->GetPos().z, 2));
+						//
+						//if (fDistance < sqrtf(powf(checkPos.x - pCharacter[nCnt2]->GetPos().x, 2) +
+						//	powf(checkPos.y - pCharacter[nCnt2]->GetPos().y, 2) +
+						//	powf(checkPos.z - pCharacter[nCnt2]->GetPos().z, 2)))
+						//
+						//{
+						//	CCharacter*pSave = pCharacter[nCnt];
+						//	pCharacter[nCnt] = pCharacter[nCnt2];
+						//	pCharacter[nCnt2] = pSave;
+						//	continue;
+						//}
 					}
 				}
 			}
@@ -218,19 +218,13 @@ void CRank::RankManager(void)
 float CRank::CheckProgress(int nCheckNum , D3DXVECTOR3 pos)
 {
 	// 最新で通過しているチェックポイントの座標
-	D3DXVECTOR3 nowCheckPos = CGame::GetCheckPoint()->GetCollision(nCheckNum)->GetPos();
+	D3DXVECTOR3 nextCheckPos = CGame::GetCheckPoint()->GetCollision(nCheckNum)->GetPos();
 	
 	// 次のチェックポイント番号
-	int nNextCheckNum = nCheckNum + 1;
-	if (nNextCheckNum >= CGame::GetCheckPoint()->GetCheckPointNum()) nNextCheckNum = 0;
+	int nowCheckNum = nCheckNum - 1;
+	if (nowCheckNum < 0) nowCheckNum = CGame::GetCheckPoint()->GetCheckPointNum()-1;
 	// 次のチェックポイントの座標の取得
-	D3DXVECTOR3 nextCheckPos = CGame::GetCheckPoint()->GetCollision(nNextCheckNum)->GetPos();
-	
-	//// 次の次のチェックポイント番号
-	//int nNextNextCheckNum = nNextCheckNum + 1;
-	//if (nNextNextCheckNum >= CGame::GetCheckPoint()->GetCheckPointNum()) nNextNextCheckNum = 0;
-	//// 次の次のチェックポイントの座標の取得
-	//D3DXVECTOR3 nextNextCheckPos = CGame::GetCheckPoint()->GetCollision(nNextNextCheckNum)->GetPos();
+	D3DXVECTOR3 nowCheckPos = CGame::GetCheckPoint()->GetCollision(nowCheckNum)->GetPos();
 
 	// 進行方向への単位ベクトル
 	D3DXVECTOR3 progressDir;

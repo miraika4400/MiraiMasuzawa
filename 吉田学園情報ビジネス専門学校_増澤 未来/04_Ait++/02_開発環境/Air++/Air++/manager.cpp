@@ -39,6 +39,8 @@
 #include "lap_ui.h"
 #include "goal_ui.h"
 #include "start.h"
+#include "itembox_effect.h"
+#include "stan_effect.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -128,23 +130,25 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	m_pFade->SetFade(m_mode);
 
 	// テクスチャ・モデルの読み込み
-	CBg::Load();        // 背景
-	CNumber::Load();    // ナンバー
-	CParticle::Load();  // パーティクル
-	CPause::Load();     // ポーズ
-	CPlayer::Load();    // プレイヤー
-	CCourse::Load();    // コース
-	CModel::Load();     // 汎用モデル
-	CCpu::Load();       // CPU
-	CRankUi::Load();    // 順位UI
-	CItem::Load();      // アイテム
-	CLocus::Load();     // 軌跡
-	CItemUi::Load();    // アイテムUI
-	CTrap::Load();      // トラップ
-	CAttack::Load();    // アタック
-	CLapUi::Load();     // ラップ数UI
-	CGoalUi::Load();    // ゴールUI
-	CStart::Load();     // スタート時カウントダウン
+	CBg::Load();            // 背景
+	CNumber::Load();        // ナンバー
+	CParticle::Load();      // パーティクル
+	CPause::Load();         // ポーズ
+	CPlayer::Load();        // プレイヤー
+	CCourse::Load();        // コース
+	CModel::Load();         // 汎用モデル
+	CCpu::Load();           // CPU
+	CRankUi::Load();        // 順位UI
+	CItem::Load();          // アイテム
+	CLocus::Load();         // 軌跡
+	CItemUi::Load();        // アイテムUI
+	CTrap::Load();          // トラップ
+	CAttack::Load();        // アタック
+	CLapUi::Load();         // ラップ数UI
+	CGoalUi::Load();        // ゴールUI
+	CStart::Load();         // スタート時カウントダウン
+	CItemBoxEffect::Load(); // アイテム取得時のエフェクト
+	CStanEffect::Load();    // スタン状態時のエフェクト
 
 	// ポーズ状態の時
 	return S_OK;
@@ -159,23 +163,25 @@ void CManager::Uninit(void)
 	CScene::ReleaseAll();
 
 	// テクスチャのアンロード
-	CBg::Unload();        // 背景
-	CNumber::Unload();    // ナンバー
-	CParticle::Unload();  // パーティクル
-	CPause::Unload();     // ポーズ
-	CPlayer::Unload();    // プレイヤー
-	CCourse::Unload();    // コース
-	CModel::Unload();     // 汎用モデル
-	CCpu::Unload();       // CPU
-	CRankUi::Unload();    // 順位UI
-	CItem::Unload();      // アイテム
-	CLocus::Unload();     // 軌跡
-	CItemUi::Unload();    // アイテムUI
-	CTrap::Unload();      // トラップ
-	CAttack::Unload();    // アタック
-	CLapUi::Unload();     // ラップ数UI
-	CGoalUi::Unload();    // ゴールUI
-	CStart::Unload();     // スタート時カウントダウン
+	CBg::Unload();            // 背景
+	CNumber::Unload();        // ナンバー
+	CParticle::Unload();      // パーティクル
+	CPause::Unload();         // ポーズ
+	CPlayer::Unload();        // プレイヤー
+	CCourse::Unload();        // コース
+	CModel::Unload();         // 汎用モデル
+	CCpu::Unload();           // CPU
+	CRankUi::Unload();        // 順位UI
+	CItem::Unload();          // アイテム
+	CLocus::Unload();         // 軌跡
+	CItemUi::Unload();        // アイテムUI
+	CTrap::Unload();          // トラップ
+	CAttack::Unload();        // アタック
+	CLapUi::Unload();         // ラップ数UI
+	CGoalUi::Unload();        // ゴールUI
+	CStart::Unload();         // スタート時カウントダウン
+	CItemBoxEffect::Unload(); // アイテム取得時のエフェクト
+	CStanEffect::Unload();    // スタン状態時のエフェクト
 
 	if (m_pSound != NULL)
 	{

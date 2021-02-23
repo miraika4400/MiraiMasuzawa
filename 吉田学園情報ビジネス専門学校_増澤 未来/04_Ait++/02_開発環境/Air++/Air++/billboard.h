@@ -19,23 +19,20 @@
 //クラス定義
 //*****************************
 
-//2dポリゴンクラス
+// ビルボードクラス
 class CBillboard : public CScene
 {
 public:
-	//************
 	// メンバ関数
-	//************
 	CBillboard(int nPliority = OBJTYPE_NONE);
 	~CBillboard();
-	static CBillboard *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size);// クラス生成
-
-	HRESULT Init(void); // 初期化
-	void Uninit(void);  // 終了
-	void Update(void);  // 更新
-	void Draw(void);    // 描画
-
-	void BindTexture(const LPDIRECT3DTEXTURE9 pTexture) { m_pTexture = pTexture; } // テクスチャの割り当て
+	static CBillboard *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size);
+	HRESULT Init(void);
+	void Uninit(void);
+	void Update(void);
+	void Draw(void);
+	LPDIRECT3DTEXTURE9 GetTexture(void) { return m_pTexture; }
+	void BindTexture(const LPDIRECT3DTEXTURE9 pTexture) { m_pTexture = pTexture; }
 
 	// 中心座標のセット、取得
 	void SetPos(const D3DXVECTOR3 pos);
@@ -54,10 +51,7 @@ public:
 
 	void SetAddMode(bool bBool) { m_bAddMode = bBool; }
 private:
-
-	//************
 	// メンバ変数
-	//************
 	LPDIRECT3DTEXTURE9		m_pTexture;	 // テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	 // 頂点バッファへのポインタ
 	D3DXVECTOR3	m_pos;                   // ポリゴンの位置
