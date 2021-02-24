@@ -114,7 +114,7 @@ void CTitle::Update(void)
 		CManager::GetMouse()->GetMouseTrigger(0) || 
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
 	{
-		//CManager::GetSound()->Play(CSound::LABEL_SE_ENTER);
+		CManager::GetSound()->Play(CSound::LABEL_SE_ENTER);
 		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
 	}
 }

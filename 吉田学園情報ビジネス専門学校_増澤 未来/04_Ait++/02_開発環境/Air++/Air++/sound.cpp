@@ -12,9 +12,16 @@
 
 CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 {
-	{ "./data/Sounds/BGM/title.wav", -1 },
-	{ "./data/Sounds/BGM/gameBGM.wav", -1 },
-	{ "./data/Sounds/BGM/result.wav", -1 },
+	{ "./data/Sounds/BGM/title.wav"      , -1 },
+	{ "./data/Sounds/BGM/in_game.wav"    , -1 },
+	{ "./data/Sounds/SE/acceleration.wav",  0 },
+	{ "./data/Sounds/SE/Attack.wav"       ,  0 },
+	{ "./data/Sounds/SE/enter.wav"      ,  0 },
+	{ "./data/Sounds/SE/hit.wav"         ,  0 },
+	{ "./data/Sounds/SE/Item.wav"        ,  0 },
+	{ "./data/Sounds/SE/count1.wav"      ,  0 },
+	{ "./data/Sounds/SE/count2.wav"      ,  0 },
+	{ "./data/Sounds/SE/fall.wav"        ,  0 },
 };
 
 //=============================================================================

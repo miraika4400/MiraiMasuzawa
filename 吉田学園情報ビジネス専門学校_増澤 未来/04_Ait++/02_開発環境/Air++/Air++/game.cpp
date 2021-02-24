@@ -131,22 +131,9 @@ HRESULT CGame::Init(void)
 	m_pItemPoint = CItemPoint::Create();
 
 
+	// キャラクターの生成・配置
 	float fPosX = INIT_POS_X;
 	float fPosZ = INIT_POS_Z;
-
-	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
-	{
-		// カメラクラスの生成
-		m_apCamera[nCnt] = CCamera::Create(nCnt);
-		// プレイヤー生成
-		m_apCharacter[m_nNumCaracter] = CPlayer::Create(D3DXVECTOR3(fPosX, 0.0f, fPosZ), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), 0);
-		// キャラクター数加算
-		m_nNumCaracter++;
-		fPosX -= SPACE_X;
-		fPosZ += SPACE_Z;
-	}
-	
-
 	for (int nCnt = 0; nCnt < MAX_NPC_NUM; nCnt++)
 	{
 		if (m_nNumCaracter % X_RESET_NUM == 0)
@@ -162,6 +149,18 @@ HRESULT CGame::Init(void)
 		fPosZ += SPACE_Z;
 
 	}
+	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+	{
+		// カメラクラスの生成
+		m_apCamera[nCnt] = CCamera::Create(nCnt);
+		// プレイヤー生成
+		m_apCharacter[m_nNumCaracter] = CPlayer::Create(D3DXVECTOR3(fPosX, 0.0f, fPosZ), D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f), 0);
+		// キャラクター数加算
+		m_nNumCaracter++;
+		fPosX -= SPACE_X;
+		fPosZ += SPACE_Z;
+	}
+	
 
 	// スタートのカウントダウンの生成
 	CStart::Create();

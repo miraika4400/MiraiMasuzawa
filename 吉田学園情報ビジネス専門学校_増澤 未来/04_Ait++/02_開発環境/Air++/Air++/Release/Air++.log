@@ -1,8 +1,14 @@
-﻿  billboard.cpp
+﻿  goal_ui.cpp
+  itembox_effect.cpp
+  manager.cpp
+  rank.cpp
+  rank_ui.cpp
+  sound.cpp
   stan_effect.cpp
-stan_effect.cpp(141): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
+  start.cpp
+  title.cpp
   コード生成しています。
-  3 of 605 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
+  7 of 605 functions ( 1.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。

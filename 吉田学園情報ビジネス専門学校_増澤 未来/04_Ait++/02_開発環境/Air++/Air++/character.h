@@ -26,7 +26,7 @@
 #define RAY_DISTANCE 50.0f                  // レイを出す距離*向き調整に使用
 #define RAY_HEIGHT   100.0f                 // レイを出す高さ*向き調整に使用
 #define TRAP_SET_DISTACE 150.0f             // トラップを置く距離
-#define ATTACK_SET_DISTACE 300.0f           // 攻撃を置く距離
+#define ATTACK_SET_DISTACE 100.0f           // 攻撃を置く距離
 #define CHARACTER_MOVE_RATE 0.05f                       // 移動量の係数
 
 //*****************************
@@ -122,7 +122,7 @@ public:
 	virtual void GoalAction(void) { m_bGoal = true; }
 
 protected:
-	void SetItem(void);                    // アイテムのセット処理
+	void SetItemObject(void);                    // アイテムのセット処理
 private:
 	void Gravity(void);                    // 重力処理
 	virtual void Direction(void);          // 向きの管理処理

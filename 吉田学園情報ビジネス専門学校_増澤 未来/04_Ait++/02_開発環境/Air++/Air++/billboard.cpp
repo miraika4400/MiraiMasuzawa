@@ -222,7 +222,7 @@ void CBillboard::SetPos(const D3DXVECTOR3 pos)
 {
 	VERTEX_3D *pVtx;// 頂点情報ポインタ
 
-					//posの代入
+	//posの代入
 	m_pos = pos;
 
 	// ロック
@@ -235,10 +235,10 @@ void CBillboard::SetPos(const D3DXVECTOR3 pos)
 	// 中心から左上の頂点の角度
 	float  fAngle2 = atan2f(m_size.y, -m_size.x);
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3((cosf(  fAngle2 + D3DXToRadian(m_fAngle)) * fDistance)  , (sinf( fAngle2  + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[1].pos = D3DXVECTOR3((cosf(  fAngle  + D3DXToRadian(m_fAngle)) * fDistance)  , (sinf( fAngle   + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[2].pos = D3DXVECTOR3((cosf( -fAngle2 + D3DXToRadian(m_fAngle)) * fDistance)  , (sinf( -fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[3].pos = D3DXVECTOR3((cosf( -fAngle  + D3DXToRadian(m_fAngle))  * fDistance) , (sinf( -fAngle  + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[0].pos = D3DXVECTOR3((cosf(  fAngle2 + D3DXToRadian(m_fAngle)) * fDistance) , (sinf( fAngle2  + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[1].pos = D3DXVECTOR3((cosf(  fAngle  + D3DXToRadian(m_fAngle)) * fDistance) , (sinf( fAngle   + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[2].pos = D3DXVECTOR3((cosf( -fAngle2 + D3DXToRadian(m_fAngle)) * fDistance) , (sinf( -fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[3].pos = D3DXVECTOR3((cosf( -fAngle  + D3DXToRadian(m_fAngle)) * fDistance) , (sinf( -fAngle  + D3DXToRadian(m_fAngle)) * fDistance), 0);
 
 	// アンロック
 	m_pVtxBuff->Unlock();

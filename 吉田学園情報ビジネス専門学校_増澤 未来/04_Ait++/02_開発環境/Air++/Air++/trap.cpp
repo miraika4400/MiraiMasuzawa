@@ -18,6 +18,7 @@
 #include "player.h"
 #include "camera.h"
 #include "attack.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -207,6 +208,8 @@ bool CTrap::CollisionCharacter(void)
 				{// プレイヤーだった時
 					// カメラのブレの設定
 					CGame::GetCamera(((CPlayer*)pChara)->GetPlayerNum())->Shake(true);
+					// SE再生
+					CManager::GetSound()->Play(CSound::LABEL_SE_HIT);
 				}
 			}
 			// 消す

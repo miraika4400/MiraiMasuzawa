@@ -20,10 +20,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-
-// 座標
-#define POS   D3DXVECTOR3(0.0f,200.0f,-500.0f) // イージー
-
+//#define POS   D3DXVECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0.0f) // 座標
+#define POS   D3DXVECTOR3(0.0f,200.0f,-500.0f) // 座標
 #define SIZE  D3DXVECTOR3(100.0f,100.0f,0.0f) 
 
 #define MAX_ANIMATION_X 4      // アニメーション数 横
@@ -187,7 +185,7 @@ void CStart::Update(void)
 
 			if (m_nAnimX + 1 != MAX_ANIMATION_X)
 			{
-				//CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_COUNT1);
+				CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_COUNT1);
 			}
 		}
 
@@ -200,14 +198,17 @@ void CStart::Update(void)
 			m_nTime = 1000;
 			if (m_nAnimX + 1 != MAX_ANIMATION_X)
 			{
-				//CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_COUNT1);
+				CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_COUNT1);
 			}
 		}
 
 		if (m_nAnimX + 1 == MAX_ANIMATION_X)
 		{
-			//CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_COUNT2);
-			
+			// SE再生
+			CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_COUNT2);
+			// ゲームBGM再生
+			CManager::GetSound()->Play(CSound::LABEL_BGM_GAME);
+
 			// 全員移動可能状態にする
 			for (int nCntChara = 0; nCntChara < CGame::GetCharacterNum(); nCntChara++)
 			{

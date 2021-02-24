@@ -380,7 +380,7 @@ void CCpu::UseItem(void)
 		// カウントの初期化
 		m_nItemCnt = 0;
 		// アイテムのセット
-		SetItem();
+		SetItemObject();
 	}
 }
 

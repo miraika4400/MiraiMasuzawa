@@ -345,13 +345,13 @@ void CManager::SetMode(MODE mode)
 		// NULLクリア
 		m_pTutorial = NULL;
 		// タイトルBGM停止
-		//m_pSound->Stop(CSound::LABEL_BGM_TITLE);
+		m_pSound->Stop(CSound::LABEL_BGM_TITLE);
 		break;
 	case MODE_GAME:
 		// NULLクリア
 		m_pGame = NULL;
 		// ゲームBGM停止
-		//m_pSound->Stop(CSound::LABEL_BGM_GAME);
+		m_pSound->Stop(CSound::LABEL_BGM_GAME);
 		break;
 
 	case MODE_RESULT:
@@ -375,7 +375,7 @@ void CManager::SetMode(MODE mode)
 		// タイトル生成
 		m_pTitle = CTitle::Create();
 		// タイトルBGM再生
-		//m_pSound->Play(CSound::LABEL_BGM_TITLE);
+		m_pSound->Play(CSound::LABEL_BGM_TITLE);
 		break;
 	case MODE_TUTORIAL:
 		// チュートリアル生成
@@ -384,7 +384,7 @@ void CManager::SetMode(MODE mode)
 	case MODE_GAME:
 		// ゲーム生成
 		m_pGame = CGame::Create();
-		// ゲームBGM再生
+		//// ゲームBGM再生
 		//m_pSound->Play(CSound::LABEL_BGM_GAME);
 		break;
 

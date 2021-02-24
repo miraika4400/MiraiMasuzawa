@@ -23,6 +23,7 @@
 #include "joypad.h"
 #include "lap_ui.h"
 #include "goal_ui.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -325,7 +326,7 @@ void CPlayer::UseItem(void)
 	if (GetItem() != CItem::ITEM_NONE && CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
 	{
 		// アイテムセット
-		SetItem();
+		SetItemObject();
 	}
 }
 
@@ -466,4 +467,7 @@ void CPlayer::FallAction(void)
 
 	m_bDriftLeft = false;
 	m_bDriftRight = false;
+
+	// SE再生
+	CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_FALL);
 }

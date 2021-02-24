@@ -138,7 +138,7 @@ HRESULT CStanEffect::Init(void)
 	m_move.z = sinf(fRandAngle)*fSpeed;
 
 	// 角度をランダムに初期化
-	SetAngle(rand()%360);
+	SetAngle((float)(rand()%360));
 
 	// サイズをランダムに設定
 	float fSize = (float)(rand() % SIZE_AMPLITUDE + SIZE_MIN);

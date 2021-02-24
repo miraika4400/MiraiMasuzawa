@@ -17,6 +17,7 @@
 #include "game.h"
 #include "cpu.h"
 #include "itembox_effect.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -301,6 +302,12 @@ void CItem::CollisionCharacter(void)
 					//	アイテムカウントのセット
 					((CCpu*)pChara)->SetItemCount((rand() % CPU_ITEM_USE_RAND_AMPLITUDE) + CPU_ITEM_USE_RAND_MIN);
 				}
+			}
+
+			if (pChara->GetIsPlayer())
+			{// プレイヤーだった時
+				// SE再生
+				CManager::GetSound()->Play(CSound::LABEL_SE_ITEM);
 			}
 			break;
 		}

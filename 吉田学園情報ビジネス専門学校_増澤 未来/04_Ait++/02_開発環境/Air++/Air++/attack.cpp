@@ -17,6 +17,7 @@
 #include "collision.h"
 #include "cpu_point.h"
 #include "player.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -337,6 +338,9 @@ void CAttack::CollisionCharacter(void)
 
 						// カメラを揺らす
 						CGame::GetCamera(((CPlayer*)pChara)->GetPlayerNum())->Shake(true);
+
+						// SE再生
+						CManager::GetSound()->Play(CSound::LABEL_SE_HIT);
 					}
 				}
 

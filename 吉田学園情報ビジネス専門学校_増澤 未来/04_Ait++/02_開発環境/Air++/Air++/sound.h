@@ -22,9 +22,16 @@ public:
 	//============ 
 	typedef enum
 	{
-		LABEL_BGM_TITLE = 0, // タイトルBGM
-		LABEL_BGM_GAME,      // ゲームBGM
-		LABEL_BGM_RESULT,    // リザルトBGM
+		LABEL_BGM_TITLE = 0,   // タイトルBGM
+		LABEL_BGM_GAME,        // ゲームBGM
+		LABEL_SE_ACCELERATION, // 加速
+		LABEL_SE_ATTACK,       // 攻撃
+		LABEL_SE_ENTER,        // 決定
+		LABEL_SE_HIT,          // ヒット
+		LABEL_SE_ITEM,         // アイテム
+		SOUND_LABEL_SE_COUNT1, // スタートカウント
+		SOUND_LABEL_SE_COUNT2, // スタートカウント
+		SOUND_LABEL_SE_FALL,   // 落下
 		SOUND_LABEL_MAX,     // サウンド最大数
 	}LABEL;
 

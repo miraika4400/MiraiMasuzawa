@@ -24,6 +24,7 @@
 #include "trap.h"
 #include "locus.h"
 #include "stan_effect.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -250,7 +251,7 @@ void CCharacter::SetStan(bool bBool)
 //******************************
 // アイテムのセット処理
 //******************************
-void CCharacter::SetItem(void)
+void CCharacter::SetItemObject(void)
 {
 	switch (m_item)
 	{
@@ -258,18 +259,30 @@ void CCharacter::SetItem(void)
 		// 加速モードにする
 		SetActiveAcceleration(true);
 
+		if (m_bIsPlayer)
+		{
+			// SE再生
+			CManager::GetSound()->Play(CSound::LABEL_SE_ACCELERATION);
+		}
+
 		break;
 	case CItem::ITEM_ATTACK:
 	{
 		// 頭から出す
 		D3DXVECTOR3 attackPos = GetPos();
-		// プレイヤーの後ろ座標の取得
+		// プレイヤーの座標の取得
 		float fAngle = (-GetRot().y) + D3DXToRadian(90);
 		attackPos.x += cosf(fAngle) * ATTACK_SET_DISTACE;
 		attackPos.z += sinf(fAngle) * ATTACK_SET_DISTACE;
 
 		// 攻撃生成
 		CAttack::Create(attackPos, D3DXVECTOR3(0.0f, -GetRot().y + D3DXToRadian(90), 0.0f), m_rankData.nRank, GetID());
+
+		if (m_bIsPlayer)
+		{
+			// SE再生
+			CManager::GetSound()->Play(CSound::LABEL_SE_ATTACK);
+		}
 
 	}
 	break;
@@ -285,6 +298,12 @@ void CCharacter::SetItem(void)
 
 		// トラップ生成
 		CTrap::Create(trapPos);
+
+		if (m_bIsPlayer)
+		{
+			// SE再生
+			CManager::GetSound()->Play(CSound::LABEL_SE_ATTACK);
+		}
 	}
 	break;
 	default:
