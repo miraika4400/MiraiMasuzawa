@@ -17,9 +17,9 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define DISTANCE_PLAYER_DDRIFT  -300                  // プレイヤーとの距離のドリフト時
-#define DISTANCE_PLAYER_DEFAULT -50                   // プレイヤーとの距離の基本値
-#define DISTANCE_PLAYER_INIT    -10                   // プレイヤーとの距離の初期
+#define DISTANCE_PLAYER_DDRIFT  -300                   // プレイヤーとの距離のドリフト時
+#define DISTANCE_PLAYER_DEFAULT -200                   // プレイヤーとの距離の基本値
+#define DISTANCE_PLAYER_INIT    -10                    // プレイヤーとの距離の初期
 
 //*****************************
 // クラス定義

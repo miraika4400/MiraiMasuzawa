@@ -1,14 +1,7 @@
-﻿  goal_ui.cpp
-  itembox_effect.cpp
-  manager.cpp
-  rank.cpp
-  rank_ui.cpp
-  sound.cpp
-  stan_effect.cpp
-  start.cpp
+﻿  game.cpp
   title.cpp
   コード生成しています。
-  7 of 605 functions ( 1.2%) were compiled, the rest were copied from previous compilation.
+  2 of 611 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。

@@ -150,6 +150,10 @@ void CLapUi::Update(void)
 	// テクスチャUV座標の初期化
 	m_nAnimX = CPlayer::GetPlayer(m_nPlayerNum)->GetRankData().nLap;
 
+	if (m_nAnimX > MAX_ANIMATION_X-1)
+	{
+		m_nAnimX = MAX_ANIMATION_X - 1;
+	}
 	// UV座標の設定
 	D3DXVECTOR2 uv[NUM_VERTEX];
 	float fu = 1.0f / MAX_ANIMATION_X;

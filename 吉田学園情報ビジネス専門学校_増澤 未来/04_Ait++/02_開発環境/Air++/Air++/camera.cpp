@@ -17,6 +17,7 @@
 #include "player.h"
 #include "cpu.h"
 #include "destination.h"
+#include "joypad.h"
 
 //******************************
 // マクロ定義
@@ -30,11 +31,11 @@
 #define CAMERA_FOV_RATE 0.05f                                // 視野角変化時の係数
 #define CAMERA_BACK_BUFFE D3DXCOLOR( 0.0f, 1.0f, 0.0f, 1.0f) // カメラの背景色
 #define CAMERA_MOVE_SPEED_MAX 0.04f                          // カメラ操作感度最大値
-#define DAMERA_THETA_RATE 0.03f                              // カメラのシータ調整時の係数
+#define DAMERA_THETA_RATE 0.05f                              // カメラのシータ調整時の係数
 #define CAMERA_THETA_BASE D3DXToRadian(75.0f)                // カメラのファイ(高さ)の基本角度
 #define DAMERA_PHI_RATE 0.01f                                // カメラのファイ(高さ)調整時の係数
-#define THETA_DIFFERENCE D3DXToRadian(20)     // シータとシータの目標値の差の最大
-#define SHAKE_VEC D3DXVECTOR3(60.0f,70.0f,30.0f)                // ブレの方向
+#define THETA_DIFFERENCE D3DXToRadian(60)                    // シータとシータの目標値の差の最大
+#define SHAKE_VEC D3DXVECTOR3(60.0f,70.0f,30.0f)             // ブレの方向
 #define SHAKE_COUNT 6                                        // ブレの方向転換時インターバル
 #define SHAKE_RATE 0.05f                                     // ブレの係数
 
@@ -193,7 +194,7 @@ void CCamera::Update(void)
 				// ブレの値の処理
 				Shake();
 
-				m_posR = pPlayer->GetPos() + m_shake;
+				m_posR = pPlayer->GetDest() ->GetPos() + m_shake;
 
 				float fThetaDist = -pPlayer->GetDest()->GetRot().y+D3DXToRadian(90);
 
@@ -233,10 +234,23 @@ void CCamera::Update(void)
 				m_fFov += (CAMERA_FOV_BASE - m_fFov)*CAMERA_FOV_RATE;
 			}
 
-			// 球面座標の設定
-			m_posV.x = pPlayer->GetPos().x + (m_fRad)* sinf(m_fPhi)*cosf(m_fTheta);
-			m_posV.y = pPlayer->GetPos().y + (m_fRad)* cosf(m_fPhi);
-			m_posV.z = pPlayer->GetPos().z + (m_fRad)* sinf(m_fPhi)*sinf(m_fTheta);
+		
+				
+			if (CManager::GetMouse()->GetMousePress(1)|| CManager::GetJoypad()->GetJoystickPress(1, 0))
+			{// バックミラー
+
+				// 球面座標の設定
+				m_posV.x = pPlayer->GetPos().x + (m_fRad)* sinf((pPlayer->GetRot().x) + CAMERA_THETA_BASE)*cosf(m_fTheta + D3DXToRadian(180));
+				m_posV.y = pPlayer->GetPos().y + (m_fRad)* cosf((pPlayer->GetRot().x) + CAMERA_THETA_BASE);
+				m_posV.z = pPlayer->GetPos().z + (m_fRad)* sinf((pPlayer->GetRot().x) + CAMERA_THETA_BASE)*sinf(m_fTheta + D3DXToRadian(180));
+			}
+			else
+			{
+				// 球面座標の設定
+				m_posV.x = pPlayer->GetPos().x + (m_fRad)* sinf(m_fPhi)*cosf(m_fTheta);
+				m_posV.y = pPlayer->GetPos().y + (m_fRad)* cosf(m_fPhi);
+				m_posV.z = pPlayer->GetPos().z + (m_fRad)* sinf(m_fPhi)*sinf(m_fTheta);
+			}
 
 			break;
 		}
@@ -244,9 +258,6 @@ void CCamera::Update(void)
 	}
 
 #endif // CPU_CAMERA
-	
-
-
 }
 
 //******************************

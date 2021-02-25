@@ -244,6 +244,9 @@ void CPlayer::Update(void)
 		// ドリフト処理
 		Drift();
 
+		// アイテム使用
+		UseItem();
+
 		// プレイヤーの正面への角度の保存
 		m_fDir = (-GetRot().y) + D3DXToRadian(90);
 	}
@@ -255,9 +258,6 @@ void CPlayer::Update(void)
 
 	// キャラクタークラスの更新処理*移動処理・向きの処理・重力処理・当たり判定
 	CCharacter::Update();
-
-	// アイテム使用
-	UseItem();
 }
 
 //******************************
@@ -323,7 +323,9 @@ void CPlayer::Move(void)
 //******************************
 void CPlayer::UseItem(void)
 {
-	if (GetItem() != CItem::ITEM_NONE && CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
+	if (GetItem() != CItem::ITEM_NONE && CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE) || 
+		GetItem() != CItem::ITEM_NONE && CManager::GetJoypad()->GetJoystickPress(4, m_nPlayerNum) ||
+		GetItem() != CItem::ITEM_NONE && CManager::GetMouse()->GetMousePress(0))
 	{
 		// アイテムセット
 		SetItemObject();

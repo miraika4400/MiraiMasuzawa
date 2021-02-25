@@ -79,9 +79,9 @@ CDestination * CDestination::Create(const int nPlayerNum, const D3DXVECTOR3 pos,
 		// 初期化
 		pDest->Init();
 		// 引数の代入
-		pDest->m_pos = pos;                // 座標
-		pDest->m_rot = rot;				   // ロット
-		pDest->m_rotDest = rot;			   // ロット目標値
+		pDest->m_pos = pos;     // 座標
+		pDest->m_rot = rot;     // ロット
+		pDest->m_rotDest = rot; // ロット目標値
 		
 	}
 
@@ -254,8 +254,8 @@ void CDestination::Direction(void)
 			// マウスでの向き操作
 			m_rotDest.y += min(max(CManager::GetMouse()->GetMouseMove().x , -VIEW_MOVE_SPEED_MAX), VIEW_MOVE_SPEED_MAX);
 
-			//// コントローラーでの向き操作
-			//m_rotDest.y += CManager::GetJoypad()->GetStick(m_nPlayerNum).lX / JOYPAD_SENSI_RATE;
+			// コントローラーでの向き操作
+			m_rotDest.y += min(max(CManager::GetJoypad()->GetStick(m_nPlayerNum).lX / JOYPAD_SENSI_RATE, -VIEW_MOVE_SPEED_MAX), VIEW_MOVE_SPEED_MAX);
 
 			m_rot += (m_rotDest - m_rot)*DIRECTION_RATE;
 		}
@@ -318,7 +318,7 @@ void CDestination::MoveControll(void)
 	D3DXVECTOR3 moveDest = VEC3_ZERO;
 
 #if 1
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_W)|| CPlayer::GetPlayer(m_nPlayerNum)->GetActiveAcceleration())
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_W) || CManager::GetJoypad()->GetJoystickPress(3, m_nPlayerNum) || CPlayer::GetPlayer(m_nPlayerNum)->GetActiveAcceleration())
 	{
 		if (CPlayer::GetPlayer(m_nPlayerNum)->GetMoveFlag())
 		{// 移動フラグがtrueの時

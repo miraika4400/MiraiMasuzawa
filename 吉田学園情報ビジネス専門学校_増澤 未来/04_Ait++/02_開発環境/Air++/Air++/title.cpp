@@ -110,9 +110,10 @@ void CTitle::Update(void)
 	// ƒ|ƒŠƒSƒ“‚ÌXVˆ—
 	m_pPolygon->Update();
 
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
+	if( CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
 		CManager::GetMouse()->GetMouseTrigger(0) || 
-		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
+		CManager::GetJoypad()->GetJoystickTrigger(3, 0)||
+		CManager::GetJoypad()->GetJoystickTrigger(11, 0))
 	{
 		CManager::GetSound()->Play(CSound::LABEL_SE_ENTER);
 		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);

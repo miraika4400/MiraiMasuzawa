@@ -29,6 +29,7 @@
 #include "item_point.h"
 #include "item.h"
 #include "start.h"
+#include "joypad.h"
 
 //=============================
 // マクロ定義
@@ -36,8 +37,8 @@
 #define RESULT_COUNT 250 // リザルトへの遷移カウント
 #define INIT_POS_X 400   // キャラクター配置初期X位置
 #define INIT_POS_Z 0     // キャラクター配置初期Y位置
-#define SPACE_X 300      // キャラクター配置Xの間隔
-#define SPACE_Z 100      // キャラクター配置Yの間隔
+#define SPACE_X 280      // キャラクター配置Xの間隔
+#define SPACE_Z 140      // キャラクター配置Yの間隔
 #define X_RESET_NUM 4    // キャラクター配置Xをリセットする間隔
 
 //=============================
@@ -199,6 +200,8 @@ void CGame::Uninit(void)
 //=============================
 void CGame::Update(void)
 {
+	// マウスカーソルの位置固定
+	CManager::GetMouse()->SetMousePos(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f));
 #ifdef _DEBUG
 	// デバッグ用画面遷移コマンド
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F1))
@@ -218,7 +221,11 @@ void CGame::Update(void)
 	}
 	else
 	{
-		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
+
+		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) ||
+			CManager::GetMouse()->GetMouseTrigger(0) ||
+			CManager::GetJoypad()->GetJoystickTrigger(3, 0) ||
+			CManager::GetJoypad()->GetJoystickTrigger(11, 0))
 		{
 			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
 		}

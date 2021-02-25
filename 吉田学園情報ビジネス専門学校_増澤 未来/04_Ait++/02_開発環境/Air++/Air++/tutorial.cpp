@@ -26,9 +26,9 @@ LPDIRECT3DTEXTURE9 CTutorial::m_pTexture[TUTORIAL_NUM] = {};
 //**********************************
 // マクロ定義
 //**********************************
-#define  TITLE_TEXTURE_1_PATH "./data/Textures/tutorial000.png" // テクスチャ
-#define  TITLE_TEXTURE_2_PATH "./data/Textures/tutorial001.png" // テクスチャ
-#define  TITLE_TEXTURE_3_PATH "./data/Textures/tutorial002.png" // テクスチャ
+#define  TITLE_TEXTURE_1_PATH "./data/Textures/tutorial_1.png" // テクスチャ
+#define  TITLE_TEXTURE_2_PATH "./data/Textures/tutorial_2.png" // テクスチャ
+#define  TITLE_TEXTURE_3_PATH "./data/Textures/tutorial_3.png" // テクスチャ
 
 //=============================
 // コンストラクタ
